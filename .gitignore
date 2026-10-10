@@ -29,3 +29,9 @@ dist-ssr
 # TypeScript / Vite incremental
 *.tsbuildinfo
 vite.config.ts.timestamp-*
+
+# Local CV extraction scratch output
+.cv-extract-tmp/cv-raw.*
+
+# Private CV working notes — never commit
+cv-from-pdf.md

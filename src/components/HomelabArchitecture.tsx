@@ -7,7 +7,7 @@ const TEXT = {
   desc:
     'Internet traffic reaches Cloudflare edge for DNS, WAF, TLS, and Access, then enters the ' +
     'homelab through a Cloudflare Tunnel. LAN and Tailscale clients resolve the same hostnames ' +
-    'via Pi-hole and, like the tunnel, land on a reverse proxy that applies per-host access lists ' +
+    'via AdGuard Home and, like the tunnel, land on a reverse proxy that applies per-host access lists ' +
     'and routes to self-hosted services. Dockge and monitoring run alongside, outside the request path.',
   internet: 'Internet',
   httpsOnly: 'HTTPS only',
@@ -19,9 +19,11 @@ const TEXT = {
   cloudflared: 'cloudflared',
   cloudflaredSub: 'tunnel',
   lan: 'LAN · Tailscale',
-  lanSub: 'Pi-hole · same names',
+  // Short form deliberately: the box is 148 units wide in the narrow layout and
+  // 'AdGuard Home · same names' overflows it. Full name is in the stack list.
+  lanSub: 'AdGuard · same names',
   proxy: 'Reverse proxy',
-  proxySub: 'NPM · HTTPS · ACLs',
+  proxySub: 'Traefik · HTTPS · ACLs',
   services: 'Self-hosted services',
   servicesSub: 'Immich · OpenCloud · ntfy · …',
   supporting: 'Supporting services · not in the request path',

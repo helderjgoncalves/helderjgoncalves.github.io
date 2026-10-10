@@ -110,9 +110,9 @@ const pages = [
   {
     path: '/',
     out: 'index.html',
-    title: 'Hélder Gonçalves — Lead Software Engineer | Developer Tools & GenAI',
+    title: 'Hélder Gonçalves — Lead Software Engineer | Developer Tools',
     description:
-      'Lead Software Engineer at OutSystems with 10+ years building developer tools, integrating Generative AI, and architecting cloud-native React/AWS systems.',
+      'Lead Software Engineer at OutSystems with 10+ years on developer tools in React, TypeScript and .NET — now integrating Mentor, the platform’s agentic AI, into ODC Studio.',
     canonical: `${SITE}/`,
     ogType: 'profile',
     image: `${SITE}/og-home.png`,

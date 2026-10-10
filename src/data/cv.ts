@@ -6,9 +6,8 @@ export const cv: CvData = {
     title: 'Lead Software Engineer',
     photo: '/portrait.jpg',
     paragraphs: [
-      'Lead Software Engineer with 10+ years of experience specialising in building mission-critical developer tools. I operate at the intersection of Product Strategy, User Experience, and Technical Execution.',
-      'Expert in translating complex business requirements into scalable, cloud-native architectures (React/AWS) while bridging the gap between design and engineering. Record of leading teams to deliver flexible, maintainable software used by thousands of enterprise developers.',
-      'Currently driving the integration of Generative AI into the OutSystems IDE, architecting the systems that leverage LLMs to power conversational workflows.',
+      'Over 10 years building developer tools used daily by thousands of enterprise engineers. Nearly all of it on one product — the OutSystems IDE — across four eras: migrating it off Windows-only WPF onto web technologies, the reliability turnaround that followed, re-architecting it as ODC Studio, a client of the company’s cloud platform, and bringing Mentor, the platform’s agentic AI, into that visual IDE.',
+      'What stayed constant is changing a live product without interrupting the people who depend on it: replacing it underneath them a piece at a time behind feature toggles, and building the telemetry that says what a failure actually costs them.',
     ],
     contacts: [
       { label: 'helderjgoncalves@proton.me', href: 'mailto:helderjgoncalves@proton.me', icon: 'email' },
@@ -28,22 +27,22 @@ export const cv: CvData = {
     ],
     groups: [
       {
-        heading: 'AI Innovation & Strategic Leadership',
+        heading: 'AI & Technical Direction',
         bullets: [
           {
-            label: 'Conversational AI IDE (Current)',
+            label: 'Mentor in ODC Studio',
             description:
-              'Leading the architectural integration of Large Language Models (LLMs) into the core product, transforming the IDE into a conversational interface that accelerates developer productivity.',
+              'Leading the integration of Mentor — the platform’s agentic AI — into ODC Studio: a conversational workflow inside the visual IDE, generally available since March 2026.',
           },
           {
-            label: 'Product–Tech Bridge',
+            label: 'Team Architecture',
             description:
-              'Translate high-level roadmaps into scalable technical execution plans. Partner with Product Management to align architectural decisions with long-term business goals.',
+              'Advise two teams — twelve engineers — on architecture and technical direction.',
           },
           {
-            label: 'Team Leadership',
+            label: 'Cross-Team Architecture',
             description:
-              'Mentored high-performing teams, fostering a culture of technical excellence (SOLID, Clean Code) while ensuring alignment with business goals.',
+              'Advise other engineering groups on architecture and design, beyond the teams I sit on.',
           },
         ],
       },
@@ -53,52 +52,62 @@ export const cv: CvData = {
           {
             label: 'Stability & Metrics',
             description:
-              'Spearheaded a targeted initiative to improve product stability, resulting in a dramatic improvement in Crash Ratio metrics (decreased by 8%). Implemented advanced telemetry to pinpoint and resolve high-impact failures.',
+              'Led a targeted initiative that cut crash ratio by roughly 80%, and built the telemetry that pinpoints high-impact failures.',
+          },
+          {
+            label: 'Hang & Freeze Signals',
+            description:
+              'Extended that telemetry to hang and freeze ratios, so the product treats those as reliability signals beyond outright crashes.',
           },
           {
             label: 'SRE Practices',
             description:
-              'Introduced Site Reliability Engineering practices and Dark Launches, balancing feature velocity with the need for a resilient core product.',
+              'Introduced Site Reliability Engineering practices and dark launches, balancing feature velocity with a resilient core product.',
           },
         ],
       },
       {
-        heading: 'UX & Frontend Strategy',
+        heading: 'Developer Experience',
         bullets: [
           {
             label: 'Bridging UX & Engineering',
             description:
-              'Review designs for technical feasibility and propose architectural alternatives that balance user experience with engineering costs.',
+              'Review designs for technical feasibility and propose architectural alternatives that keep the user experience without inflating engineering cost.',
           },
           {
-            label: 'Design System Governance',
+            label: 'Design System Modernization',
             description:
-              'Review the implementation of the internal Design System, defining reusable components that enforce visual consistency and accelerate cross-team development.',
+              'Led a modernization initiative that took a company-wide Design System live in 2026, preparing the infrastructure behind it so teams share reusable components across the product.',
           },
           {
-            label: 'User-Centric Innovation',
+            label: 'Granular Merge',
             description:
-              'Revamped “Automatic Text Merge” by combining algorithm optimisation (>50% success rate) with a UI redesign, solving a critical user pain point.',
+              'Made merge much more granular, so edits to different parts of the same screen no longer conflict. A team initiative added text merge for remaining cases — from fully manual to hands-off in most cases, with a redesigned UI when a human is still needed.',
+          },
+          {
+            label: 'Desktop Notifications',
+            description:
+              'Brought desktop notifications into the IDE from scratch, so it can reach developers when it is not the focused window.',
           },
         ],
       },
       {
-        heading: 'Technical Architecture & Cloud Migration',
+        heading: 'Technical Architecture & Cloud Integration',
         bullets: [
           {
-            label: 'Cloud-Native Transition',
+            label: 'Cloud Platform Client',
             description:
-              'Architected ODC Studio, spearheading the strategic shift from legacy desktop apps to a modern, browser-based cloud environment.',
+              'Re-architected the desktop IDE’s client integration with the OutSystems cloud platform for ODC Studio, moving it off a single backend dependency onto distributed services.',
           },
           {
-            label: 'Modern Web Stack',
+            label: 'Incremental Platform Migration',
             description:
-              'Migrated the core IDE from WPF to a cross-platform stack (React, TypeScript, .NET), unlocking macOS support.',
+              'The WPF-to-web migration shipped component by component behind feature toggles — a React UI in an embedded WebView — so the product kept shipping instead of forking into a rewrite. Multi-year team effort; that unlocked macOS support.',
           },
         ],
       },
     ],
-    techPills: ['React', 'TypeScript', 'Node.js', '.NET', 'Azure', 'Avalonia', 'REST', 'AWS', 'Snowflake'],
+    techPills: ['React', 'TypeScript', '.NET', 'AWS', 'Snowflake'],
   },
 
   internships: [
@@ -141,15 +150,15 @@ export const cv: CvData = {
       title: 'Self-Hosted Home Lab',
       subtitle: 'Personal infrastructure (ongoing)',
       description:
-        'NAS-based private cloud serving the whole family with self-hosted services (Immich, Plex / Plexamp, OpenCloud), most running in Docker containers managed via Dockge, exposed through Cloudflare Tunnel and a reverse proxy. Custom DNS via Pi-hole with local rewrites mapping public hostnames to internal services. Zero-trust access enforced with mTLS, OAuth, service tokens, and Cloudflare Access policies; HTTPS everywhere; uptime monitoring and alerting. Full stack declaratively configured and versioned in Git for reproducibility.',
+        'NAS-based private cloud serving the whole family with self-hosted services (Immich, Plex / Plexamp, OpenCloud), most running in Docker containers managed via Dockge, exposed through Cloudflare Tunnel and a Traefik reverse proxy. Custom DNS via AdGuard Home, resolving upstream over DoH, with local rewrites mapping public hostnames to internal services. Zero-trust access enforced with mTLS, OAuth, service tokens, and Cloudflare Access policies; HTTPS everywhere; uptime monitoring and alerting. Full stack declaratively configured and versioned in Git for reproducibility.',
       techPills: [
         'Docker',
-        'Dockge',
         'Cloudflare Zero Trust',
-        'Pi-hole',
+        'AdGuard Home',
+        'DNS over HTTPS',
         'mTLS',
         'OAuth',
-        'Reverse Proxy',
+        'Traefik',
         'Configuration-as-Code',
         'Self-Hosted',
         'Observability',

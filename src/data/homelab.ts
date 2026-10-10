@@ -49,22 +49,27 @@ export const homelab: HomelabPageData = {
     {
       title: 'One hostname everywhere',
       description:
-        'Public DNS resolves to Cloudflare; Pi-hole rewrites map the same names to internal IPs for LAN and VPN clients alike. Either way the request hits the same reverse proxy — same URLs, same TLS, same auth, one bookmark.',
+        'Public DNS resolves to Cloudflare; AdGuard Home rewrites map the same names to internal IPs for LAN and VPN clients alike. Either way the request hits the same reverse proxy — same URLs, same TLS, same app logins, one bookmark.',
+    },
+    {
+      title: 'Encrypted lookups',
+      description:
+        'Lookups leave over DoH, so nothing on the path sees a plaintext hostname — the name resolution is encrypted, not just the request that follows it. AdGuard Home speaks DoH natively, with no second resolver bolted alongside.',
     },
     {
       title: 'Auth at the edge',
       description:
-        'Cloudflare Access enforces SSO/OAuth for humans; service tokens and mTLS for machines. Origins additionally validate Cloudflare’s signed JWT / client cert.',
+        'Cloudflare Access enforces SSO/OAuth for humans, service tokens and mTLS for machines — every policy evaluated at the edge, not inside the apps. The apps keep their own logins behind that, and there is no public origin to go around it.',
     },
     {
       title: 'Least privilege on the VPN',
       description:
-        'Cloudflare’s free plan caps proxied uploads at 100 MB, and phone photo backups need a path without that ceiling. Tailscale ACLs open only Pi-hole and the reverse proxy to family devices — plus Dockge for admin — so the VPN still ends at the same per-host access lists.',
+        'VPN traffic reaches Traefik directly, skipping Cloudflare Access, so per-route allowlists carry it instead: family devices get only the public apps behind their own logins, and admin UIs answer to my devices alone.',
     },
     {
       title: 'Layered monitoring',
       description:
-        'Uptime Kuma covers container and HTTP liveness, Beszel covers resources, and Better Stack probes the public path from outside. Alerts converge on self-hosted ntfy — and Better Stack also expects a heartbeat on a schedule, so a lab that goes dark entirely, ntfy included, still raises an alarm: the missing heartbeat is the alert.',
+        'Uptime Kuma covers container and HTTP liveness, Beszel covers resources, and Better Stack probes the public path from outside. Alerts converge on ntfy — and Better Stack also expects a heartbeat on a schedule, so a lab that goes dark entirely, ntfy included, still raises an alarm: the missing heartbeat is the alert.',
       evidence: { label: 'Live status page', href: 'https://status.hgoncalves.uk' },
     },
     {
@@ -79,9 +84,9 @@ export const homelab: HomelabPageData = {
     { name: 'Plex / Plexamp', purpose: 'Media (runs on the NAS; not in the repo)' },
     { name: 'Home Assistant', purpose: 'Home automation' },
     { name: 'Cloudflare Tunnel', purpose: 'Outbound-only ingress, Access, mTLS' },
-    { name: 'Tailscale', purpose: 'ACL-scoped VPN for uncapped uploads and admin' },
-    { name: 'Nginx Proxy Manager', purpose: 'TLS termination, per-host routing and access lists' },
-    { name: 'Pi-hole', purpose: 'DNS, ad blocking, LAN hostname rewrites' },
+    { name: 'Tailscale', purpose: 'ACL-scoped VPN for family devices and admin' },
+    { name: 'Traefik', purpose: 'TLS termination, per-host routing and access lists' },
+    { name: 'AdGuard Home', purpose: 'DNS over HTTPS upstream, ad blocking, LAN hostname rewrites' },
     { name: 'Dockge', purpose: 'Compose stack manager' },
     { name: 'Uptime Kuma', purpose: 'Container and HTTP liveness probes' },
     { name: 'Beszel', purpose: 'CPU, RAM, disk, temperature metrics' },
@@ -103,7 +108,7 @@ export const homelab: HomelabPageData = {
   meta: {
     title: 'Self-Hosted Home Lab · Hélder Gonçalves',
     description:
-      'Case study of a NAS-based private cloud: Cloudflare Tunnel, zero-trust Access, Pi-hole, Immich, OpenCloud, and layered monitoring — all declarative in Git.',
+      'Case study of a NAS-based private cloud: Cloudflare Tunnel, zero-trust Access, AdGuard Home with DoH, Immich, OpenCloud, and monitoring — declarative in Git.',
     canonical: 'https://hgoncalves.uk/homelab/',
     image: 'https://hgoncalves.uk/og-homelab.png',
     datePublished: '2026-08-10',
