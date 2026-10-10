@@ -108,7 +108,7 @@ export const homelab: HomelabPageData = {
   meta: {
     title: 'Self-Hosted Home Lab · Hélder Gonçalves',
     description:
-      'Case study of a NAS-based private cloud: Cloudflare Tunnel, zero-trust Access, AdGuard Home with DoH, Immich, OpenCloud, and monitoring — declarative in Git.',
+      'Case study of a NAS-based private cloud: no inbound ports, Cloudflare Tunnel into a Traefik reverse proxy, zero-trust Access, AdGuard Home with DoH, and monitoring — declarative in Git.',
     canonical: 'https://hgoncalves.uk/homelab/',
     image: 'https://hgoncalves.uk/og-homelab.png',
     datePublished: '2026-08-10',
