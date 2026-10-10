@@ -6,7 +6,7 @@ export const cv: CvData = {
     title: 'Lead Software Engineer',
     photo: '/portrait.jpg',
     paragraphs: [
-      'Over 10 years building developer tools used daily by thousands of enterprise engineers. Nearly all of it on one product — the OutSystems IDE — across four eras: migrating it off Windows-only WPF onto web technologies, the reliability turnaround that followed, re-architecting it as ODC Studio, a client of the company’s cloud platform, and bringing Mentor, the platform’s agentic AI, into that visual IDE.',
+      'Over 10 years building developer tools used daily by thousands of enterprise engineers. Nearly all of it on one product — the OutSystems IDE — across four eras: its migration off Windows-only WPF onto web technologies, the reliability turnaround that followed, its adaptation into ODC Studio for the company’s cloud platform, and now Mentor, the platform’s agentic AI, inside that visual IDE.',
       'What stayed constant is changing a live product without interrupting the people who depend on it: replacing it underneath them a piece at a time behind feature toggles, and building the telemetry that says what a failure actually costs them.',
     ],
     contacts: [
@@ -35,14 +35,9 @@ export const cv: CvData = {
               'Leading the integration of Mentor — the platform’s agentic AI — into ODC Studio: a conversational workflow inside the visual IDE, generally available since March 2026.',
           },
           {
-            label: 'Team Architecture',
+            label: 'Architecture Guidance',
             description:
-              'Advise two teams — twelve engineers — on architecture and technical direction.',
-          },
-          {
-            label: 'Cross-Team Architecture',
-            description:
-              'Advise other engineering groups on architecture and design, beyond the teams I sit on.',
+              'Guide architecture for two teams — twelve engineers — and advise engineering groups beyond them on design.',
           },
         ],
       },
@@ -52,17 +47,12 @@ export const cv: CvData = {
           {
             label: 'Stability & Metrics',
             description:
-              'Led a targeted initiative that cut crash ratio by roughly 80%, and built the telemetry that pinpoints high-impact failures.',
-          },
-          {
-            label: 'Hang & Freeze Signals',
-            description:
-              'Extended that telemetry to hang and freeze ratios, so the product treats those as reliability signals beyond outright crashes.',
+              'Led a targeted initiative that cut crash ratio by roughly 80%, and built the telemetry that pinpoints high-impact failures — since extended to hangs and freezes.',
           },
           {
             label: 'SRE Practices',
             description:
-              'Introduced Site Reliability Engineering practices and dark launches, balancing feature velocity with a resilient core product.',
+              'Introduced Site Reliability Engineering practices and dark launches, so new features reach production switched off and roll out gradually.',
           },
         ],
       },
@@ -70,19 +60,14 @@ export const cv: CvData = {
         heading: 'Developer Experience',
         bullets: [
           {
-            label: 'Bridging UX & Engineering',
-            description:
-              'Review designs for technical feasibility and propose architectural alternatives that keep the user experience without inflating engineering cost.',
-          },
-          {
             label: 'Design System Modernization',
             description:
-              'Led a modernization initiative that took a company-wide Design System live in 2026, preparing the infrastructure behind it so teams share reusable components across the product.',
+              'Led the implementation of the 2026 modernization that took a company-wide Design System live — setting up its infrastructure, and sending designs back to UX for rework when they would not hold up in code.',
           },
           {
             label: 'Granular Merge',
             description:
-              'Made merge much more granular, so edits to different parts of the same screen no longer conflict. A team initiative added text merge for remaining cases — from fully manual to hands-off in most cases, with a redesigned UI when a human is still needed.',
+              'Made merge much more granular, so edits to different parts of the same screen no longer conflict. A team initiative added text merge for what remains — from fully manual to hands-off most of the time, with a redesigned UI when a human is still needed.',
           },
           {
             label: 'Desktop Notifications',
@@ -150,18 +135,15 @@ export const cv: CvData = {
       title: 'Self-Hosted Home Lab',
       subtitle: 'Personal infrastructure (ongoing)',
       description:
-        'NAS-based private cloud serving the whole family with self-hosted services (Immich, Plex / Plexamp, OpenCloud), most running in Docker containers managed via Dockge, exposed through Cloudflare Tunnel and a Traefik reverse proxy. Custom DNS via AdGuard Home, resolving upstream over DoH, with local rewrites mapping public hostnames to internal services. Zero-trust access enforced with mTLS, OAuth, service tokens, and Cloudflare Access policies; HTTPS everywhere; uptime monitoring and alerting. Full stack declaratively configured and versioned in Git for reproducibility.',
+        'NAS-based private cloud serving the whole family — photos, files and media (Immich, OpenCloud, Plex), running in Docker. No inbound ports: traffic arrives through Cloudflare Tunnel and a Traefik reverse proxy, with zero-trust access at the edge (OAuth, mTLS, service tokens), DNS over HTTPS, and layered monitoring with alerting. The whole stack is declared in Git, so it redeploys onto fresh hardware.',
       techPills: [
         'Docker',
         'Cloudflare Zero Trust',
-        'AdGuard Home',
-        'DNS over HTTPS',
+        'Traefik',
         'mTLS',
         'OAuth',
-        'Traefik',
+        'DNS over HTTPS',
         'Configuration-as-Code',
-        'Self-Hosted',
-        'Observability',
       ],
       caseStudyHref: '/homelab/',
     },
@@ -178,6 +160,7 @@ export const cv: CvData = {
     {
       title: 'Top Performer Award',
       context: 'OutSystems',
+      year: 2023,
       description: 'Company-wide recognition for delivering high-impact technical results.',
     },
   ],
