@@ -47,13 +47,13 @@ export function HomelabPage() {
         </div>
       </nav>
 
-      <header className="homelab-hero">
-        <div className="container homelab-hero__inner">
-          <p className="homelab-hero__eyebrow">Side project · case study</p>
-          <h1 className="homelab-hero__title">{title}</h1>
-          <p className="homelab-hero__thesis">{thesis}</p>
-          <p className="homelab-hero__intro">{intro}</p>
-          <div className="homelab-hero__actions">
+      <header className="page-hero">
+        <div className="container page-hero__inner">
+          <p className="page-hero__eyebrow">Side project · case study</p>
+          <h1 className="page-hero__title">{title}</h1>
+          <p className="page-hero__thesis">{thesis}</p>
+          <p className="page-hero__intro">{intro}</p>
+          <div className="page-hero__actions">
             {ctas.map((cta) => (
               <a
                 key={cta.href + cta.label}

@@ -131,6 +131,11 @@ added for an asset that changes a few times a year. The card copy duplicates a
 little of `cv.ts` / `homelab.ts` by necessity — when a name, role, or thesis
 changes there, update the template and re-run `npm run cards`.
 
+`public/og-travel.jpg` is the exception: a 1200×630 crop of a photo rather than
+a rendered template. Photos under `public/photos/` are resized for display and
+stripped of all metadata except the colour profile before they are committed
+(`exiftool -all= -tagsfromfile @ -icc_profile`), so no GPS or camera data ships.
+
 ## Styling rules
 
 SASS partials in `src/styles/`:

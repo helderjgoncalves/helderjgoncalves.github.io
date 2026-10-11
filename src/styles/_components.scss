@@ -209,8 +209,8 @@
   }
 }
 
-// ---- Homelab case study ----
-.homelab-hero {
+// ---- Sub-page hero (home lab, travel) ----
+.page-hero {
   position: relative;
   padding: 2.5rem 0 3rem;
   background:
@@ -302,6 +302,100 @@
     }
 
     &:active { background: $white; }
+  }
+}
+
+// ---- Travel ----
+.travel-count {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+
+  &__number {
+    font-size: $fs-3xl;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  &__label {
+    font-size: $fs-md;
+    color: rgba($white, 0.82);
+  }
+}
+
+.travel-glance__line {
+  margin-bottom: 1rem;
+  color: $color-text-soft;
+  line-height: 1.6;
+}
+
+.travel-countries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// Photos, not controls: no hover state, so it stays out of the interaction
+// vocabulary. Captions sit on a dark scrim, fixed across themes like the heroes.
+.gallery {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+
+  @include md-up { gap: 0.9rem; }
+
+  &--glance {
+    @include md-up { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  &--full {
+    @include md-up { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  &__figure {
+    position: relative;
+    height: 100%;
+    margin: 0;
+    border-radius: $radius-md;
+    overflow: hidden;
+    background: $color-rule;
+    box-shadow: $shadow-card;
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+  }
+
+  // Two columns wide at 3:2 lands within a few pixels of the 3:4 tiles'
+  // height, so the row stays level without fixing heights.
+  &__item--wide {
+    grid-column: span 2;
+
+    .gallery__img { aspect-ratio: 3 / 2; }
+  }
+
+  &__caption {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 1.5rem 0.75rem 0.6rem;
+    font-size: $fs-xs;
+    font-weight: 600;
+    color: $white;
+    background: linear-gradient(180deg, transparent, rgba($ink-900, 0.7));
+
+    @include md-up {
+      font-size: $fs-sm;
+      padding: 2rem 0.9rem 0.75rem;
+    }
   }
 }
 

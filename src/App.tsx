@@ -10,6 +10,8 @@ import { Languages } from './components/Languages';
 import { Certifications } from './components/Certifications';
 import { LeadershipAwards } from './components/LeadershipAwards';
 import { HomelabPage } from './components/HomelabPage';
+import { TravelGlance } from './components/TravelGlance';
+import { TravelPage } from './components/TravelPage';
 import { Footer } from './components/Footer';
 
 export function normalizePath(path: string): string {
@@ -20,6 +22,10 @@ export function normalizePath(path: string): string {
 
 export function isHomelabPath(path: string): boolean {
   return normalizePath(path) === '/homelab';
+}
+
+export function isTravelPath(path: string): boolean {
+  return normalizePath(path) === '/travel';
 }
 
 interface AppProps {
@@ -42,6 +48,7 @@ function HomePage() {
         <Languages items={cv.languages} />
         <Certifications items={cv.certifications} />
         <LeadershipAwards items={cv.awards} />
+        <TravelGlance />
       </main>
 
       <Footer />
@@ -55,6 +62,10 @@ export default function App({ path }: AppProps) {
 
   if (isHomelabPath(pathname)) {
     return <HomelabPage />;
+  }
+
+  if (isTravelPath(pathname)) {
+    return <TravelPage />;
   }
 
   return <HomePage />;

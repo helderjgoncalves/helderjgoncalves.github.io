@@ -5,7 +5,7 @@ import { useReveal } from '../hooks/useReveal';
 interface SectionProps {
   id: string;
   title: string;
-  icon: 'briefcase' | 'graduationCap' | 'lab' | 'code' | 'star' | 'badge' | 'user' | 'languages';
+  icon: 'briefcase' | 'graduationCap' | 'lab' | 'code' | 'star' | 'badge' | 'user' | 'languages' | 'globe';
   children: ReactNode;
 }
 

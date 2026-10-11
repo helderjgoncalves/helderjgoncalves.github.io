@@ -23,7 +23,7 @@ const ROOT_PLACEHOLDER = '<div id="root"></div>';
 const SITE = 'https://hgoncalves.uk';
 const PERSON_ID = `${SITE}/#person`;
 
-const { render, homelab } = await import(pathToFileURL(ssrEntry).href);
+const { render, homelab, travel } = await import(pathToFileURL(ssrEntry).href);
 
 /**
  * Last commit date touching any of `paths`, as an ISO string. Falls back to the
@@ -95,6 +95,47 @@ function homelabJsonLd(dateModified) {
   };
 }
 
+/**
+ * Structured data for the travel page: a photo gallery by the same Person the
+ * other pages describe. Copy comes from src/data/travel.ts.
+ *
+ * @param {string} dateModified
+ */
+function travelJsonLd(dateModified) {
+  const url = travel.meta.canonical;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'ImageGallery',
+        '@id': `${url}#gallery`,
+        name: travel.meta.title,
+        description: travel.meta.description,
+        url,
+        image: travel.meta.image,
+        dateModified,
+        inLanguage: 'en-GB',
+        author: { '@id': PERSON_ID },
+        associatedMedia: travel.photos.map((photo) => ({
+          '@type': 'ImageObject',
+          contentUrl: `${SITE}${photo.src}`,
+          caption: photo.caption,
+          width: photo.width,
+          height: photo.height,
+        })),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE}/` },
+          { '@type': 'ListItem', position: 2, name: travel.title, item: url },
+        ],
+      },
+    ],
+  };
+}
+
 // Routing (output path, structured data, social card) belongs to the build; the
 // copy belongs to the data layer. The homelab strings therefore come from
 // src/data/homelab.ts. The home route has no equivalent field on CvData yet,
@@ -137,6 +178,23 @@ const pages = [
       'src/components/HomelabArchitecture.tsx',
     ],
     jsonLd: 'homelab',
+  },
+  {
+    path: '/travel',
+    out: path.join('travel', 'index.html'),
+    title: travel.meta.title,
+    description: travel.meta.description,
+    canonical: travel.meta.canonical,
+    ogType: 'website',
+    image: travel.meta.image,
+    imageAlt: 'Standing on a snowy summit at night, city lights far below',
+    sources: [
+      'src/data/travel.ts',
+      'src/components/TravelPage.tsx',
+      'src/components/TravelPhotos.tsx',
+      'public/photos',
+    ],
+    jsonLd: 'travel',
   },
 ];
 
@@ -266,7 +324,9 @@ function applyMeta(html, meta, dateModified) {
     if (!block.test(next)) {
       throw new Error('prerender: could not find the JSON-LD block to replace');
     }
-    const data = JSON.stringify(homelabJsonLd(dateModified), null, 2);
+    const jsonLd =
+      meta.jsonLd === 'travel' ? travelJsonLd(dateModified) : homelabJsonLd(dateModified);
+    const data = JSON.stringify(jsonLd, null, 2);
     const script = `\n    <script type="application/ld+json">\n${data}\n    </script>`;
     next = next.replace(block, () => script);
   }

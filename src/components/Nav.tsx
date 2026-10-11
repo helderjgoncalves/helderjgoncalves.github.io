@@ -7,6 +7,7 @@ const LINKS = [
   { href: '#side-projects', label: 'Side Projects' },
   { href: '#education', label: 'Education' },
   { href: '#awards', label: 'Awards' },
+  { href: '#travel', label: 'Travel' },
 ];
 
 export function Nav() {
