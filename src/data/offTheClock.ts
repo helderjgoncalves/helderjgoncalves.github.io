@@ -127,8 +127,9 @@ export const offTheClock: OffTheClockPageData = {
         },
         {
           src: '/photos/lake-sunset.jpg',
-          alt: 'Silhouette watching the sun set over a wide lake',
-          caption: 'Sunset over the lake',
+          alt: 'Silhouette watching the sun set over Lake Titicaca from Amantaní Island',
+          caption: 'Amantaní Island',
+          place: 'Peru · sunset over Lake Titicaca',
           width: 600,
           height: 800,
           focus: '50% 40%',
