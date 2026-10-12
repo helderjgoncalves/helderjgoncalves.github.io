@@ -111,8 +111,9 @@ export const offTheClock: OffTheClockPageData = {
       photos: [
         {
           src: '/photos/salt-flat-jump.jpg',
-          alt: 'Jumping mid-air on a mirrored salt flat at sunset, reflection below',
-          caption: 'Salt flat, sunset',
+          alt: 'Jumping mid-air on the mirrored Salar de Uyuni at sunset, reflection below',
+          caption: 'Salar de Uyuni at sunset',
+          place: 'Bolivia · the world’s largest salt flat',
           width: 600,
           height: 800,
         },
