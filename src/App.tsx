@@ -10,8 +10,8 @@ import { Languages } from './components/Languages';
 import { Certifications } from './components/Certifications';
 import { LeadershipAwards } from './components/LeadershipAwards';
 import { HomelabPage } from './components/HomelabPage';
-import { TravelGlance } from './components/TravelGlance';
 import { TravelPage } from './components/TravelPage';
+import { FrontDoor } from './components/FrontDoor';
 import { Footer } from './components/Footer';
 
 export function normalizePath(path: string): string {
@@ -28,12 +28,16 @@ export function isTravelPath(path: string): boolean {
   return normalizePath(path) === '/travel';
 }
 
+export function isCvPath(path: string): boolean {
+  return normalizePath(path) === '/cv';
+}
+
 interface AppProps {
   /** Pathname used for SSR / prerender; client falls back to location. */
   path?: string;
 }
 
-function HomePage() {
+function CvPage() {
   return (
     <>
       <Nav />
@@ -48,7 +52,6 @@ function HomePage() {
         <Languages items={cv.languages} />
         <Certifications items={cv.certifications} />
         <LeadershipAwards items={cv.awards} />
-        <TravelGlance />
       </main>
 
       <Footer />
@@ -68,5 +71,9 @@ export default function App({ path }: AppProps) {
     return <TravelPage />;
   }
 
-  return <HomePage />;
+  if (isCvPath(pathname)) {
+    return <CvPage />;
+  }
+
+  return <FrontDoor />;
 }

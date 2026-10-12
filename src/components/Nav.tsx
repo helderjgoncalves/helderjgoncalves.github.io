@@ -7,14 +7,15 @@ const LINKS = [
   { href: '#side-projects', label: 'Side Projects' },
   { href: '#education', label: 'Education' },
   { href: '#awards', label: 'Awards' },
-  { href: '#travel', label: 'Travel' },
 ];
 
 export function Nav() {
   return (
     <nav className="nav" aria-label="Section navigation">
       <div className="container nav__inner">
-        <a href="#top" className="nav__brand">HG.</a>
+        <a href="/" className="nav__brand" aria-label="Home">
+          HG.
+        </a>
         <div className="nav__links">
           {LINKS.map((link) => (
             <a key={link.href} href={link.href}>

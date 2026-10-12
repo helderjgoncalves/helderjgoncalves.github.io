@@ -23,7 +23,7 @@ const ROOT_PLACEHOLDER = '<div id="root"></div>';
 const SITE = 'https://hgoncalves.uk';
 const PERSON_ID = `${SITE}/#person`;
 
-const { render, homelab, travel } = await import(pathToFileURL(ssrEntry).href);
+const { render, homelab, travel, frontDoor } = await import(pathToFileURL(ssrEntry).href);
 
 /**
  * Last commit date touching any of `paths`, as an ISO string. Falls back to the
@@ -51,8 +51,8 @@ function lastModified(paths) {
  * Structured data for the case study. Derived from src/data/homelab.ts so the
  * copy still has a single home; only the schema shape lives here.
  *
- * `author`/`publisher` point at the same @id the ProfilePage on / assigns to
- * the Person, which is what ties the two pages into one entity rather than two
+ * `author`/`publisher` point at the same @id the ProfilePage on /cv/ assigns to
+ * the Person, which is what ties the pages into one entity rather than
  * unrelated documents.
  *
  * @param {string} dateModified
@@ -79,7 +79,7 @@ function homelabJsonLd(dateModified) {
           '@type': 'Person',
           '@id': PERSON_ID,
           name: 'Hélder Gonçalves',
-          url: `${SITE}/`,
+          url: `${SITE}/cv/`,
         },
         publisher: { '@id': PERSON_ID },
       },
@@ -92,6 +92,67 @@ function homelabJsonLd(dateModified) {
         ],
       },
     ],
+  };
+}
+
+/**
+ * ProfilePage for /cv/. The Person @id is shared with the front door and the
+ * case study; the page URL is the CV, which is the profile.
+ */
+function profileJsonLd() {
+  const url = `${SITE}/cv/`;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    '@id': `${url}#profilepage`,
+    url,
+    name: 'Hélder Gonçalves — Lead Software Engineer',
+    inLanguage: 'en-GB',
+    mainEntity: {
+      '@type': 'Person',
+      '@id': PERSON_ID,
+      name: 'Hélder Gonçalves',
+      alternateName: ['Helder Goncalves', 'Helder J. Goncalves'],
+      givenName: 'Hélder',
+      familyName: 'Gonçalves',
+      jobTitle: 'Lead Software Engineer',
+      description:
+        'Lead Software Engineer at OutSystems with 10+ years on developer tools in React, TypeScript and .NET — now integrating Mentor, the platform’s agentic AI, into ODC Studio.',
+      url,
+      image: `${SITE}/portrait.jpg`,
+      email: 'mailto:helderjgoncalves@proton.me',
+      sameAs: [
+        'https://www.linkedin.com/in/helderjgoncalves',
+        'https://github.com/helderjgoncalves',
+      ],
+      worksFor: {
+        '@type': 'Organization',
+        name: 'OutSystems',
+        url: 'https://www.outsystems.com',
+      },
+      alumniOf: {
+        '@type': 'CollegeOrUniversity',
+        name: 'Universidade do Minho',
+        url: 'https://www.uminho.pt',
+      },
+      knowsAbout: [
+        'Developer Tools',
+        'Agentic AI',
+        'Large Language Models',
+        'React',
+        'TypeScript',
+        '.NET',
+        'AWS',
+        'Site Reliability Engineering',
+        'Software Architecture',
+        'Design Systems',
+        'Technical Direction',
+      ],
+      knowsLanguage: [
+        { '@type': 'Language', name: 'Portuguese' },
+        { '@type': 'Language', name: 'English' },
+      ],
+    },
   };
 }
 
@@ -136,10 +197,30 @@ function travelJsonLd(dateModified) {
   };
 }
 
+/** Front door. Names the person and the three pages behind it; lists no services. */
+function homeJsonLd() {
+  const url = `${SITE}/`;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: frontDoor.meta.title,
+    description: frontDoor.meta.description,
+    inLanguage: 'en-GB',
+    mainEntity: {
+      '@type': 'Person',
+      '@id': PERSON_ID,
+      name: 'Hélder Gonçalves',
+      url: `${SITE}/cv/`,
+      jobTitle: 'Lead Software Engineer',
+    },
+  };
+}
+
 // Routing (output path, structured data, social card) belongs to the build; the
-// copy belongs to the data layer. The homelab strings therefore come from
-// src/data/homelab.ts. The home route has no equivalent field on CvData yet,
-// so its metadata still lives inline here.
+// copy belongs to the data layer. Front-door and homelab strings come from
+// their data files. The CV description still lives here, beside its ProfilePage.
 /**
  * @type {{
  *   path: string, out: string, title: string, description: string,
@@ -151,16 +232,27 @@ const pages = [
   {
     path: '/',
     out: 'index.html',
+    title: frontDoor.meta.title,
+    description: frontDoor.meta.description,
+    canonical: `${SITE}/`,
+    ogType: 'website',
+    image: `${SITE}/og-home.png`,
+    imageAlt: 'Hélder Gonçalves — Lead Software Engineer at OutSystems',
+    sources: ['src/data/frontDoor.ts', 'src/components/FrontDoor.tsx', 'public/photos', 'index.html'],
+    jsonLd: 'home',
+  },
+  {
+    path: '/cv',
+    out: path.join('cv', 'index.html'),
     title: 'Hélder Gonçalves — Lead Software Engineer | Developer Tools',
     description:
       'Lead Software Engineer at OutSystems with 10+ years on developer tools in React, TypeScript and .NET — now integrating Mentor, the platform’s agentic AI, into ODC Studio.',
-    canonical: `${SITE}/`,
+    canonical: `${SITE}/cv/`,
     ogType: 'profile',
     image: `${SITE}/og-home.png`,
     imageAlt: 'Hélder Gonçalves — Lead Software Engineer at OutSystems',
-    sources: ['index.html', 'src', 'public'],
-    // Keeps the ProfilePage + Person block already inlined in index.html.
-    jsonLd: undefined,
+    sources: ['src/data/cv.ts', 'src/components', 'src/App.tsx'],
+    jsonLd: 'profile',
   },
   {
     path: '/homelab',
@@ -324,9 +416,13 @@ function applyMeta(html, meta, dateModified) {
     if (!block.test(next)) {
       throw new Error('prerender: could not find the JSON-LD block to replace');
     }
-    const jsonLd =
-      meta.jsonLd === 'travel' ? travelJsonLd(dateModified) : homelabJsonLd(dateModified);
-    const data = JSON.stringify(jsonLd, null, 2);
+    const builders = {
+      home: homeJsonLd,
+      profile: profileJsonLd,
+      homelab: homelabJsonLd,
+      travel: travelJsonLd,
+    };
+    const data = JSON.stringify(builders[meta.jsonLd](dateModified), null, 2);
     const script = `\n    <script type="application/ld+json">\n${data}\n    </script>`;
     next = next.replace(block, () => script);
   }

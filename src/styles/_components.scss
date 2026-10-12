@@ -209,6 +209,68 @@
   }
 }
 
+// ---- Front page (shares the CV's hero; this is what sits under it) ----
+.front {
+  padding-top: 1.75rem;
+
+  @include md-up { padding-top: 2.5rem; }
+
+  &__intro {
+    max-width: 46rem;
+    font-size: $fs-md;
+    line-height: 1.65;
+    color: $color-text-soft;
+  }
+}
+
+.doors {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.75rem;
+
+  @include md-up {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+}
+
+.door {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  padding: 1.35rem 1.25rem 1.25rem;
+
+  &__eyebrow {
+    font-size: $fs-xs;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $color-text-muted;
+  }
+
+  &__title {
+    margin-top: 0.35rem;
+    font-size: $fs-lg;
+    font-weight: 700;
+    color: $color-heading;
+  }
+
+  &__line {
+    flex: 1;
+    margin-top: 0.6rem;
+    color: $color-text-soft;
+    line-height: 1.6;
+  }
+
+  &__link {
+    @include action-link;
+    @include action-link-primary;
+    align-self: flex-start;
+    margin-top: 1.1rem;
+  }
+}
+
 // ---- Sub-page hero (home lab, travel) ----
 .page-hero {
   position: relative;
@@ -323,12 +385,6 @@
     font-size: $fs-md;
     color: rgba($white, 0.82);
   }
-}
-
-.travel-glance__line {
-  margin-bottom: 1rem;
-  color: $color-text-soft;
-  line-height: 1.6;
 }
 
 .travel-countries {
