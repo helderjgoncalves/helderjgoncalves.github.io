@@ -95,8 +95,9 @@ export const offTheClock: OffTheClockPageData = {
         },
         {
           src: '/photos/glacier.jpg',
-          alt: 'The blue-white front of a vast glacier meeting a grey-green lake',
-          caption: 'One of the world’s great glaciers',
+          alt: 'The blue-white front of the Perito Moreno Glacier meeting a grey-green lake',
+          caption: 'Perito Moreno Glacier',
+          place: 'Argentina · Los Glaciares National Park',
           width: 600,
           height: 800,
         },
