@@ -90,7 +90,7 @@ src/
   data/homelab.ts         # home-lab case study
   data/offTheClock.ts     # photos, captions, wonders and meta for /off-the-clock/
   components/             # one component per CV section + page components (FrontDoor,
-                          # HomelabPage, OffTheClockPage), PhotoGrid, Nav, Hero, Icon, Section…
+                          # HomelabPage, OffTheClockPage), PhotoGrid, SiteNav, Hero, Icon, Section…
   hooks/useReveal.ts      # IntersectionObserver scroll-reveal
   styles/                 # SASS partials (see below)
   vite-env.d.ts
@@ -113,6 +113,12 @@ page has its own data file in `src/data/` (see the layout above). The
 components in `src/components/` are presentation-only and shouldn't carry
 hard-coded copy.
 
+Each Off the clock photo ships twice: `public/photos/<name>.jpg` (≤800px, for
+the grid) and `public/photos/large/<name>.jpg` (the source's full size, opened
+by the photo viewer, `PhotoViewer.tsx`). `npm test` fails if a page references
+a `/photos/` file that isn't in `dist/`. The viewer is a native `<dialog>` with
+previous/next, arrow keys, swipe and Esc — deliberately no auto-advance.
+
 Photo captions on Off the clock follow one format: `caption` is the place's
 proper name, `place` is `Country · one short detail`. Omit `place` rather than
 fill it with something else. `PhotoGrid` stretches a stranded last photo across
@@ -125,7 +131,9 @@ fields when adding new entries. If you genuinely need a new field, update
 
 ### Downloadable CV (`public/helder-goncalves-cv.pdf`)
 
-The Nav exposes a "Download CV" button that links to
+The `/cv/` hero has a "Download CV" link (`CvDownload.tsx`, `<Hero showDownload />`;
+the front page leaves it to its CV card) — a pill under the title from md up,
+one more round icon in the contacts row on phones — that links to
 `/helder-goncalves-cv.pdf`, served verbatim from `public/`. **`cv.ts` is the
 canonical source**; the PDF is a printable mirror of it. When the content of
 `cv.ts` changes in any user-visible way, regenerate or replace the PDF so
@@ -190,10 +198,10 @@ Reach for the mixin; if nothing fits, add a family here and document why.
 | --- | --- | --- | --- |
 | Action link | `action-link` (+ `action-link-primary`) | "View case study", "Live status page" | accent text + accent rule |
 | Prose link | `prose-link` | `.homelab-stack__note a`, `.footer a` | accent → accent-dark |
-| Nav control | `nav-control` | `.nav__cv`, `.theme-toggle` | accent tint deepens, border firms, press scales |
-| Hero button | `hero-button` | `.hero__contact`, `.homelab-cta` | white glass brightens, lifts 1px |
-| Nav link | — (`.nav__links a`) | in-nav section links | soft → accent |
-| Card link | `card-link` | `.door` (front-page cards) | card lifts 2px, shadow deepens, inner action line turns accent |
+| Nav control | `nav-control` | `.theme-toggle`, `.nav__menu` | accent tint deepens, border firms, press scales |
+| Hero button | `hero-button` | `.hero__contact`, `.hero__download`, `.homelab-cta`, `.viewer__button` | white glass brightens, lifts 1px |
+| Nav link | — (`.nav__links a`) | `SiteNav` page links (every page; below md they live in the ☰ panel, which closes on Esc, an outside tap or a link) | soft → accent; the current page rests in accent |
+| Card link | `card-link` | `.door` (front-page cards), `.gallery__link` (front-page photos) | card lifts 2px, shadow deepens, inner action line turns accent |
 
 `card-link` exists because the front-page doors are whole-surface targets: a
 lone underlined link inside a card left most of the card dead to clicks. Its
@@ -202,10 +210,11 @@ action line is a `<span>` styled with `action-link`, never a nested `<a>`.
 The families own *interaction*, not geometry: callers keep their own size,
 padding, radius, and resting colour. Two rules that follow from that:
 
-- `nav-control` deliberately doesn't set text colour. The CV pill's
-  `accent-dark` label is a contrast decision against its tinted background
-  (see the note in `_variables.scss`) and must survive the hover; the theme
-  toggle adds its own accent-on-hover because it rests muted.
+- `nav-control` deliberately doesn't set text colour. The theme toggle and
+  menu button add their own accent-on-hover because they rest muted.
+- The top bar is identical on every page — no page-specific buttons. A control
+  that appears on some pages and not others shifts its neighbours as you move
+  between pages, which reads as a glitch.
 - `hero-button` uses `rgba($white, …)` rather than accent tokens. Both heroes
   stay brand-blue in either theme, so a themed accent would sink into the
   background — this is one of the sanctioned uses of raw palette values.
@@ -220,7 +229,16 @@ padding, radius, and resting colour. Two rules that follow from that:
   `localStorage.theme` and sets `data-theme` on `<html>` **before first paint**
   to avoid a flash of the wrong theme. Don't move it out of `<head>` or make
   it async.
-- `ThemeToggle.tsx` cycles auto → light → dark and persists to `localStorage`.
+- `ThemeToggle.tsx` is a two-state toggle: a click always flips the theme on
+  screen. A first visit follows the system; a choice that differs from the
+  system is saved to `localStorage`, and flipping back to the system's theme
+  clears it so the page follows the OS again. The saved choice is also cleared
+  whenever the system comes round to match it (on load, and live via a
+  `prefers-color-scheme` listener), so picking dark by day doesn't pin dark
+  the next morning for someone whose OS switches automatically. Don't reintroduce a third "auto"
+  click — a click that changes nothing visible reads as a bug. The icon is
+  chosen in CSS (same selectors as the palette), so it is right before
+  hydration and the component holds no state.
 - The hero gradient stays brand-blue across themes by design.
 
 ## Deployment

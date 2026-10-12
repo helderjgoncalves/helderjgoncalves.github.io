@@ -68,8 +68,9 @@ when no explicit preference is stored.
 
 A small inline script in `index.html` runs synchronously in `<head>` to apply
 the persisted theme **before** first paint, so users never see a flash of the
-wrong theme during hydration. The `ThemeToggle` React component cycles
-auto → light → dark on click; the brand-blue hero stays consistent across
+wrong theme during hydration. The `ThemeToggle` button flips between light and
+dark: a first visit follows the system, and switching back to the system's
+theme forgets the saved choice. The brand-blue hero stays consistent across
 both themes.
 
 Print stylesheets force the light palette regardless of the chosen theme so
@@ -135,7 +136,7 @@ helderjgoncalves.github.io/
 │   ├── og-cards/          # HTML sources for the social cards (`npm run cards`)
 │   └── prerender.mjs      # SSR injection, head metadata, sitemap.xml
 ├── src/
-│   ├── components/        # CV sections + page components, PhotoGrid, Nav, Hero, Icon…
+│   ├── components/        # CV sections + page components, PhotoGrid, SiteNav, Hero, Icon…
 │   ├── data/              # cv.ts, frontDoor.ts, homelab.ts, offTheClock.ts
 │   ├── hooks/useReveal.ts # scroll-reveal hook
 │   ├── styles/            # SASS partials

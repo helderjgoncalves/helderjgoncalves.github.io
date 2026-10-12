@@ -35,7 +35,7 @@
 // `action-link` is the standalone link that closes a block and reads as a
 // call to action — "View case study" on the home page, "Live status page" in
 // the homelab decisions. `action-link-primary` raises one where it is the
-// block's main action. Buttons (`.homelab-cta`, `.nav__cv`) are a separate
+// block's main action. Buttons (`.homelab-cta`, `.hero__contact`) are a separate
 // vocabulary and don't belong here.
 @mixin action-link {
   font-size: $fs-sm;
@@ -69,12 +69,10 @@
   &:focus-visible { color: $color-accent-dark; }
 }
 
-// Controls that live in the nav — the Download CV pill and the theme toggle,
-// which sit next to each other on every page. Their rest states differ on
-// purpose (one is the nav's primary action, the other a tertiary control), but
-// they deepen the same tint on hover and press by the same amount. Text colour
-// is left to the caller: the CV pill's accent-dark label is a contrast choice
-// against its tinted background and must survive the hover.
+// Controls that live in the nav — the theme toggle and the ☰ menu button,
+// which sit next to each other. They deepen the same tint on hover and press
+// by the same amount. Text colour is left to the caller, which knows whether
+// its control rests muted and needs the accent to arrive on hover.
 @mixin nav-control {
   transition:
     color $dur-fast $ease,

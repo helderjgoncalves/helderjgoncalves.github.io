@@ -1,13 +1,23 @@
-import { offTheClock, wondersSeen } from '../data/offTheClock';
+import { useState } from 'react';
+import { allPhotos, largeSrc, offTheClock, wondersSeen, type Photo } from '../data/offTheClock';
 import { Footer } from './Footer';
 import { Icon } from './Icon';
 import { PhotoGrid } from './PhotoGrid';
+import { PhotoViewer } from './PhotoViewer';
 import { Section } from './Section';
 import { SiteNav } from './SiteNav';
 
 export function OffTheClockPage() {
   const { title, thesis, wonders, countries, themes } = offTheClock;
   const [adventures, ...otherThemes] = themes;
+  const sortedWonders = [...wonders].sort(
+    (a, b) => Number(b.seen) - Number(a.seen) || a.name.localeCompare(b.name, 'en'),
+  );
+
+  // allPhotos follows the themes in page order, so the viewer's next/previous
+  // walks the page top to bottom.
+  const [viewing, setViewing] = useState<number | null>(null);
+  const open = (photo: Photo) => setViewing(allPhotos.indexOf(photo));
 
   return (
     <>
@@ -22,7 +32,7 @@ export function OffTheClockPage() {
 
       <main>
         <Section id={adventures.id} title={adventures.title} icon={adventures.icon}>
-          <PhotoGrid photos={adventures.photos} variant="full" eager />
+          <PhotoGrid photos={adventures.photos} variant="full" eager linkTo={largeSrc} onOpen={open} />
         </Section>
 
         <Section id="wonders" title="Wonders of the World" icon="star">
@@ -41,7 +51,7 @@ export function OffTheClockPage() {
             <span style={{ width: `${(wondersSeen / wonders.length) * 100}%` }} />
           </div>
           <ul className="wonders">
-            {wonders.map((wonder) => (
+            {sortedWonders.map((wonder) => (
               <li
                 key={wonder.name}
                 className={wonder.seen ? 'wonders__item wonders__item--seen' : 'wonders__item'}
@@ -63,7 +73,7 @@ export function OffTheClockPage() {
         {otherThemes.map((theme) => (
           <Section key={theme.id} id={theme.id} title={theme.title} icon={theme.icon}>
             {theme.intro && <p className="gallery__intro">{theme.intro}</p>}
-            <PhotoGrid photos={theme.photos} variant="full" />
+            <PhotoGrid photos={theme.photos} variant="full" linkTo={largeSrc} onOpen={open} />
           </Section>
         ))}
 
@@ -81,6 +91,8 @@ export function OffTheClockPage() {
       </main>
 
       <Footer />
+
+      <PhotoViewer photos={allPhotos} index={viewing} onChange={setViewing} />
     </>
   );
 }

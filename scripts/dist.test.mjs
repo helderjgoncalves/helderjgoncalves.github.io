@@ -252,6 +252,24 @@ describe('sitemap.xml', () => {
   });
 });
 
+describe('photos', () => {
+  // Grid tiles link to /photos/large/<name>; a missing large copy builds
+  // cleanly and only shows up as a broken photo viewer.
+  test('every /photos/ file the pages reference exists', async () => {
+    for (const page of pages) {
+      const refs = new Set(
+        [...page.html.matchAll(/(?:src|href)="(\/photos\/[^"#?]+)"/g)].map((m) => m[1]),
+      );
+      for (const ref of refs) {
+        await assert.doesNotReject(
+          fs.access(path.join(distDir, ref)),
+          `${page.url} references ${ref}, which is not in dist/`,
+        );
+      }
+    }
+  });
+});
+
 describe('robots.txt', () => {
   test('points crawlers at the generated sitemap', async () => {
     const robots = await readDist('robots.txt');

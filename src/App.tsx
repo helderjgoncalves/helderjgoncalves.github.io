@@ -1,5 +1,5 @@
 import { cv } from './data/cv';
-import { Nav } from './components/Nav';
+import { SiteNav } from './components/SiteNav';
 import { Hero } from './components/Hero';
 import { Profile } from './components/Profile';
 import { WorkExperience } from './components/WorkExperience';
@@ -40,8 +40,8 @@ interface AppProps {
 function CvPage() {
   return (
     <>
-      <Nav />
-      <Hero profile={cv.profile} />
+      <SiteNav current="/cv/" />
+      <Hero profile={cv.profile} showDownload />
 
       <main>
         <Profile profile={cv.profile} />

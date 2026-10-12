@@ -5,20 +5,21 @@ import { Icon } from './Icon';
 const CV_HREF = '/helder-goncalves-cv.pdf';
 const CV_FILENAME = 'helder-goncalves-cv.pdf';
 
-// Shared by both navs so the two pages can't drift apart on the href, the
-// download filename or the accessible name.
-export function CvDownload() {
+interface CvDownloadProps {
+  /** `pill` under the hero title from md up; `icon` in the contacts row below md. */
+  variant: 'pill' | 'icon';
+}
+
+export function CvDownload({ variant }: CvDownloadProps) {
+  const className =
+    variant === 'pill'
+      ? 'hero__download hero__download--pill'
+      : 'hero__contact hero__download hero__download--icon';
+
   return (
-    <a
-      className="nav__cv"
-      href={CV_HREF}
-      download={CV_FILENAME}
-      aria-label="Download CV (PDF)"
-    >
+    <a className={className} href={CV_HREF} download={CV_FILENAME} aria-label="Download CV (PDF)">
       <Icon name="download" />
-      <span>
-        <span className="nav__cv-verb">Download </span>CV
-      </span>
+      <span>Download CV</span>
     </a>
   );
 }

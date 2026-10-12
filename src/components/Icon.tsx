@@ -19,7 +19,11 @@ export type IconName =
   | 'mountain'
   | 'motorbike'
   | 'camera'
-  | 'check';
+  | 'check'
+  | 'close'
+  | 'menu'
+  | 'chevronLeft'
+  | 'chevronRight';
 
 interface IconProps extends SVGProps<SVGSVGElement> {
   name: IconName;
@@ -112,6 +116,10 @@ const PATHS: Record<IconName, JSX.Element> = {
     </>
   ),
   check: <path d="M5 12.5l4.5 4.5L19 7.5" />,
+  close: <path d="M6 6l12 12M18 6L6 18" />,
+  menu: <path d="M4 7h16M4 12h16M4 17h16" />,
+  chevronLeft: <path d="M15 5l-7 7 7 7" />,
+  chevronRight: <path d="M9 5l7 7-7 7" />,
   motorbike: (
     <>
       <circle cx="5" cy="16" r="3.5" />

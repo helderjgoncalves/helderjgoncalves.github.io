@@ -74,8 +74,7 @@ $canvas:   #f7f9fc;
   --color-rule:         #2a3242;
 
   --color-accent:       #{$blue-400};
-  // Emphasis text on the tinted accent-soft surface (chips, the Download CV
-  // button). On a dark canvas that has to go *lighter* than the base accent,
+  // Emphasis text on the tinted accent-soft surface (chips). On a dark canvas that has to go *lighter* than the base accent,
   // not darker — $blue-500 here scored only 3.63:1 on --color-accent-soft.
   --color-accent-dark:  #{$blue-300};
   --color-accent-soft:  #1e2c43;

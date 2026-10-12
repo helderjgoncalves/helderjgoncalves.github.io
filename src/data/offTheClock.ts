@@ -223,4 +223,17 @@ export const offTheClock: OffTheClockPageData = {
 
 export const allPhotos = offTheClock.themes.flatMap((theme) => theme.photos);
 
+/**
+ * The bigger copy opened in the photo viewer. Every photo needs one at
+ * /photos/large/<same name> — `npm test` fails if it's missing.
+ */
+export function largeSrc(photo: Photo): string {
+  return photo.src.replace('/photos/', '/photos/large/');
+}
+
+/** Anchor id for a photo on the full page, from its file name: '/photos/volcano.jpg' → 'volcano'. */
+export function photoId(photo: Photo): string {
+  return photo.src.replace(/^.*\//, '').replace(/\.\w+$/, '');
+}
+
 export const wondersSeen = offTheClock.wonders.filter((wonder) => wonder.seen).length;

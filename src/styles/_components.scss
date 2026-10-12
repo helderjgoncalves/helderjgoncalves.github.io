@@ -495,6 +495,13 @@
     box-shadow: $shadow-card;
   }
 
+  &__link {
+    display: block;
+    height: 100%;
+    border-radius: $radius-md;
+    @include card-link;
+  }
+
   &__img {
     display: block;
     width: 100%;
@@ -543,6 +550,121 @@
     font-size: $fs-xs;
     color: rgba($white, 0.78);
   }
+}
+
+// ---- Photo viewer (Off the clock) ----
+// Always dark, whatever the theme — a photo reads best on near-black — so the
+// surround and controls use raw palette values, and the buttons borrow the
+// hero-button glass for the same reason the blue heroes do.
+.viewer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: $white;
+  background: $ink-900;
+
+  &[open] { animation: viewer-in $dur-med $ease; }
+
+  &::backdrop { background: transparent; }
+
+  &__stage {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    padding: 3.75rem 1rem 1.25rem;
+
+    @include md-up { padding: 2rem 5rem; }
+  }
+
+  &__figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+    margin: 0;
+    max-width: 100%;
+  }
+
+  &__img {
+    display: block;
+    max-width: 100%;
+    max-height: calc(100dvh - 9rem);
+    width: auto;
+    height: auto;
+    border-radius: $radius-md;
+    animation: viewer-in $dur-med $ease;
+  }
+
+  &__caption {
+    display: grid;
+    gap: 0.15rem;
+    text-align: center;
+    font-size: $fs-sm;
+  }
+
+  &__title { font-weight: 600; }
+
+  &__place { color: rgba($white, 0.78); }
+
+  &__count {
+    margin-top: 0.25rem;
+    font-size: $fs-xs;
+    color: rgba($white, 0.6);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__button {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+    color: $white;
+    cursor: pointer;
+    @include hero-button;
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  &__close {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  // top, not a translate, centres them: hero-button's hover lift is a transform.
+  &__nav {
+    top: calc(50% - 22px);
+
+    &--prev { left: 0.5rem; }
+    &--next { right: 0.5rem; }
+
+    @include md-up {
+      &--prev { left: 1.25rem; }
+      &--next { right: 1.25rem; }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &[open],
+    &__img { animation: none; }
+  }
+}
+
+@keyframes viewer-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .homelab-arch {

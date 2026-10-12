@@ -1,13 +1,17 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 
+// Side padding scales with viewport: 20px on phones up to 40px on
+// tablet/desktop, never less than the device's safe-area inset.
+@mixin gutters {
+  padding-left: max(clamp(1.25rem, 4vw, 2.5rem), env(safe-area-inset-left));
+  padding-right: max(clamp(1.25rem, 4vw, 2.5rem), env(safe-area-inset-right));
+}
+
 .container {
   max-width: $container-max;
   margin: 0 auto;
-  // Side padding scales with viewport: 20px on phones up to 40px on
-  // tablet/desktop, never less than the device's safe-area inset.
-  padding-left: max(clamp(1.25rem, 4vw, 2.5rem), env(safe-area-inset-left));
-  padding-right: max(clamp(1.25rem, 4vw, 2.5rem), env(safe-area-inset-right));
+  @include gutters;
 }
 
 // ---- Top navigation ----
@@ -47,10 +51,30 @@
     padding: 0.25rem 0;
   }
 
-  // Hidden on mobile (CV reads linearly; tap-strip is unnecessary noise),
-  // shown as a right-aligned row from md and up.
+  // A right-aligned row from md up. Below md it is the ☰ menu's panel: a
+  // full-width sheet dropped from the bottom of the bar (`.nav` is sticky, so
+  // it is the containing block), shown while `.nav--open` is set.
   &__links {
     display: none;
+
+    @include md-down {
+      .nav--open & {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        @include gutters;
+        padding-bottom: 0.5rem;
+        background: $color-bg;
+        border-bottom: 1px solid $color-rule;
+        box-shadow: $shadow-card;
+        animation: nav-panel-in $dur-fast $ease;
+
+        @media (prefers-reduced-motion: reduce) { animation: none; }
+      }
+    }
 
     @include md-up {
       flex: 1;
@@ -66,70 +90,31 @@
       transition: color $dur-fast $ease;
       padding: 0.4rem 0;
 
+      // Full-width rows with a thumb-sized hit area inside the panel.
+      @include md-down {
+        font-size: $fs-md;
+        padding: 0.85rem 0;
+
+        & + a { border-top: 1px solid $color-rule; }
+      }
+
       &:hover,
       &[aria-current='page'] { color: $color-accent; }
     }
   }
 }
 
-// ---- Download CV (sits in the nav, just before the theme toggle) ----
-//
-// Icon + label pill in the brand-blue palette at every width, so it reads as
-// the nav's primary action without competing with the section links. A label
-// of some kind stays visible on mobile: an icon-only circle next to the
-// identically sized theme toggle gives no hint that this one is the CV.
-//
-// The auto left margin lives here (rather than on .theme-toggle) because
-// .nav__cv is the first nav item after the (hidden-on-mobile) links list,
-// so it owns pushing the trailing items to the right edge. It has to stay auto
-// at every width: from md up the flexible links list eats the free space, but
-// below md the list is hidden, so the margin is the only thing keeping the
-// trailing pair off the brand.
-.nav__cv {
-  margin-left: auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  padding: 0.35rem 0.7rem;
-  border: 1px solid color-mix(in srgb, $color-accent 25%, transparent);
-  border-radius: $radius-pill;
-  background: $color-accent-soft;
-  color: $color-accent-dark;
-  font-size: $fs-sm;
-  font-weight: 600;
-  white-space: nowrap;
-  @include nav-control;
-
-  svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  @include md-up {
-    padding: 0.4rem 0.85rem;
-  }
+@keyframes nav-panel-in {
+  from { opacity: 0; transform: translateY(-0.5rem); }
 }
 
-// The full "Download CV" pill would take 43% of a 320px nav, more presence than
-// the brand. Below md the arrow plus "CV" carries the same meaning at half the
-// width; the anchor's aria-label spells it out in full either way.
-.nav__cv-verb {
-  display: none;
-
-  @include md-up {
-    display: inline;
-  }
-}
-
-// ---- Theme toggle (sits in the nav) ----
-.theme-toggle {
-  // Push to the right edge when there is no .nav__cv ahead of it.
+// ---- Theme toggle and ☰ menu button (sit in the nav) ----
+.theme-toggle,
+.nav__menu {
+  // The toggle owns pushing the trailing controls to the right edge: from md
+  // up the flexible links list eats the free space, but below md the list is
+  // hidden, so this margin is all that keeps them off the brand.
   margin-left: auto;
-
-  // Two auto margins would share the free space and strand .nav__cv mid-nav,
-  // so the toggle gives up the push whenever the CV button already owns it.
-  .nav__cv + & { margin-left: 0; }
 
   display: inline-flex;
   align-items: center;
@@ -144,18 +129,41 @@
   cursor: pointer;
   @include nav-control;
 
-  // Its resting colour is muted, unlike the CV pill's, so the accent has to
-  // arrive on hover for the control to look live.
+  // Its resting colour is muted, so the accent has to arrive on hover for the
+  // control to look live.
   &:hover { color: $color-accent; }
-
-  &[disabled] {
-    cursor: default;
-    opacity: 0.55;
-  }
 
   svg {
     width: 18px;
     height: 18px;
+  }
+}
+
+// Rightmost on phones, where the page links live in its panel; the links row
+// replaces it from md up.
+.nav__menu {
+  margin-left: 0;
+
+  &[aria-expanded='true'] { color: $color-accent; }
+
+  @include md-up { display: none; }
+}
+
+.theme-toggle {
+  // Shows the theme a click switches to: the moon while light is on screen,
+  // the sun while dark is. Same selectors as the palette in _variables.scss.
+  &__sun { display: none; }
+
+  :root[data-theme='dark'] & {
+    .theme-toggle__moon { display: none; }
+    .theme-toggle__sun { display: block; }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) & {
+      .theme-toggle__moon { display: none; }
+      .theme-toggle__sun { display: block; }
+    }
   }
 }
 
@@ -245,6 +253,32 @@
     font-size: clamp(1.05rem, 4vw, $fs-lg);
     font-weight: 400;
     color: rgba($white, 0.9);
+  }
+
+  // Download CV takes two forms. From md up it is a labelled pill under the
+  // title, not another row in the contacts list, where it read as a fourth
+  // way to reach me rather than an action. On phones a centred pill dominated
+  // the header, so there it is one more round icon in the contacts row.
+  &__download--pill {
+    display: none;
+
+    @include md-up {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 1rem;
+      padding: 0.5rem 1.05rem;
+      border-radius: $radius-pill;
+      font-size: $fs-sm;
+      font-weight: 600;
+      color: $white;
+      @include hero-button;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
   }
 
   // Mobile: horizontal row of icon-only buttons.
@@ -344,6 +378,10 @@
         background: transparent;
       }
     }
+  }
+
+  &__download--icon {
+    @include md-up { display: none; }
   }
 }
 

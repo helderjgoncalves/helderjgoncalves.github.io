@@ -1,8 +1,11 @@
 import type { ProfileData } from '../types';
+import { CvDownload } from './CvDownload';
 import { Icon } from './Icon';
 
 interface HeroProps {
   profile: ProfileData;
+  /** Show Download CV (pill on desktop, contact icon on phones). Only the CV page does. */
+  showDownload?: boolean;
 }
 
 function getInitials(name: string) {
@@ -15,7 +18,7 @@ function getInitials(name: string) {
     .toUpperCase();
 }
 
-export function Hero({ profile }: HeroProps) {
+export function Hero({ profile, showDownload = false }: HeroProps) {
   return (
     <header id="top" className="hero">
       <div className="container hero__inner">
@@ -30,6 +33,7 @@ export function Hero({ profile }: HeroProps) {
         <div>
           <h1 className="hero__name">{profile.name}</h1>
           <p className="hero__title">{profile.title}</p>
+          {showDownload && <CvDownload variant="pill" />}
         </div>
 
         <div className="hero__contacts">
@@ -45,6 +49,7 @@ export function Hero({ profile }: HeroProps) {
               <span>{contact.label}</span>
             </a>
           ))}
+          {showDownload && <CvDownload variant="icon" />}
         </div>
       </div>
     </header>
