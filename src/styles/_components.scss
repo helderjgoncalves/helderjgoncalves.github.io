@@ -520,6 +520,7 @@
     font-size: $fs-xs;
     color: $white;
     background: linear-gradient(180deg, transparent, rgba($ink-900, 0.78));
+    text-wrap: balance;
 
     @include md-up {
       font-size: $fs-sm;
