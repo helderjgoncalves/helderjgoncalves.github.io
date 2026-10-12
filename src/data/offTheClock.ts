@@ -1,18 +1,5 @@
 import type { IconName } from '../components/Icon';
-
-export interface Photo {
-  src: string;
-  alt: string;
-  caption: string;
-  /** Where it was, shown under the caption. */
-  place?: string;
-  width: number;
-  height: number;
-  /** Landscape shots span two grid columns on the full page. */
-  wide?: boolean;
-  /** CSS object-position, for subjects that sit off-centre in the crop. */
-  focus?: string;
-}
+import { photos, type Photo } from './photos';
 
 export interface PhotoTheme {
   id: string;
@@ -21,6 +8,8 @@ export interface PhotoTheme {
   /** One quiet line under the section title. */
   intro?: string;
   photos: Photo[];
+  /** A link under the photos, to the page that has the rest. */
+  more?: { href: string; label: string };
 }
 
 export interface Wonder {
@@ -29,16 +18,31 @@ export interface Wonder {
   seen: boolean;
 }
 
+/** A list to see all of — a personal goal, shown with its progress. */
+export interface WonderGoal {
+  id: string;
+  title: string;
+  /** The photo theme it follows, so photo and text sections alternate. */
+  after: string;
+  icon: IconName;
+  /** Completes "The goal: all seven of …". */
+  collection: string;
+  wonders: Wonder[];
+}
+
 export interface OffTheClockPageData {
   title: string;
   thesis: string;
-  /** The New Seven Wonders of the World — the collection goal. */
-  wonders: Wonder[];
-  /** Country names, shown as tags once filled in. Hidden while empty. */
-  countries: string[];
+  /** A short paragraph under the thesis. */
+  intro: string;
+  goals: WonderGoal[];
+  /**
+   * One section per hobby, a few photos each. The page stays an overview;
+   * travel's depth belongs on /trips/ and the trip pages.
+   */
   themes: PhotoTheme[];
-  /** `src`s of the photos previewed on the front page, in order. */
-  glance: string[];
+  /** The front-page preview, in order. */
+  glance: Photo[];
   meta: {
     title: string;
     description: string;
@@ -50,190 +54,83 @@ export interface OffTheClockPageData {
 
 export const offTheClock: OffTheClockPageData = {
   title: 'Off the clock',
-  thesis: 'Travel, adventures and the odd ride — the places I go when I close the laptop.',
-  wonders: [
-    { name: 'Machu Picchu', place: 'Peru', seen: true },
-    { name: 'Chichén Itzá', place: 'Mexico', seen: true },
-    { name: 'Christ the Redeemer', place: 'Brazil', seen: true },
-    { name: 'Colosseum', place: 'Italy', seen: true },
-    { name: 'Petra', place: 'Jordan', seen: false },
-    { name: 'Taj Mahal', place: 'India', seen: false },
-    { name: 'Great Wall', place: 'China', seen: false },
-  ],
-  countries: [],
-  themes: [
+  thesis: 'What fills the hours once the laptop is closed.',
+  intro:
+    'Some of them go far: long trails, big skies, a summit before dawn. Some go fast, on two wheels, on fresh snow or hanging under a paraglider. And some stay close to home, with a guitar in the evening or a night out dancing. A camera comes along for most of it, and underneath runs a slow quest to see every wonder of the world.',
+  goals: [
     {
-      id: 'adventures',
-      title: 'Adventures',
-      icon: 'mountain',
-      photos: [
-        {
-          src: '/photos/summit-night.jpg',
-          alt: 'On the snowy summit of Huayna Potosí at night in crampons and a helmet, the lights of La Paz far below',
-          caption: 'Huayna Potosí',
-          place: 'Bolivia · the 6,088\u00a0m summit, before dawn',
-          width: 800,
-          height: 600,
-          wide: true,
-          focus: '70% 50%',
-        },
-        {
-          src: '/photos/above-the-clouds.jpg',
-          alt: 'Sunrise over a sea of clouds from the snow ridge of Huayna Potosí',
-          caption: 'Huayna Potosí',
-          place: 'Bolivia · sunrise above the clouds',
-          width: 600,
-          height: 800,
-        },
-        {
-          src: '/photos/volcano.jpg',
-          alt: 'Volcán de Fuego erupting at night, lava running down its flanks under the stars',
-          caption: 'Volcán de Fuego',
-          place: 'Guatemala · seen from 4,000\u00a0m',
-          width: 600,
-          height: 800,
-        },
-        {
-          src: '/photos/torres-del-paine.jpg',
-          alt: 'Jumping star-shaped on a rock at the turquoise lagoon below the granite towers of Torres del Paine',
-          caption: 'Torres del Paine',
-          place: 'Chile · Base Las Torres',
-          width: 450,
-          height: 800,
-          focus: '50% 60%',
-        },
-        {
-          src: '/photos/glacier.jpg',
-          alt: 'The blue-white front of the Perito Moreno Glacier meeting a grey-green lake',
-          caption: 'Perito Moreno Glacier',
-          place: 'Argentina · Patagonia',
-          width: 600,
-          height: 800,
-        },
+      id: 'wonders',
+      title: 'Wonders of the World',
+      after: 'travel',
+      icon: 'star',
+      collection: 'the New Seven Wonders',
+      wonders: [
+        { name: 'Machu Picchu', place: 'Peru', seen: true },
+        { name: 'Chichén Itzá', place: 'Mexico', seen: true },
+        { name: 'Christ the Redeemer', place: 'Brazil', seen: true },
+        { name: 'Colosseum', place: 'Italy', seen: true },
+        { name: 'Petra', place: 'Jordan', seen: false },
+        { name: 'Taj Mahal', place: 'India', seen: false },
+        { name: 'Great Wall', place: 'China', seen: false },
       ],
     },
+    {
+      // The classic list, not New7Wonders of Nature (2011) — Rio's harbour is only on this one.
+      id: 'natural-wonders',
+      title: 'Natural Wonders',
+      after: 'ride',
+      icon: 'mountain',
+      collection: 'the Seven Natural Wonders',
+      wonders: [
+        { name: 'Harbour of Rio de Janeiro', place: 'Brazil', seen: true },
+        { name: 'Grand Canyon', place: 'United States', seen: false },
+        { name: 'Great Barrier Reef', place: 'Australia', seen: false },
+        { name: 'Mount Everest', place: 'Nepal · China', seen: false },
+        { name: 'Aurora', place: 'Polar skies', seen: false },
+        { name: 'Parícutin', place: 'Mexico', seen: false },
+        { name: 'Victoria Falls', place: 'Zambia · Zimbabwe', seen: false },
+      ],
+    },
+  ],
+  themes: [
     {
       id: 'travel',
       title: 'Travel',
       icon: 'globe',
       intro: 'Walking the world, one country at a time. A few favourites so far.',
+      // Two rows at three columns and at two: wide first, then night beside night.
       photos: [
-        {
-          src: '/photos/salt-flat-jump.jpg',
-          alt: 'Jumping mid-air on the mirrored Salar de Uyuni at sunset, reflection below',
-          caption: 'Salar de Uyuni',
-          place: 'Bolivia · the world’s largest salt flat',
-          width: 600,
-          height: 800,
-        },
-        {
-          src: '/photos/machu-picchu.jpg',
-          alt: 'Arms wide in front of Machu Picchu and the green peaks behind it',
-          caption: 'Machu Picchu',
-          place: 'Peru · a New Seven Wonder',
-          width: 600,
-          height: 800,
-        },
-        {
-          src: '/photos/lake-sunset.jpg',
-          alt: 'Silhouette watching the sun set over Lake Titicaca from Amantaní Island',
-          caption: 'Amantaní Island',
-          place: 'Peru · sunset over Lake Titicaca',
-          width: 600,
-          height: 800,
-          focus: '50% 30%',
-        },
+        photos.summitNight,
+        photos.volcano,
+        photos.machuPicchu,
+        photos.saltFlatJump,
+        photos.glacier,
       ],
+      more: { href: '/trips/', label: 'All trips' },
     },
     {
       id: 'ride',
       title: 'Ride',
       icon: 'motorbike',
-      photos: [
-        {
-          src: '/photos/motorcycle.jpg',
-          alt: 'Sitting on a dark red motorcycle on a forest road',
-          caption: 'Forest roads',
-          width: 600,
-          height: 800,
-        },
-        {
-          src: '/photos/snowboard.jpg',
-          alt: 'Smiling in sunglasses, holding a red snowboard upright on a sunny snow slope',
-          caption: 'Snowboarding',
-          width: 599,
-          height: 800,
-        },
-        {
-          src: '/photos/paragliding.jpg',
-          alt: 'Lifting off under a blue and yellow paraglider from a grassy launch, wind turbines on the ridge behind',
-          caption: 'Paragliding',
-          width: 600,
-          height: 800,
-        },
-      ],
+      photos: [photos.motorcycle, photos.snowboard, photos.paragliding],
     },
     {
       id: 'through-the-lens',
       title: 'Through the lens',
       icon: 'camera',
       intro: 'Where the place is the whole picture.',
-      photos: [
-        {
-          src: '/photos/fuego-ash.jpg',
-          alt: 'A tall ash cloud rising from Volcán de Fuego above a sea of clouds, a line of people silhouetted on the ridge in front',
-          caption: 'Volcán de Fuego',
-          place: 'Guatemala · an ash cloud at dawn',
-          width: 600,
-          height: 800,
-        },
-        {
-          src: '/photos/salt-tables.jpg',
-          alt: 'Tables built from salt bricks on the white Salar de Uyuni, distant mountains under a wide blue sky',
-          caption: 'Salar de Uyuni',
-          place: 'Bolivia · salt-brick tables',
-          width: 600,
-          height: 800,
-        },
-        {
-          src: '/photos/salt-sunset.jpg',
-          alt: 'Golden sunset mirrored in a thin layer of water on the Salar de Uyuni, low hills on the horizon',
-          caption: 'Salar de Uyuni',
-          place: 'Bolivia · sunset on the mirror',
-          width: 600,
-          height: 800,
-        },
-      ],
+      photos: [photos.fuegoAsh, photos.saltTables, photos.saltSunset],
     },
   ],
-  glance: [
-    '/photos/salt-flat-jump.jpg',
-    '/photos/volcano.jpg',
-    '/photos/above-the-clouds.jpg',
-    '/photos/machu-picchu.jpg',
-  ],
+  glance: [photos.saltFlatJump, photos.volcano, photos.aboveTheClouds, photos.machuPicchu],
   meta: {
     title: 'Off the clock · Hélder Gonçalves',
     description:
-      'Photos from travel and adventures: Huayna Potosí in Bolivia, Volcán de Fuego in Guatemala, and a slow quest to see all seven wonders of the world.',
+      'What I do away from the laptop: travel, motorbikes, snowboarding, paragliding and photography — and a slow quest to see every wonder of the world, built and natural.',
     canonical: 'https://hgoncalves.uk/off-the-clock/',
     image: 'https://hgoncalves.uk/og-off-the-clock.jpg',
   },
 };
 
+/** Every photo on the page, in page order — the viewer walks them top to bottom. */
 export const allPhotos = offTheClock.themes.flatMap((theme) => theme.photos);
-
-/**
- * The bigger copy opened in the photo viewer. Every photo needs one at
- * /photos/large/<same name> — `npm test` fails if it's missing.
- */
-export function largeSrc(photo: Photo): string {
-  return photo.src.replace('/photos/', '/photos/large/');
-}
-
-/** Anchor id for a photo on the full page, from its file name: '/photos/volcano.jpg' → 'volcano'. */
-export function photoId(photo: Photo): string {
-  return photo.src.replace(/^.*\//, '').replace(/\.\w+$/, '');
-}
-
-export const wondersSeen = offTheClock.wonders.filter((wonder) => wonder.seen).length;

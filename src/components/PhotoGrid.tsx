@@ -1,5 +1,5 @@
 import type { MouseEvent } from 'react';
-import { photoId, type Photo } from '../data/offTheClock';
+import { photoId, type Photo } from '../data/photos';
 
 interface PhotoGridProps {
   photos: Photo[];

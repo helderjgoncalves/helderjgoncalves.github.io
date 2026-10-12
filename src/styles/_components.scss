@@ -230,10 +230,12 @@
   margin-top: 1.75rem;
 
   @include md-up {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.25rem;
     margin-top: 2rem;
   }
+
+  @include lg-up { grid-template-columns: repeat(4, 1fr); }
 }
 
 .door {
@@ -307,6 +309,30 @@
     text-transform: uppercase;
     color: rgba($white, 0.72);
     margin: 0 0 0.85rem;
+  }
+
+  &__heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+  }
+
+  // Raw white like the eyebrow: the hero stays brand-blue in both themes.
+  // The top margin moves the pill's middle down to the title's lowercase
+  // letters, which is where the eye puts the middle of the word.
+  &__badge {
+    margin-top: 0.35rem;
+    padding: 0.15rem 0.6rem;
+    line-height: 1.5;
+    border: 1px solid rgba($white, 0.3);
+    border-radius: $radius-pill;
+    background: rgba($white, 0.12);
+    font-size: $fs-xs;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba($white, 0.9);
   }
 
   &__title {
@@ -612,11 +638,38 @@
 
   &__place { color: rgba($white, 0.78); }
 
-  &__count {
+  // The counter and, for photos from a trip, a link to it — one line, so the
+  // link costs the photo no height.
+  &__meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
     margin-top: 0.25rem;
+  }
+
+  &__count {
     font-size: $fs-xs;
     color: rgba($white, 0.6);
     font-variant-numeric: tabular-nums;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.2rem 0.5rem 0.2rem 0.75rem;
+    border-radius: $radius-pill;
+    font-size: $fs-xs;
+    font-weight: 600;
+    color: $white;
+    @include hero-button;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
   }
 
   &__button {
@@ -665,6 +718,227 @@
 @keyframes viewer-in {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+// ---- Trip pages ----
+// The stops in travel order, numbered. Not links: the photo sections below
+// follow the same order, and stops without photos have nowhere to go yet.
+.trip-route {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+  counter-reset: stop;
+
+  @include sm-up { grid-template-columns: repeat(2, 1fr); }
+  @include md-up { grid-template-columns: repeat(4, 1fr); }
+
+  &__stop {
+    @include card;
+    counter-increment: stop;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.75rem;
+    align-items: center;
+    padding: 0.8rem 0.9rem;
+
+    &::before {
+      content: counter(stop);
+      grid-row: span 2;
+      display: grid;
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: $color-accent-soft;
+      color: $color-accent-dark;
+      font-size: $fs-xs;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  &__name {
+    font-weight: 600;
+    color: $color-heading;
+  }
+
+  &__country {
+    font-size: $fs-xs;
+    color: $color-text-muted;
+  }
+}
+
+.trip-tips {
+  margin: 1.25rem 0 0;
+  display: grid;
+  gap: 1rem;
+
+  @include md-up { grid-template-columns: repeat(2, 1fr); }
+
+  &__item {
+    @include card;
+    padding: 1rem 1.1rem;
+  }
+
+  &__label {
+    font-size: $fs-xs;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $color-text-muted;
+  }
+
+  &__text {
+    margin: 0.35rem 0 0;
+    line-height: 1.6;
+  }
+}
+
+// The /trips/ index: one card per trip, the whole card a link (card-link).
+.trip-cards {
+  display: grid;
+  gap: 1rem;
+  padding-top: 1.75rem;
+
+  @include md-up {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    padding-top: 3rem;
+  }
+
+  // Everything that isn't featured: small enough that dozens still scan.
+  &--compact {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    padding-top: 0;
+
+    @include md-up {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      padding-top: 0;
+    }
+
+    @include lg-up { grid-template-columns: repeat(4, 1fr); }
+  }
+}
+
+.trip-region {
+  & + & { margin-top: 1.75rem; }
+
+  &__title {
+    margin-bottom: 0.75rem;
+    font-size: $fs-sm;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: $color-text-soft;
+  }
+}
+
+.trip-card {
+  @include card;
+  @include card-link;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    background: $color-rule;
+  }
+
+  &__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1.1rem 1.25rem 1.25rem;
+  }
+
+  &__eyebrow {
+    font-size: $fs-xs;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $color-text-muted;
+  }
+
+  &__title {
+    margin-top: 0.3rem;
+    font-size: $fs-xl;
+    font-weight: 700;
+    color: $color-heading;
+  }
+
+  &__summary {
+    margin-top: 0.5rem;
+    color: $color-text-soft;
+    line-height: 1.6;
+  }
+
+  &__route {
+    flex: 1;
+    margin-top: 0.6rem;
+    font-size: $fs-sm;
+    color: $color-text-muted;
+    line-height: 1.5;
+  }
+
+  // Looks like an action link but is a span: the whole card is the anchor.
+  &__cta {
+    @include action-link;
+    @include action-link-primary;
+    align-self: flex-start;
+    margin-top: 1rem;
+  }
+
+  &:hover &__cta,
+  &:focus-visible &__cta { border-color: $color-accent; }
+
+  &--compact &__img { aspect-ratio: 4 / 3; }
+
+  &--compact &__body { padding: 0.65rem 0.85rem 0.8rem; }
+
+  &--compact &__title {
+    margin-top: 0.15rem;
+    font-size: $fs-md;
+  }
+}
+
+// The offer of tips that closes /trips/ and each trip page.
+// A sign-off, not another card: a card here reads as a trip without a photo.
+.trip-help {
+  padding-top: 1.5rem;
+  padding-bottom: 3rem;
+
+  &__card {
+    max-width: 34rem;
+    margin: 0 auto;
+    padding-top: 2.5rem;
+    border-top: 1px solid $color-rule;
+    text-align: center;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: $fs-lg;
+  }
+
+  &__text {
+    margin: 0.6rem 0 0;
+    line-height: 1.6;
+    color: $color-text-soft;
+  }
+
+  &__actions {
+    justify-content: center;
+    gap: 0.65rem 1.75rem;
+  }
 }
 
 .homelab-arch {
@@ -808,7 +1082,7 @@
     color: $color-text-soft;
   }
 
-  // Same treatment as "View case study" on the home page: both are the
+  // Same treatment as the front-page card actions: both are the
   // closing action of a card, so they read as the same affordance.
   &__evidence {
     @include action-link;

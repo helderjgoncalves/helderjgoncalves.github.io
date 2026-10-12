@@ -3,17 +3,20 @@ import { Icon } from './Icon';
 import { ThemeToggle } from './ThemeToggle';
 
 const LINKS = [
-  { href: '/cv/', label: 'Curriculum vitae' },
-  { href: '/homelab/', label: 'Home lab' },
   { href: '/off-the-clock/', label: 'Off the clock' },
+  { href: '/trips/', label: 'Trips' },
+  { href: '/homelab/', label: 'Home lab' },
+  { href: '/cv/', label: 'Curriculum vitae' },
 ];
 
 interface SiteNavProps {
   /** Path of the page being rendered, e.g. '/homelab/'. '/' for the front page. */
   current: string;
+  /** The top-level page a sub-page belongs to, e.g. '/trips/' for a trip. */
+  section?: string;
 }
 
-export function SiteNav({ current }: SiteNavProps) {
+export function SiteNav({ current, section }: SiteNavProps) {
   const isHome = current === '/';
   const [open, setOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
@@ -55,7 +58,9 @@ export function SiteNav({ current }: SiteNavProps) {
             <a
               key={link.href}
               href={link.href}
-              aria-current={link.href === current ? 'page' : undefined}
+              aria-current={
+                link.href === current ? 'page' : link.href === section ? 'true' : undefined
+              }
               onClick={() => setOpen(false)}
             >
               {link.label}

@@ -6,7 +6,9 @@ import App from './App';
 // typed data file instead of keeping its own copy of the same strings.
 export { homelab } from './data/homelab';
 export { offTheClock, allPhotos } from './data/offTheClock';
+export { tripsPage } from './data/tripsPage';
 export { frontDoor } from './data/frontDoor';
+export { trips, sampleTrips, tripPath, tripPhotos, tripCountries } from './data/trips';
 
 export function render(url = '/'): string {
   return renderToString(

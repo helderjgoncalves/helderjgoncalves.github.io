@@ -98,8 +98,9 @@
         & + a { border-top: 1px solid $color-rule; }
       }
 
+      // 'page' on the page itself, 'true' on the section a sub-page sits in.
       &:hover,
-      &[aria-current='page'] { color: $color-accent; }
+      &[aria-current] { color: $color-accent; }
     }
   }
 }

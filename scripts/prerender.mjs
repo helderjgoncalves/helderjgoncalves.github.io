@@ -23,9 +23,19 @@ const ROOT_PLACEHOLDER = '<div id="root"></div>';
 const SITE = 'https://hgoncalves.uk';
 const PERSON_ID = `${SITE}/#person`;
 
-const { render, homelab, offTheClock, allPhotos, frontDoor } = await import(
-  pathToFileURL(ssrEntry).href
-);
+const {
+  render,
+  homelab,
+  offTheClock,
+  allPhotos,
+  tripsPage,
+  frontDoor,
+  trips,
+  sampleTrips,
+  tripPath,
+  tripPhotos,
+  tripCountries,
+} = await import(pathToFileURL(ssrEntry).href);
 
 /**
  * Last commit date touching any of `paths`, as an ISO string. Falls back to the
@@ -201,7 +211,102 @@ function offTheClockJsonLd(dateModified) {
   };
 }
 
-/** Front door. Names the person and the three pages behind it; lists no services. */
+/**
+ * The trips index: a CollectionPage listing every trip page, by the same Person.
+ * Copy comes from src/data/tripsPage.ts.
+ *
+ * @param {string} dateModified
+ */
+function tripsJsonLd(dateModified) {
+  const page = tripsPage;
+  const url = page.meta.canonical;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': `${url}#collection`,
+        name: page.meta.title,
+        description: page.meta.description,
+        url,
+        image: page.meta.image,
+        dateModified,
+        inLanguage: 'en-GB',
+        author: { '@id': PERSON_ID },
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: trips.map((trip, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: trip.title,
+            url: `${SITE}${tripPath(trip)}`,
+          })),
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE}/` },
+          { '@type': 'ListItem', position: 2, name: page.title, item: url },
+        ],
+      },
+    ],
+  };
+}
+
+/**
+ * A trip page: a TouristTrip whose itinerary is the stops in travel order,
+ * by the same Person, filed under Trips in the breadcrumb.
+ *
+ * @param {string} dateModified
+ * @param {(typeof pages)[number]} page
+ */
+function tripJsonLd(dateModified, page) {
+  const trip = page.trip;
+  const url = page.canonical;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'TouristTrip',
+        '@id': `${url}#trip`,
+        name: trip.title,
+        description: page.description,
+        url,
+        image: tripPhotos(trip).map((photo) => `${SITE}${photo.src}`),
+        dateModified,
+        inLanguage: 'en-GB',
+        author: { '@id': PERSON_ID },
+        touristType: 'Independent traveller',
+        itinerary: {
+          '@type': 'ItemList',
+          itemListElement: trip.stops.map((stop, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            item: {
+              '@type': 'TouristDestination',
+              name: stop.name,
+              containedInPlace: { '@type': 'Country', name: stop.country },
+            },
+          })),
+        },
+        about: tripCountries(trip).map((name) => ({ '@type': 'Country', name })),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE}/` },
+          { '@type': 'ListItem', position: 2, name: tripsPage.title, item: tripsPage.meta.canonical },
+          { '@type': 'ListItem', position: 3, name: trip.title, item: url },
+        ],
+      },
+    ],
+  };
+}
+
+/** Front door. Names the person and the pages behind it; lists no services. */
 function homeJsonLd() {
   const url = `${SITE}/`;
   return {
@@ -229,7 +334,7 @@ function homeJsonLd() {
  * @type {{
  *   path: string, out: string, title: string, description: string,
  *   canonical: string, ogType: string, image: string, imageAlt: string,
- *   sources: string[], jsonLd?: unknown,
+ *   sources: string[], jsonLd?: unknown, trip?: any,
  * }[]}
  */
 const pages = [
@@ -242,7 +347,13 @@ const pages = [
     ogType: 'website',
     image: `${SITE}/og-home.png`,
     imageAlt: 'Hélder Gonçalves — Lead Software Engineer at OutSystems',
-    sources: ['src/data/frontDoor.ts', 'src/components/FrontDoor.tsx', 'public/photos', 'index.html'],
+    sources: [
+      'src/data/frontDoor.ts',
+      'src/data/trips',
+      'src/components/FrontDoor.tsx',
+      'public/photos',
+      'index.html',
+    ],
     jsonLd: 'home',
   },
   {
@@ -286,12 +397,52 @@ const pages = [
     imageAlt: 'Standing on a snowy summit at night, city lights far below',
     sources: [
       'src/data/offTheClock.ts',
+      'src/data/photos.ts',
+      'src/data/trips',
       'src/components/OffTheClockPage.tsx',
       'src/components/PhotoGrid.tsx',
       'public/photos',
     ],
     jsonLd: 'offTheClock',
   },
+  {
+    path: '/trips',
+    out: path.join('trips', 'index.html'),
+    title: tripsPage.meta.title,
+    description: tripsPage.meta.description,
+    canonical: tripsPage.meta.canonical,
+    ogType: 'website',
+    image: tripsPage.meta.image,
+    imageAlt: tripsPage.meta.imageAlt,
+    sources: [
+      'src/data/tripsPage.ts',
+      'src/data/trips',
+      'src/data/photos.ts',
+      'src/components/TripsPage.tsx',
+      'public/photos',
+    ],
+    jsonLd: 'trips',
+  },
+  // One page per entry in src/data/trips/index.ts — adding a trip there is all
+  // it takes for it to be built, described and listed in the sitemap.
+  ...trips.map((trip) => ({
+    path: tripPath(trip),
+    out: path.join('trips', trip.slug, 'index.html'),
+    title: trip.meta.title,
+    description: trip.meta.description,
+    canonical: `${SITE}${tripPath(trip)}`,
+    ogType: 'article',
+    image: trip.meta.image,
+    imageAlt: trip.meta.imageAlt,
+    sources: [
+      `src/data/trips/${trip.slug}.ts`,
+      'src/data/photos.ts',
+      'src/components/TripPage.tsx',
+      'public/photos',
+    ],
+    jsonLd: 'trip',
+    trip,
+  })),
 ];
 
 const template = await fs.readFile(templatePath, 'utf-8');
@@ -425,8 +576,10 @@ function applyMeta(html, meta, dateModified) {
       profile: profileJsonLd,
       homelab: homelabJsonLd,
       offTheClock: offTheClockJsonLd,
+      trips: tripsJsonLd,
+      trip: tripJsonLd,
     };
-    const data = JSON.stringify(builders[meta.jsonLd](dateModified), null, 2);
+    const data = JSON.stringify(builders[meta.jsonLd](dateModified, meta), null, 2);
     const script = `\n    <script type="application/ld+json">\n${data}\n    </script>`;
     next = next.replace(block, () => script);
   }
@@ -463,5 +616,11 @@ ${sitemapEntries
 `;
 await fs.writeFile(path.join(distDir, 'sitemap.xml'), sitemap);
 console.log(`✓ Wrote sitemap.xml (${sitemapEntries.length} URLs)`);
+
+if (sampleTrips.length) {
+  console.warn(
+    `⚠ ${sampleTrips.length} trip(s) still use sample photos: ${sampleTrips.map((t) => t.slug).join(', ')}`,
+  );
+}
 
 await fs.rm(ssrDir, { recursive: true, force: true });

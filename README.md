@@ -37,8 +37,10 @@ All CV content lives in **[`src/data/cv.ts`](src/data/cv.ts)** as a single typed
 object. To update a bullet, change a tag, or add a new award, you only edit that
 file — the components are presentation-only. The other pages each have their own
 data file: [`frontDoor.ts`](src/data/frontDoor.ts) (front page),
-[`homelab.ts`](src/data/homelab.ts) and [`offTheClock.ts`](src/data/offTheClock.ts)
-(photos and captions).
+[`homelab.ts`](src/data/homelab.ts), [`offTheClock.ts`](src/data/offTheClock.ts)
+and [`tripsPage.ts`](src/data/tripsPage.ts) (the `/trips/` index).
+Photos are described once in [`photos.ts`](src/data/photos.ts); each trip page
+is a file in [`src/data/trips/`](src/data/trips/), listed in its `index.ts`.
 
 The TypeScript types in **[`src/types.ts`](src/types.ts)** describe the shape of
 the data, so the compiler will catch missing fields if you add new entries.
@@ -137,7 +139,7 @@ helderjgoncalves.github.io/
 │   └── prerender.mjs      # SSR injection, head metadata, sitemap.xml
 ├── src/
 │   ├── components/        # CV sections + page components, PhotoGrid, SiteNav, Hero, Icon…
-│   ├── data/              # cv.ts, frontDoor.ts, homelab.ts, offTheClock.ts
+│   ├── data/              # cv.ts, frontDoor.ts, homelab.ts, offTheClock.ts, photos.ts, trips/
 │   ├── hooks/useReveal.ts # scroll-reveal hook
 │   ├── styles/            # SASS partials
 │   ├── App.tsx

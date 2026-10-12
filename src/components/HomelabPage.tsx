@@ -40,7 +40,6 @@ export function HomelabPage() {
 
       <header className="page-hero">
         <div className="container page-hero__inner">
-          <p className="page-hero__eyebrow">Side project · case study</p>
           <h1 className="page-hero__title">{title}</h1>
           <p className="page-hero__thesis">{thesis}</p>
           <p className="page-hero__intro">{intro}</p>

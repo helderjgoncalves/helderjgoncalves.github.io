@@ -81,16 +81,20 @@ Don't break that branching when editing `main.tsx`.
 
 ```
 src/
-  App.tsx                 # routes: / front page, /cv/, /homelab/, /off-the-clock/
+  App.tsx                 # routes: / front page, /cv/, /homelab/, /off-the-clock/, /trips/, /trips/<slug>/
   main.tsx                # client entry; hydrate-or-render based on root contents
   entry-server.tsx        # SSR entry; renderToString(<App />)
   types.ts                # CvData and related interfaces
   data/cv.ts              # CV content (the /cv/ page and the front page hero)
   data/frontDoor.ts       # front page intro, door cards and meta
   data/homelab.ts         # home-lab case study
-  data/offTheClock.ts     # photos, captions, wonders and meta for /off-the-clock/
+  data/photos.ts          # every photo, described once (src, alt, caption, place, size)
+  data/offTheClock.ts     # hobby themes, wonders, glance and meta for /off-the-clock/
+  data/tripsPage.ts       # /trips/: title and meta (the cards come from trips/)
+  data/trips/             # one file per trip + index.ts (the list, checks and helpers)
   components/             # one component per CV section + page components (FrontDoor,
-                          # HomelabPage, OffTheClockPage), PhotoGrid, SiteNav, Hero, Icon, Section…
+                          # HomelabPage, OffTheClockPage, TripsPage, TripPage), PhotoGrid, PhotoViewer,
+                          # SiteNav, Hero, Icon, Section…
   hooks/useReveal.ts      # IntersectionObserver scroll-reveal
   styles/                 # SASS partials (see below)
   vite-env.d.ts
@@ -113,7 +117,61 @@ page has its own data file in `src/data/` (see the layout above). The
 components in `src/components/` are presentation-only and shouldn't carry
 hard-coded copy.
 
-Each Off the clock photo ships twice: `public/photos/<name>.jpg` (≤800px, for
+### Off the clock and trips
+
+Off the clock is an overview of hobbies — travel, riding, photography — a few
+photos each. Travel is one of them, so its depth lives elsewhere: `/trips/`
+(`TripsPage.tsx`) is the travel index, and each trip has its own page
+(`/trips/<slug>/`, `TripPage.tsx`). Don't grow Off the clock's themes into a
+camera roll — add the photos to a trip instead. Trips is in the top bar and
+has a front-page card; Off the clock's Travel section links to it.
+
+- **Photos** are described once, in `src/data/photos.ts`. Pages pick from that
+  catalogue, so a photo shown in two places can't drift apart.
+- **A trip** is a file in `src/data/trips/` registered in `trips/index.ts`
+  (oldest first). That's all: routing, prerendering (with `TouristTrip`
+  JSON-LD), the sitemap, the cards on `/trips/` and the front-page card's
+  counts follow from the list.
+- **One page per destination** someone would plan as a trip: a region that
+  spans borders stays one page (Patagonia), while one journey through two
+  rich countries becomes two (Peru, Bolivia). Trip pages don't link to each
+  other; each leads back to `/trips/`.
+- **Stops** are in travel order. A stop without photos still shows on the
+  numbered route but gets no section. `note` and the trip's `practical` notes
+  are hidden while empty — leave them empty rather than invent copy.
+- **`/trips/`** is an informative index, not another photo wall. Trips marked
+  `featured` get a big card (cover, countries, summary, route); keep that to
+  a couple. Every other trip gets a compact card under "More trips" — cover,
+  countries, title — grouped by the trip's `region` (order set by `regions`
+  in `trips/types.ts`; add a region there when a trip needs one), so the page
+  still scans with dozens of trips. Within a region, cards follow the list. The cover is the trip's own `cover` (one of its stop
+  photos, with a `focus` for the 3:2 crop) — the build throws if it isn't.
+  The page is for people planning a trip; the **wonder goals** (the New Seven
+  Wonders and the classic Seven Natural Wonders, `offTheClock.goals`) are
+  personal, so they stay on Off the clock. Each goal's `after` names the
+  photo theme it follows (Wonders after Travel, Natural Wonders after Ride),
+  so photo and text sections alternate.
+- **Travel** on Off the clock is a handful of favourites ending in an "All
+  trips" link — the trips themselves live on `/trips/`, so don't rebuild a
+  per-country grid there. Arrange photos by hand: wide first, similar poses
+  (like the two open-arms shots) not side by side. A photo may appear only
+  once per page (its tile id is the file name).
+- Theme photos on Off the clock open the viewer, whose caption links to the
+  photo's trip when it has one. The front-page glance links straight to the
+  photo on its trip page.
+- `/trips/` and every trip page close with `TripHelp`, a quiet offer of free
+  tips by email (copy in `tripsPage.help`, address from `cv.ts`). Keep it a
+  friend's offer: no form, no pricing, nothing in the top bar.
+- Trips carry no dates — no months, years or "last spring". Durations
+  ("three weeks") are fine.
+- **Sample photos** (`sample: true` in `photos.ts`, gradient JPEGs named
+  `sample-*.jpg`) hold a trip's place until its real photos arrive; the
+  build prints a ⚠ line listing those trips. While any remain, `/trips/`
+  shows a "Work in progress" badge and those trips add "Photos soon" to their
+  eyebrow (`tripsPage.wip`, `tripEyebrow`); both disappear on their own once
+  the last sample is replaced.
+
+Each photo ships twice: `public/photos/<name>.jpg` (≤800px, for
 the grid) and `public/photos/large/<name>.jpg` (the source's full size, opened
 by the photo viewer, `PhotoViewer.tsx`). `npm test` fails if a page references
 a `/photos/` file that isn't in `dist/`. The viewer is a native `<dialog>` with
@@ -199,9 +257,9 @@ Reach for the mixin; if nothing fits, add a family here and document why.
 | Action link | `action-link` (+ `action-link-primary`) | "View case study", "Live status page" | accent text + accent rule |
 | Prose link | `prose-link` | `.homelab-stack__note a`, `.footer a` | accent → accent-dark |
 | Nav control | `nav-control` | `.theme-toggle`, `.nav__menu` | accent tint deepens, border firms, press scales |
-| Hero button | `hero-button` | `.hero__contact`, `.hero__download`, `.homelab-cta`, `.viewer__button` | white glass brightens, lifts 1px |
+| Hero button | `hero-button` | `.hero__contact`, `.hero__download`, `.homelab-cta`, `.viewer__button`, `.viewer__link` | white glass brightens, lifts 1px |
 | Nav link | — (`.nav__links a`) | `SiteNav` page links (every page; below md they live in the ☰ panel, which closes on Esc, an outside tap or a link) | soft → accent; the current page rests in accent |
-| Card link | `card-link` | `.door` (front-page cards), `.gallery__link` (front-page photos) | card lifts 2px, shadow deepens, inner action line turns accent |
+| Card link | `card-link` | `.door` (front-page cards), `.trip-card` (`/trips/`), `.gallery__link` (photo tiles) | card lifts 2px, shadow deepens, inner action line turns accent |
 
 `card-link` exists because the front-page doors are whole-surface targets: a
 lone underlined link inside a card left most of the card dead to clicks. Its

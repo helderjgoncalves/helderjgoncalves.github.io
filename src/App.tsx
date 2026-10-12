@@ -11,6 +11,9 @@ import { Certifications } from './components/Certifications';
 import { LeadershipAwards } from './components/LeadershipAwards';
 import { HomelabPage } from './components/HomelabPage';
 import { OffTheClockPage } from './components/OffTheClockPage';
+import { TripPage } from './components/TripPage';
+import { TripsPage } from './components/TripsPage';
+import { tripForPath } from './data/trips';
 import { FrontDoor } from './components/FrontDoor';
 import { Footer } from './components/Footer';
 
@@ -26,6 +29,10 @@ export function isHomelabPath(path: string): boolean {
 
 export function isOffTheClockPath(path: string): boolean {
   return normalizePath(path) === '/off-the-clock';
+}
+
+export function isTripsPath(path: string): boolean {
+  return normalizePath(path) === '/trips';
 }
 
 export function isCvPath(path: string): boolean {
@@ -73,6 +80,15 @@ export default function App({ path }: AppProps) {
 
   if (isCvPath(pathname)) {
     return <CvPage />;
+  }
+
+  if (isTripsPath(pathname)) {
+    return <TripsPage />;
+  }
+
+  const trip = tripForPath(normalizePath(pathname));
+  if (trip) {
+    return <TripPage trip={trip} />;
   }
 
   return <FrontDoor />;
