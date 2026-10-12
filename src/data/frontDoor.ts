@@ -32,7 +32,7 @@ export const frontDoor = {
     {
       eyebrow: 'Outside work',
       title: 'Off the clock',
-      line: 'Travel, adventures and two wheels — a few photos from the road.',
+      line: 'Travel, adventures and the odd ride — a few photos from the road.',
       href: '/off-the-clock/',
       cta: 'See the photos',
     },

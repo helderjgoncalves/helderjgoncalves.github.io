@@ -18,6 +18,7 @@ export type IconName =
   | 'download'
   | 'mountain'
   | 'motorbike'
+  | 'camera'
   | 'check';
 
 interface IconProps extends SVGProps<SVGSVGElement> {
@@ -116,6 +117,12 @@ const PATHS: Record<IconName, JSX.Element> = {
       <circle cx="5" cy="16" r="3.5" />
       <circle cx="19" cy="16" r="3.5" />
       <path d="M5 16l4-6h5.5l4.5 6M14.5 10l1.5-4h2.5M9 10l-1.5-3H5" />
+    </>
+  ),
+  camera: (
+    <>
+      <path d="M3 8.5A1.5 1.5 0 0 1 4.5 7h3l1.5-2.5h6L16.5 7h3A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z" />
+      <circle cx="12" cy="13" r="3.5" />
     </>
   ),
 };

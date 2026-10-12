@@ -50,7 +50,7 @@ export interface OffTheClockPageData {
 
 export const offTheClock: OffTheClockPageData = {
   title: 'Off the clock',
-  thesis: 'Travel, adventures and two wheels — the places I go when I close the laptop.',
+  thesis: 'Travel, adventures and the odd ride — the places I go when I close the laptop.',
   wonders: [
     { name: 'Machu Picchu', place: 'Peru', seen: true },
     { name: 'Chichén Itzá', place: 'Mexico', seen: true },
@@ -137,14 +137,37 @@ export const offTheClock: OffTheClockPageData = {
       ],
     },
     {
-      id: 'two-wheels',
-      title: 'Two wheels',
+      id: 'ride',
+      title: 'Ride',
       icon: 'motorbike',
       photos: [
         {
           src: '/photos/motorcycle.jpg',
           alt: 'Sitting on a dark red motorcycle on a forest road',
           caption: 'Forest roads',
+          width: 600,
+          height: 800,
+        },
+        {
+          src: '/photos/snowboard.jpg',
+          alt: 'Smiling in sunglasses, holding a red snowboard upright on a sunny snow slope',
+          caption: 'Snowboarding',
+          width: 599,
+          height: 800,
+        },
+      ],
+    },
+    {
+      id: 'through-the-lens',
+      title: 'Through the lens',
+      icon: 'camera',
+      intro: 'No one in frame, just the place.',
+      photos: [
+        {
+          src: '/photos/salt-tables.jpg',
+          alt: 'Tables built from salt bricks on the white Salar de Uyuni, distant mountains under a wide blue sky',
+          caption: 'Salar de Uyuni',
+          place: 'Bolivia · salt-brick tables',
           width: 600,
           height: 800,
         },
