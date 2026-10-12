@@ -141,7 +141,7 @@ export const offTheClock: OffTheClockPageData = {
           place: 'Peru · sunset over Lake Titicaca',
           width: 600,
           height: 800,
-          focus: '50% 40%',
+          focus: '50% 30%',
         },
       ],
     },

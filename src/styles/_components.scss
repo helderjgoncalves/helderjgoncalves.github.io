@@ -511,6 +511,15 @@
     .gallery__img { aspect-ratio: 3 / 2; }
   }
 
+  // Desktop's three columns already end each section on a full row.
+  &__item--fill {
+    @include md-down {
+      grid-column: span 2;
+
+      .gallery__img { aspect-ratio: 3 / 2; }
+    }
+  }
+
   &__caption {
     position: absolute;
     inset: auto 0 0 0;
