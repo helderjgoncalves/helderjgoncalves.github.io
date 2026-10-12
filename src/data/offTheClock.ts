@@ -161,8 +161,16 @@ export const offTheClock: OffTheClockPageData = {
       id: 'through-the-lens',
       title: 'Through the lens',
       icon: 'camera',
-      intro: 'No one in frame, just the place.',
+      intro: 'Where the place is the whole picture.',
       photos: [
+        {
+          src: '/photos/fuego-ash.jpg',
+          alt: 'A tall ash cloud rising from Volcán de Fuego above a sea of clouds, a line of people silhouetted on the ridge in front',
+          caption: 'Volcán de Fuego',
+          place: 'Guatemala · an ash cloud at dawn',
+          width: 600,
+          height: 800,
+        },
         {
           src: '/photos/salt-tables.jpg',
           alt: 'Tables built from salt bricks on the white Salar de Uyuni, distant mountains under a wide blue sky',
@@ -176,14 +184,6 @@ export const offTheClock: OffTheClockPageData = {
           alt: 'Golden sunset mirrored in a thin layer of water on the Salar de Uyuni, low hills on the horizon',
           caption: 'Salar de Uyuni',
           place: 'Bolivia · sunset on the mirror',
-          width: 600,
-          height: 800,
-        },
-        {
-          src: '/photos/milky-way.jpg',
-          alt: 'The Milky Way arching over a still lake, the moon rising behind dark hills',
-          caption: 'Milky Way',
-          place: 'Moonrise over the water',
           width: 600,
           height: 800,
         },
