@@ -4,8 +4,6 @@ export interface Photo {
   src: string;
   alt: string;
   caption: string;
-  /** Headline figure shown above the caption, e.g. an altitude. */
-  stat?: string;
   /** Where it was, shown under the caption. */
   place?: string;
   width: number;
@@ -20,6 +18,8 @@ export interface PhotoTheme {
   id: string;
   title: string;
   icon: IconName;
+  /** One quiet line under the section title. */
+  intro?: string;
   photos: Photo[];
 }
 
@@ -32,8 +32,6 @@ export interface Wonder {
 export interface OffTheClockPageData {
   title: string;
   thesis: string;
-  countryCount: number;
-  highestSummit: { metres: string; name: string };
   /** The New Seven Wonders of the World — the collection goal. */
   wonders: Wonder[];
   /** Country names, shown as tags once filled in. Hidden while empty. */
@@ -52,9 +50,7 @@ export interface OffTheClockPageData {
 
 export const offTheClock: OffTheClockPageData = {
   title: 'Off the clock',
-  thesis: 'From a 6,088 m summit above La Paz to an erupting volcano at night.',
-  countryCount: 26,
-  highestSummit: { metres: '6,088 m', name: 'Huayna Potosí' },
+  thesis: 'Travel, adventures and two wheels — the places I go when I close the laptop.',
   wonders: [
     { name: 'Machu Picchu', place: 'Peru', seen: true },
     { name: 'Chichén Itzá', place: 'Mexico', seen: true },
@@ -75,8 +71,7 @@ export const offTheClock: OffTheClockPageData = {
           src: '/photos/summit-night.jpg',
           alt: 'On the snowy summit of Huayna Potosí at night in crampons and a helmet, the lights of La Paz far below',
           caption: 'Huayna Potosí summit, before dawn',
-          stat: '6,088 m',
-          place: 'Bolivia · La Paz lit up below',
+          place: 'Bolivia · 6,088 m, La Paz lit up below',
           width: 800,
           height: 600,
           wide: true,
@@ -86,7 +81,6 @@ export const offTheClock: OffTheClockPageData = {
           src: '/photos/above-the-clouds.jpg',
           alt: 'Sunrise over a sea of clouds from the snow ridge of Huayna Potosí',
           caption: 'Sunrise from the top',
-          stat: '6,088 m',
           place: 'Huayna Potosí, Bolivia',
           width: 600,
           height: 800,
@@ -95,8 +89,7 @@ export const offTheClock: OffTheClockPageData = {
           src: '/photos/volcano.jpg',
           alt: 'Volcán de Fuego erupting at night, lava running down its flanks under the stars',
           caption: 'Volcán de Fuego, erupting',
-          stat: '≈4,000 m',
-          place: 'Guatemala',
+          place: 'Guatemala · seen from about 4,000 m',
           width: 600,
           height: 800,
         },
@@ -113,6 +106,7 @@ export const offTheClock: OffTheClockPageData = {
       id: 'travel',
       title: 'Travel',
       icon: 'globe',
+      intro: 'Walking the world, one country at a time. A few favourites so far.',
       photos: [
         {
           src: '/photos/salt-flat-jump.jpg',
@@ -162,7 +156,7 @@ export const offTheClock: OffTheClockPageData = {
   meta: {
     title: 'Off the clock · Hélder Gonçalves',
     description:
-      'Adventure and travel across 26 countries: the 6,088 m summit of Huayna Potosí, Volcán de Fuego erupting at night, and 4 of the 7 wonders of the world.',
+      'Photos from travel and adventures: Huayna Potosí in Bolivia, Volcán de Fuego in Guatemala, and a slow quest to see all seven wonders of the world.',
     canonical: 'https://hgoncalves.uk/off-the-clock/',
     image: 'https://hgoncalves.uk/og-off-the-clock.jpg',
   },

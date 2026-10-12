@@ -7,7 +7,7 @@ import { Section } from './Section';
 import { ThemeToggle } from './ThemeToggle';
 
 export function OffTheClockPage() {
-  const { title, thesis, countryCount, highestSummit, wonders, countries, themes } = offTheClock;
+  const { title, thesis, wonders, countries, themes } = offTheClock;
   const [adventures, ...otherThemes] = themes;
 
   return (
@@ -26,20 +26,6 @@ export function OffTheClockPage() {
         <div className="container page-hero__inner">
           <h1 className="page-hero__title">{title}</h1>
           <p className="page-hero__thesis">{thesis}</p>
-          <dl className="stats">
-            <div className="stats__item">
-              <dt className="stats__label">countries visited</dt>
-              <dd className="stats__number">{countryCount}</dd>
-            </div>
-            <div className="stats__item">
-              <dt className="stats__label">highest summit · {highestSummit.name}</dt>
-              <dd className="stats__number">{highestSummit.metres}</dd>
-            </div>
-            <div className="stats__item">
-              <dt className="stats__label">of {wonders.length} wonders seen</dt>
-              <dd className="stats__number">{wondersSeen}</dd>
-            </div>
-          </dl>
         </div>
       </header>
 
@@ -85,6 +71,7 @@ export function OffTheClockPage() {
 
         {otherThemes.map((theme) => (
           <Section key={theme.id} id={theme.id} title={theme.title} icon={theme.icon}>
+            {theme.intro && <p className="gallery__intro">{theme.intro}</p>}
             <PhotoGrid photos={theme.photos} variant="full" />
           </Section>
         ))}

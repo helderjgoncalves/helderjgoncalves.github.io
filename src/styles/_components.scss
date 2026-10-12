@@ -374,41 +374,6 @@
 }
 
 // ---- Off the clock ----
-// Glass tiles on the blue hero: white alpha for the same reason as
-// hero-button, but not interactive, so no hover. The number reads first while
-// the label stays the <dt>, hence column-reverse.
-.stats {
-  display: grid;
-  gap: 0.75rem;
-  margin: 1.75rem 0 0;
-
-  @include sm-up { grid-template-columns: repeat(3, 1fr); }
-
-  &__item {
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: flex-end;
-    gap: 0.35rem;
-    padding: 1rem 1.1rem;
-    border: 1px solid rgba($white, 0.22);
-    border-radius: $radius-lg;
-    background: rgba($white, 0.1);
-  }
-
-  &__number {
-    margin: 0;
-    font-size: clamp(2rem, 6vw, $fs-3xl);
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: -0.02em;
-  }
-
-  &__label {
-    font-size: $fs-sm;
-    color: rgba($white, 0.82);
-  }
-}
-
 .wonders {
   list-style: none;
   margin: 1.25rem 0 0;
@@ -506,6 +471,12 @@
 
   @include md-up { gap: 0.9rem; }
 
+  &__intro {
+    margin-bottom: 1rem;
+    color: $color-text-soft;
+    line-height: 1.6;
+  }
+
   &--glance {
     @include md-up { grid-template-columns: repeat(4, 1fr); }
   }
@@ -554,15 +525,6 @@
       font-size: $fs-sm;
       padding: 2.5rem 0.95rem 0.8rem;
     }
-  }
-
-  &__stat {
-    font-size: $fs-lg;
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.01em;
-
-    @include md-up { font-size: $fs-xl; }
   }
 
   &__title { font-weight: 600; }

@@ -10,10 +10,10 @@ export const frontDoor = {
   meta: {
     title: 'Hélder Gonçalves — Lead Software Engineer',
     description:
-      'Lead Software Engineer on developer tools at OutSystems. Curriculum vitae, a home-lab case study, and life off the clock across 26 countries.',
+      'Lead Software Engineer on developer tools at OutSystems. Curriculum vitae, a home-lab case study, and photos from travel and adventures.',
   },
   intro:
-    'I build developer tools at OutSystems, used every day by thousands of engineers. Off the clock I go far and high: 26 countries so far, a 6,088 m summit, and four of the seven wonders.',
+    'I build developer tools at OutSystems, used every day by thousands of engineers. Off the clock I travel, climb and ride whenever I can.',
   doors: [
     {
       eyebrow: 'Work',
@@ -32,7 +32,7 @@ export const frontDoor = {
     {
       eyebrow: 'Outside work',
       title: 'Off the clock',
-      line: '26 countries, a 6,088 m summit above La Paz, an erupting volcano, and 4 of the 7 wonders so far.',
+      line: 'Travel, adventures and two wheels — a few photos from the road.',
       href: '/off-the-clock/',
       cta: 'See the photos',
     },
