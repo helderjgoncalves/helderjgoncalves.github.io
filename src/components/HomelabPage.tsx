@@ -2,9 +2,8 @@ import type { ReactNode } from 'react';
 import { homelab } from '../data/homelab';
 import { HomelabArchitecture } from './HomelabArchitecture';
 import { Icon, type IconName } from './Icon';
-import { CvDownload } from './CvDownload';
-import { ThemeToggle } from './ThemeToggle';
 import { Footer } from './Footer';
+import { SiteNav } from './SiteNav';
 import { useReveal } from '../hooks/useReveal';
 
 function RevealSection({
@@ -37,15 +36,7 @@ export function HomelabPage() {
 
   return (
     <>
-      <nav className="nav" aria-label="Site navigation">
-        <div className="container nav__inner">
-          <a href="/" className="nav__brand" aria-label="Back home">
-            HG.
-          </a>
-          <CvDownload />
-          <ThemeToggle />
-        </div>
-      </nav>
+      <SiteNav current="/homelab/" />
 
       <header className="page-hero">
         <div className="container page-hero__inner">

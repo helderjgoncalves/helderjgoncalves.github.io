@@ -1,10 +1,9 @@
 import { offTheClock, wondersSeen } from '../data/offTheClock';
-import { CvDownload } from './CvDownload';
 import { Footer } from './Footer';
 import { Icon } from './Icon';
 import { PhotoGrid } from './PhotoGrid';
 import { Section } from './Section';
-import { ThemeToggle } from './ThemeToggle';
+import { SiteNav } from './SiteNav';
 
 export function OffTheClockPage() {
   const { title, thesis, wonders, countries, themes } = offTheClock;
@@ -12,15 +11,7 @@ export function OffTheClockPage() {
 
   return (
     <>
-      <nav className="nav" aria-label="Site navigation">
-        <div className="container nav__inner">
-          <a href="/" className="nav__brand" aria-label="Back home">
-            HG.
-          </a>
-          <CvDownload />
-          <ThemeToggle />
-        </div>
-      </nav>
+      <SiteNav current="/off-the-clock/" />
 
       <header className="page-hero">
         <div className="container page-hero__inner">

@@ -66,7 +66,8 @@
       transition: color $dur-fast $ease;
       padding: 0.4rem 0;
 
-      &:hover { color: $color-accent; }
+      &:hover,
+      &[aria-current='page'] { color: $color-accent; }
     }
   }
 }
@@ -81,9 +82,9 @@
 // The auto left margin lives here (rather than on .theme-toggle) because
 // .nav__cv is the first nav item after the (hidden-on-mobile) links list,
 // so it owns pushing the trailing items to the right edge. It has to stay auto
-// at every width: on the CV page the flexible links list eats the free space
-// from md up, but the homelab nav has no links list, so the margin is the only
-// thing keeping the trailing pair off the brand.
+// at every width: from md up the flexible links list eats the free space, but
+// below md the list is hidden, so the margin is the only thing keeping the
+// trailing pair off the brand.
 .nav__cv {
   margin-left: auto;
   display: inline-flex;
@@ -123,7 +124,7 @@
 
 // ---- Theme toggle (sits in the nav) ----
 .theme-toggle {
-  // Push to the right edge when there is no .nav__cv ahead of it (e.g. Homelab).
+  // Push to the right edge when there is no .nav__cv ahead of it.
   margin-left: auto;
 
   // Two auto margins would share the free space and strand .nav__cv mid-nav,
