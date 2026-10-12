@@ -13,7 +13,7 @@ export const frontDoor = {
       'Lead Software Engineer on developer tools at OutSystems. Curriculum vitae, a home-lab case study, and life off the clock across 26 countries.',
   },
   intro:
-    'I build developer tools at OutSystems — ten years on one IDE, now bringing Mentor, its agentic AI, into ODC Studio. Away from work I travel: 26 countries so far, the higher and colder the better.',
+    'I build developer tools at OutSystems, used every day by thousands of engineers. Off the clock I go far and high: 26 countries so far, a 6,088 m summit, and four of the seven wonders.',
   doors: [
     {
       eyebrow: 'Work',
@@ -32,7 +32,7 @@ export const frontDoor = {
     {
       eyebrow: 'Outside work',
       title: 'Off the clock',
-      line: 'Travel, mountains and two wheels: 26 countries so far, and 4 of the 7 wonders of the world.',
+      line: '26 countries, a 6,088 m summit above La Paz, an erupting volcano, and 4 of the 7 wonders so far.',
       href: '/off-the-clock/',
       cta: 'See the photos',
     },

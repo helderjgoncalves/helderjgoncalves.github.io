@@ -27,7 +27,11 @@ export function PhotoGrid({ photos, variant }: PhotoGridProps) {
               decoding="async"
               style={photo.focus ? { objectPosition: photo.focus } : undefined}
             />
-            <figcaption className="gallery__caption">{photo.caption}</figcaption>
+            <figcaption className="gallery__caption">
+              {photo.stat && <span className="gallery__stat">{photo.stat}</span>}
+              <span className="gallery__title">{photo.caption}</span>
+              {photo.place && <span className="gallery__place">{photo.place}</span>}
+            </figcaption>
           </figure>
         </li>
       ))}

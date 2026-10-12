@@ -4,6 +4,10 @@ export interface Photo {
   src: string;
   alt: string;
   caption: string;
+  /** Headline figure shown above the caption, e.g. an altitude. */
+  stat?: string;
+  /** Where it was, shown under the caption. */
+  place?: string;
   width: number;
   height: number;
   /** Landscape shots span two grid columns on the full page. */
@@ -29,6 +33,7 @@ export interface OffTheClockPageData {
   title: string;
   thesis: string;
   countryCount: number;
+  highestSummit: { metres: string; name: string };
   /** The New Seven Wonders of the World — the collection goal. */
   wonders: Wonder[];
   /** Country names, shown as tags once filled in. Hidden while empty. */
@@ -47,9 +52,9 @@ export interface OffTheClockPageData {
 
 export const offTheClock: OffTheClockPageData = {
   title: 'Off the clock',
-  thesis:
-    'Travel, mountains and two wheels — happiest somewhere high, cold or a long way from a desk.',
+  thesis: 'From a 6,088 m summit above La Paz to an erupting volcano at night.',
   countryCount: 26,
+  highestSummit: { metres: '6,088 m', name: 'Huayna Potosí' },
   wonders: [
     { name: 'Machu Picchu', place: 'Peru', seen: true },
     { name: 'Chichén Itzá', place: 'Mexico', seen: true },
@@ -62,14 +67,16 @@ export const offTheClock: OffTheClockPageData = {
   countries: [],
   themes: [
     {
-      id: 'mountains',
-      title: 'Mountains',
+      id: 'adventures',
+      title: 'Adventures',
       icon: 'mountain',
       photos: [
         {
           src: '/photos/summit-night.jpg',
-          alt: 'Standing on a snowy summit at night in crampons and a helmet, city lights far below',
-          caption: 'Summit, before dawn',
+          alt: 'On the snowy summit of Huayna Potosí at night in crampons and a helmet, the lights of La Paz far below',
+          caption: 'Huayna Potosí summit, before dawn',
+          stat: '6,088 m',
+          place: 'Bolivia · La Paz lit up below',
           width: 800,
           height: 600,
           wide: true,
@@ -77,22 +84,26 @@ export const offTheClock: OffTheClockPageData = {
         },
         {
           src: '/photos/above-the-clouds.jpg',
-          alt: 'Sunrise over a sea of clouds, seen from a snow ridge',
-          caption: 'Above the clouds',
+          alt: 'Sunrise over a sea of clouds from the snow ridge of Huayna Potosí',
+          caption: 'Sunrise from the top',
+          stat: '6,088 m',
+          place: 'Huayna Potosí, Bolivia',
           width: 600,
           height: 800,
         },
         {
           src: '/photos/volcano.jpg',
-          alt: 'A volcano erupting at night, lava running down its flanks under the stars',
-          caption: 'A volcano, awake',
+          alt: 'Volcán de Fuego erupting at night, lava running down its flanks under the stars',
+          caption: 'Volcán de Fuego, erupting',
+          stat: '≈4,000 m',
+          place: 'Guatemala',
           width: 600,
           height: 800,
         },
         {
           src: '/photos/glacier.jpg',
-          alt: 'The blue-white front of a glacier meeting a grey-green lake',
-          caption: 'Glacier front',
+          alt: 'The blue-white front of a vast glacier meeting a grey-green lake',
+          caption: 'One of the world’s great glaciers',
           width: 600,
           height: 800,
         },
@@ -151,7 +162,7 @@ export const offTheClock: OffTheClockPageData = {
   meta: {
     title: 'Off the clock · Hélder Gonçalves',
     description:
-      'Travel, mountains and two wheels: 26 countries, summits before sunrise, glaciers, salt flats and a volcano at night — the off-the-clock side of a software engineer.',
+      'Adventure and travel across 26 countries: the 6,088 m summit of Huayna Potosí, Volcán de Fuego erupting at night, and 4 of the 7 wonders of the world.',
     canonical: 'https://hgoncalves.uk/off-the-clock/',
     image: 'https://hgoncalves.uk/og-off-the-clock.jpg',
   },

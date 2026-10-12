@@ -7,7 +7,8 @@ import { Section } from './Section';
 import { ThemeToggle } from './ThemeToggle';
 
 export function OffTheClockPage() {
-  const { title, thesis, countryCount, wonders, countries, themes } = offTheClock;
+  const { title, thesis, countryCount, highestSummit, wonders, countries, themes } = offTheClock;
+  const [adventures, ...otherThemes] = themes;
 
   return (
     <>
@@ -23,13 +24,16 @@ export function OffTheClockPage() {
 
       <header className="page-hero">
         <div className="container page-hero__inner">
-          <p className="page-hero__eyebrow">Outside work</p>
           <h1 className="page-hero__title">{title}</h1>
           <p className="page-hero__thesis">{thesis}</p>
           <dl className="stats">
             <div className="stats__item">
               <dt className="stats__label">countries visited</dt>
               <dd className="stats__number">{countryCount}</dd>
+            </div>
+            <div className="stats__item">
+              <dt className="stats__label">highest summit · {highestSummit.name}</dt>
+              <dd className="stats__number">{highestSummit.metres}</dd>
             </div>
             <div className="stats__item">
               <dt className="stats__label">of {wonders.length} wonders seen</dt>
@@ -40,6 +44,10 @@ export function OffTheClockPage() {
       </header>
 
       <main>
+        <Section id={adventures.id} title={adventures.title} icon={adventures.icon}>
+          <PhotoGrid photos={adventures.photos} variant="full" />
+        </Section>
+
         <Section id="wonders" title="Wonders of the World" icon="star">
           <p className="wonders__intro">
             The goal: all seven of the New Seven Wonders. {wondersSeen} down,{' '}
@@ -75,7 +83,7 @@ export function OffTheClockPage() {
           </ul>
         </Section>
 
-        {themes.map((theme) => (
+        {otherThemes.map((theme) => (
           <Section key={theme.id} id={theme.id} title={theme.title} icon={theme.icon}>
             <PhotoGrid photos={theme.photos} variant="full" />
           </Section>

@@ -216,10 +216,11 @@
   @include md-up { padding-top: 2.5rem; }
 
   &__intro {
-    max-width: 46rem;
     font-size: $fs-md;
-    line-height: 1.65;
+    line-height: 1.6;
     color: $color-text-soft;
+
+    @include md-up { font-size: $fs-lg; }
   }
 }
 
@@ -373,31 +374,37 @@
 }
 
 // ---- Off the clock ----
-// Number reads first, but the label is the <dt>, so the row is reversed.
+// Glass tiles on the blue hero: white alpha for the same reason as
+// hero-button, but not interactive, so no hover. The number reads first while
+// the label stays the <dt>, hence column-reverse.
 .stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 2.5rem;
-  margin: 1.5rem 0 0;
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.75rem 0 0;
+
+  @include sm-up { grid-template-columns: repeat(3, 1fr); }
 
   &__item {
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: column-reverse;
     justify-content: flex-end;
-    align-items: baseline;
-    gap: 0.6rem;
+    gap: 0.35rem;
+    padding: 1rem 1.1rem;
+    border: 1px solid rgba($white, 0.22);
+    border-radius: $radius-lg;
+    background: rgba($white, 0.1);
   }
 
   &__number {
     margin: 0;
-    font-size: $fs-3xl;
+    font-size: clamp(2rem, 6vw, $fs-3xl);
     font-weight: 800;
     line-height: 1;
     letter-spacing: -0.02em;
   }
 
   &__label {
-    font-size: $fs-md;
+    font-size: $fs-sm;
     color: rgba($white, 0.82);
   }
 }
@@ -536,16 +543,33 @@
   &__caption {
     position: absolute;
     inset: auto 0 0 0;
-    padding: 1.5rem 0.75rem 0.6rem;
+    display: grid;
+    gap: 0.1rem;
+    padding: 2rem 0.75rem 0.65rem;
     font-size: $fs-xs;
-    font-weight: 600;
     color: $white;
-    background: linear-gradient(180deg, transparent, rgba($ink-900, 0.7));
+    background: linear-gradient(180deg, transparent, rgba($ink-900, 0.78));
 
     @include md-up {
       font-size: $fs-sm;
-      padding: 2rem 0.9rem 0.75rem;
+      padding: 2.5rem 0.95rem 0.8rem;
     }
+  }
+
+  &__stat {
+    font-size: $fs-lg;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+
+    @include md-up { font-size: $fs-xl; }
+  }
+
+  &__title { font-weight: 600; }
+
+  &__place {
+    font-size: $fs-xs;
+    color: rgba($white, 0.78);
   }
 }
 
