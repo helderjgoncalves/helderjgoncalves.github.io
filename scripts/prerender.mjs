@@ -23,7 +23,9 @@ const ROOT_PLACEHOLDER = '<div id="root"></div>';
 const SITE = 'https://hgoncalves.uk';
 const PERSON_ID = `${SITE}/#person`;
 
-const { render, homelab, travel, frontDoor } = await import(pathToFileURL(ssrEntry).href);
+const { render, homelab, offTheClock, allPhotos, frontDoor } = await import(
+  pathToFileURL(ssrEntry).href
+);
 
 /**
  * Last commit date touching any of `paths`, as an ISO string. Falls back to the
@@ -157,27 +159,28 @@ function profileJsonLd() {
 }
 
 /**
- * Structured data for the travel page: a photo gallery by the same Person the
- * other pages describe. Copy comes from src/data/travel.ts.
+ * Structured data for the off-the-clock page: a photo gallery by the same
+ * Person the other pages describe. Copy comes from src/data/offTheClock.ts.
  *
  * @param {string} dateModified
  */
-function travelJsonLd(dateModified) {
-  const url = travel.meta.canonical;
+function offTheClockJsonLd(dateModified) {
+  const page = offTheClock;
+  const url = page.meta.canonical;
   return {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'ImageGallery',
         '@id': `${url}#gallery`,
-        name: travel.meta.title,
-        description: travel.meta.description,
+        name: page.meta.title,
+        description: page.meta.description,
         url,
-        image: travel.meta.image,
+        image: page.meta.image,
         dateModified,
         inLanguage: 'en-GB',
         author: { '@id': PERSON_ID },
-        associatedMedia: travel.photos.map((photo) => ({
+        associatedMedia: allPhotos.map((photo) => ({
           '@type': 'ImageObject',
           contentUrl: `${SITE}${photo.src}`,
           caption: photo.caption,
@@ -190,7 +193,7 @@ function travelJsonLd(dateModified) {
         '@id': `${url}#breadcrumb`,
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE}/` },
-          { '@type': 'ListItem', position: 2, name: travel.title, item: url },
+          { '@type': 'ListItem', position: 2, name: page.title, item: url },
         ],
       },
     ],
@@ -272,21 +275,21 @@ const pages = [
     jsonLd: 'homelab',
   },
   {
-    path: '/travel',
-    out: path.join('travel', 'index.html'),
-    title: travel.meta.title,
-    description: travel.meta.description,
-    canonical: travel.meta.canonical,
+    path: '/off-the-clock',
+    out: path.join('off-the-clock', 'index.html'),
+    title: offTheClock.meta.title,
+    description: offTheClock.meta.description,
+    canonical: offTheClock.meta.canonical,
     ogType: 'website',
-    image: travel.meta.image,
+    image: offTheClock.meta.image,
     imageAlt: 'Standing on a snowy summit at night, city lights far below',
     sources: [
-      'src/data/travel.ts',
-      'src/components/TravelPage.tsx',
-      'src/components/TravelPhotos.tsx',
+      'src/data/offTheClock.ts',
+      'src/components/OffTheClockPage.tsx',
+      'src/components/PhotoGrid.tsx',
       'public/photos',
     ],
-    jsonLd: 'travel',
+    jsonLd: 'offTheClock',
   },
 ];
 
@@ -420,7 +423,7 @@ function applyMeta(html, meta, dateModified) {
       home: homeJsonLd,
       profile: profileJsonLd,
       homelab: homelabJsonLd,
-      travel: travelJsonLd,
+      offTheClock: offTheClockJsonLd,
     };
     const data = JSON.stringify(builders[meta.jsonLd](dateModified), null, 2);
     const script = `\n    <script type="application/ld+json">\n${data}\n    </script>`;

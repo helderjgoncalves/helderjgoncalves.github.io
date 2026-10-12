@@ -237,6 +237,7 @@
 
 .door {
   @include card;
+  @include card-link;
   display: flex;
   flex-direction: column;
   padding: 1.35rem 1.25rem 1.25rem;
@@ -263,15 +264,19 @@
     line-height: 1.6;
   }
 
-  &__link {
+  // Looks like an action link but is a span: the whole card is the anchor.
+  &__cta {
     @include action-link;
     @include action-link-primary;
     align-self: flex-start;
     margin-top: 1.1rem;
   }
+
+  &:hover &__cta,
+  &:focus-visible &__cta { border-color: $color-accent; }
 }
 
-// ---- Sub-page hero (home lab, travel) ----
+// ---- Sub-page hero (home lab, off the clock) ----
 .page-hero {
   position: relative;
   padding: 2.5rem 0 3rem;
@@ -367,14 +372,24 @@
   }
 }
 
-// ---- Travel ----
-.travel-count {
+// ---- Off the clock ----
+// Number reads first, but the label is the <dt>, so the row is reversed.
+.stats {
   display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
-  margin-top: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.75rem 2.5rem;
+  margin: 1.5rem 0 0;
+
+  &__item {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
 
   &__number {
+    margin: 0;
     font-size: $fs-3xl;
     font-weight: 800;
     line-height: 1;
@@ -387,7 +402,86 @@
   }
 }
 
-.travel-countries {
+.wonders {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+
+  @include sm-up { grid-template-columns: repeat(2, 1fr); }
+  @include md-up { grid-template-columns: repeat(4, 1fr); }
+
+  &__intro {
+    color: $color-text-soft;
+    line-height: 1.6;
+  }
+
+  &__bar {
+    height: 8px;
+    margin-top: 0.9rem;
+    border-radius: $radius-pill;
+    background: $color-rule;
+    overflow: hidden;
+
+    span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: $color-accent;
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.8rem 0.9rem;
+    border: 1px dashed $color-rule;
+    border-radius: $radius-md;
+    color: $color-text-muted;
+
+    &--seen {
+      @include card;
+      border: 1px solid transparent;
+      color: $color-text;
+    }
+  }
+
+  &__mark {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1.5px dashed $color-rule;
+
+    .wonders__item--seen & {
+      border: 0;
+      background: $color-accent;
+      color: $color-pill-text;
+    }
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  &__name {
+    display: block;
+    font-weight: 600;
+  }
+
+  &__place {
+    display: block;
+    font-size: $fs-xs;
+    color: $color-text-muted;
+  }
+}
+
+.country-list {
   list-style: none;
   margin: 0;
   padding: 0;

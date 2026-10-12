@@ -4,12 +4,12 @@ import { CvDownload } from './CvDownload';
 import { Footer } from './Footer';
 import { Hero } from './Hero';
 import { ThemeToggle } from './ThemeToggle';
-import { TravelGlance } from './TravelGlance';
+import { OffTheClockGlance } from './OffTheClockGlance';
 
 const LINKS = [
   { href: '/cv/', label: 'Curriculum vitae' },
   { href: '/homelab/', label: 'Home lab' },
-  { href: '/travel/', label: 'Travel' },
+  { href: '/off-the-clock/', label: 'Off the clock' },
 ];
 
 export function FrontDoor() {
@@ -39,19 +39,17 @@ export function FrontDoor() {
           <p className="front__intro">{frontDoor.intro}</p>
           <div className="doors">
             {frontDoor.doors.map((door) => (
-              <article key={door.href} className="door">
-                <p className="door__eyebrow">{door.eyebrow}</p>
+              <a key={door.href} className="door" href={door.href}>
+                <span className="door__eyebrow">{door.eyebrow}</span>
                 <h2 className="door__title">{door.title}</h2>
-                <p className="door__line">{door.line}</p>
-                <a className="door__link" href={door.href}>
-                  {door.cta}
-                </a>
-              </article>
+                <span className="door__line">{door.line}</span>
+                <span className="door__cta">{door.cta}</span>
+              </a>
             ))}
           </div>
         </div>
 
-        <TravelGlance />
+        <OffTheClockGlance />
       </main>
 
       <Footer />

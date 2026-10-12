@@ -1,0 +1,100 @@
+import { offTheClock, wondersSeen } from '../data/offTheClock';
+import { CvDownload } from './CvDownload';
+import { Footer } from './Footer';
+import { Icon } from './Icon';
+import { PhotoGrid } from './PhotoGrid';
+import { Section } from './Section';
+import { ThemeToggle } from './ThemeToggle';
+
+export function OffTheClockPage() {
+  const { title, thesis, countryCount, wonders, countries, themes } = offTheClock;
+
+  return (
+    <>
+      <nav className="nav" aria-label="Site navigation">
+        <div className="container nav__inner">
+          <a href="/" className="nav__brand" aria-label="Back home">
+            HG.
+          </a>
+          <CvDownload />
+          <ThemeToggle />
+        </div>
+      </nav>
+
+      <header className="page-hero">
+        <div className="container page-hero__inner">
+          <p className="page-hero__eyebrow">Outside work</p>
+          <h1 className="page-hero__title">{title}</h1>
+          <p className="page-hero__thesis">{thesis}</p>
+          <dl className="stats">
+            <div className="stats__item">
+              <dt className="stats__label">countries visited</dt>
+              <dd className="stats__number">{countryCount}</dd>
+            </div>
+            <div className="stats__item">
+              <dt className="stats__label">of {wonders.length} wonders seen</dt>
+              <dd className="stats__number">{wondersSeen}</dd>
+            </div>
+          </dl>
+        </div>
+      </header>
+
+      <main>
+        <Section id="wonders" title="Wonders of the World" icon="star">
+          <p className="wonders__intro">
+            The goal: all seven of the New Seven Wonders. {wondersSeen} down,{' '}
+            {wonders.length - wondersSeen} to go.
+          </p>
+          <div
+            className="wonders__bar"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={wonders.length}
+            aria-valuenow={wondersSeen}
+            aria-label="Wonders seen"
+          >
+            <span style={{ width: `${(wondersSeen / wonders.length) * 100}%` }} />
+          </div>
+          <ul className="wonders">
+            {wonders.map((wonder) => (
+              <li
+                key={wonder.name}
+                className={wonder.seen ? 'wonders__item wonders__item--seen' : 'wonders__item'}
+              >
+                <span className="wonders__mark" aria-hidden="true">
+                  {wonder.seen && <Icon name="check" />}
+                </span>
+                <span>
+                  <span className="wonders__name">{wonder.name}</span>
+                  <span className="wonders__place">
+                    {wonder.place} · {wonder.seen ? 'seen' : 'still to go'}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        {themes.map((theme) => (
+          <Section key={theme.id} id={theme.id} title={theme.title} icon={theme.icon}>
+            <PhotoGrid photos={theme.photos} variant="full" />
+          </Section>
+        ))}
+
+        {countries.length > 0 && (
+          <Section id="countries" title="Countries" icon="star">
+            <ul className="pills country-list">
+              {countries.map((country) => (
+                <li key={country} className="pill pill--ghost">
+                  {country}
+                </li>
+              ))}
+            </ul>
+          </Section>
+        )}
+      </main>
+
+      <Footer />
+    </>
+  );
+}

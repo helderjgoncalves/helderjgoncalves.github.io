@@ -10,7 +10,7 @@ import { Languages } from './components/Languages';
 import { Certifications } from './components/Certifications';
 import { LeadershipAwards } from './components/LeadershipAwards';
 import { HomelabPage } from './components/HomelabPage';
-import { TravelPage } from './components/TravelPage';
+import { OffTheClockPage } from './components/OffTheClockPage';
 import { FrontDoor } from './components/FrontDoor';
 import { Footer } from './components/Footer';
 
@@ -24,8 +24,8 @@ export function isHomelabPath(path: string): boolean {
   return normalizePath(path) === '/homelab';
 }
 
-export function isTravelPath(path: string): boolean {
-  return normalizePath(path) === '/travel';
+export function isOffTheClockPath(path: string): boolean {
+  return normalizePath(path) === '/off-the-clock';
 }
 
 export function isCvPath(path: string): boolean {
@@ -67,8 +67,8 @@ export default function App({ path }: AppProps) {
     return <HomelabPage />;
   }
 
-  if (isTravelPath(pathname)) {
-    return <TravelPage />;
+  if (isOffTheClockPath(pathname)) {
+    return <OffTheClockPage />;
   }
 
   if (isCvPath(pathname)) {

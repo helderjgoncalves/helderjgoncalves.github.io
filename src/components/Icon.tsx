@@ -15,7 +15,10 @@ export type IconName =
   | 'badge'
   | 'user'
   | 'languages'
-  | 'download';
+  | 'download'
+  | 'mountain'
+  | 'motorbike'
+  | 'check';
 
 interface IconProps extends SVGProps<SVGSVGElement> {
   name: IconName;
@@ -99,6 +102,20 @@ const PATHS: Record<IconName, JSX.Element> = {
       <path d="M12 4v11" />
       <path d="M7 11l5 5 5-5" />
       <path d="M5 20h14" />
+    </>
+  ),
+  mountain: (
+    <>
+      <path d="M2 20l7-12 4 6 2.5-3.5L22 20z" />
+      <path d="M7.2 11l1.8-3 1.8 2.7" />
+    </>
+  ),
+  check: <path d="M5 12.5l4.5 4.5L19 7.5" />,
+  motorbike: (
+    <>
+      <circle cx="5" cy="16" r="3.5" />
+      <circle cx="19" cy="16" r="3.5" />
+      <path d="M5 16l4-6h5.5l4.5 6M14.5 10l1.5-4h2.5M9 10l-1.5-3H5" />
     </>
   ),
 };

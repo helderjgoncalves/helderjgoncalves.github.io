@@ -1,12 +1,12 @@
-import type { TravelPhoto } from '../data/travel';
+import type { Photo } from '../data/offTheClock';
 
-interface TravelPhotosProps {
-  photos: TravelPhoto[];
-  /** The CV preview is a single row; the travel page lets landscapes span two columns. */
+interface PhotoGridProps {
+  photos: Photo[];
+  /** The front-page preview is a single row; the full page lets landscapes span two columns. */
   variant: 'glance' | 'full';
 }
 
-export function TravelPhotos({ photos, variant }: TravelPhotosProps) {
+export function PhotoGrid({ photos, variant }: PhotoGridProps) {
   return (
     <ul className={`gallery gallery--${variant}`}>
       {photos.map((photo) => (

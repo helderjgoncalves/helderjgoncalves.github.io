@@ -90,6 +90,31 @@
   &:active { transform: scale(0.97); }
 }
 
+// A whole card that is one link — the front page's doors. The surface is the
+// target, so the affordance is the card itself lifting; the action line inside
+// picks up the action-link hover colour via the caller. Motion is dropped for
+// reduced-motion users, the shadow change alone still signals hover.
+@mixin card-link {
+  color: inherit;
+  text-decoration: none;
+  transition: transform $dur-med $ease, box-shadow $dur-med $ease;
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: $shadow-hover;
+  }
+
+  &:active { transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: box-shadow $dur-med $ease;
+
+    &:hover,
+    &:focus-visible { transform: none; }
+  }
+}
+
 // Glass buttons sitting on a hero — contact chips on the home page, CTAs on the
 // homelab case study. White alpha rather than accent tokens because both heroes
 // keep their brand blue across themes, so a themed accent would sink into it.

@@ -10,7 +10,7 @@ export const frontDoor = {
   meta: {
     title: 'Hélder Gonçalves — Lead Software Engineer',
     description:
-      'Lead Software Engineer on developer tools at OutSystems. Curriculum vitae, a home-lab case study, and photos from 26 countries of travel.',
+      'Lead Software Engineer on developer tools at OutSystems. Curriculum vitae, a home-lab case study, and life off the clock across 26 countries.',
   },
   intro:
     'I build developer tools at OutSystems — ten years on one IDE, now bringing Mentor, its agentic AI, into ODC Studio. Away from work I travel: 26 countries so far, the higher and colder the better.',
@@ -30,10 +30,10 @@ export const frontDoor = {
       cta: 'View case study',
     },
     {
-      eyebrow: 'Off the clock',
-      title: 'Travel',
-      line: '26 countries so far: summits before sunrise, glaciers, salt flats and a volcano at night.',
-      href: '/travel/',
+      eyebrow: 'Outside work',
+      title: 'Off the clock',
+      line: 'Travel, mountains and two wheels: 26 countries so far, and 4 of the 7 wonders of the world.',
+      href: '/off-the-clock/',
       cta: 'See the photos',
     },
   ] satisfies FrontDoorLink[],

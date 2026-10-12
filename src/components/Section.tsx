@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
-import { Icon } from './Icon';
+import { Icon, type IconName } from './Icon';
 import { useReveal } from '../hooks/useReveal';
 
 interface SectionProps {
   id: string;
   title: string;
-  icon: 'briefcase' | 'graduationCap' | 'lab' | 'code' | 'star' | 'badge' | 'user' | 'languages' | 'globe';
+  icon: IconName;
   children: ReactNode;
 }
 

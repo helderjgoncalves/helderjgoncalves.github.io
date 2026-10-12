@@ -131,7 +131,7 @@ added for an asset that changes a few times a year. The card copy duplicates a
 little of `cv.ts` / `homelab.ts` by necessity — when a name, role, or thesis
 changes there, update the template and re-run `npm run cards`.
 
-`public/og-travel.jpg` is the exception: a 1200×630 crop of a photo rather than
+`public/og-off-the-clock.jpg` is the exception: a 1200×630 crop of a photo rather than
 a rendered template. Photos under `public/photos/` are resized for display and
 stripped of all metadata except the colour profile before they are committed
 (`exiftool -all= -tagsfromfile @ -icc_profile`), so no GPS or camera data ships.
@@ -170,7 +170,7 @@ Conventions:
 
 ### Interaction vocabulary
 
-Every interactive element belongs to one of five named families, each a mixin
+Every interactive element belongs to one of six named families, each a mixin
 in `_mixins.scss`. **Never invent a sixth at the call site** — that is how the
 same affordance ended up with three different hover states across two pages.
 Reach for the mixin; if nothing fits, add a family here and document why.
@@ -182,6 +182,11 @@ Reach for the mixin; if nothing fits, add a family here and document why.
 | Nav control | `nav-control` | `.nav__cv`, `.theme-toggle` | accent tint deepens, border firms, press scales |
 | Hero button | `hero-button` | `.hero__contact`, `.homelab-cta` | white glass brightens, lifts 1px |
 | Nav link | — (`.nav__links a`) | in-nav section links | soft → accent |
+| Card link | `card-link` | `.door` (front-page cards) | card lifts 2px, shadow deepens, inner action line turns accent |
+
+`card-link` exists because the front-page doors are whole-surface targets: a
+lone underlined link inside a card left most of the card dead to clicks. Its
+action line is a `<span>` styled with `action-link`, never a nested `<a>`.
 
 The families own *interaction*, not geometry: callers keep their own size,
 padding, radius, and resting colour. Two rules that follow from that:
