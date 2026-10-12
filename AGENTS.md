@@ -81,12 +81,16 @@ Don't break that branching when editing `main.tsx`.
 
 ```
 src/
-  App.tsx                 # composes Nav + Hero + section components
+  App.tsx                 # routes: / front page, /cv/, /homelab/, /off-the-clock/
   main.tsx                # client entry; hydrate-or-render based on root contents
   entry-server.tsx        # SSR entry; renderToString(<App />)
   types.ts                # CvData and related interfaces
-  data/cv.ts              # ALL CV content lives here
-  components/             # one component per CV section + Nav, Hero, Pill, Icon, Section, ThemeToggle
+  data/cv.ts              # CV content (the /cv/ page and the front page hero)
+  data/frontDoor.ts       # front page intro, door cards and meta
+  data/homelab.ts         # home-lab case study
+  data/offTheClock.ts     # photos, captions, wonders and meta for /off-the-clock/
+  components/             # one component per CV section + page components (FrontDoor,
+                          # HomelabPage, OffTheClockPage), PhotoGrid, Nav, Hero, Icon, Section…
   hooks/useReveal.ts      # IntersectionObserver scroll-reveal
   styles/                 # SASS partials (see below)
   vite-env.d.ts
@@ -104,9 +108,16 @@ vite.config.ts            # base = '/' (user/org GitHub Pages site)
 ## Editing content
 
 **All CV copy lives in `src/data/cv.ts`** as a single typed `CvData` object.
-To update a bullet, tag, role, award, etc., edit only that file. The
+To update a bullet, tag, role, award, etc., edit only that file. Each other
+page has its own data file in `src/data/` (see the layout above). The
 components in `src/components/` are presentation-only and shouldn't carry
 hard-coded copy.
+
+Photo captions on Off the clock follow one format: `caption` is the place's
+proper name, `place` is `Country · one short detail`. Omit `place` rather than
+fill it with something else. `PhotoGrid` stretches a stranded last photo across
+both columns on phones, so any count works, but desktop (three columns) reads
+best when each section fills its rows — a `wide` photo counts as two.
 
 The shape is defined in `src/types.ts` — the compiler will catch missing
 fields when adding new entries. If you genuinely need a new field, update

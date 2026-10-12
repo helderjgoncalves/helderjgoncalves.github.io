@@ -4,9 +4,11 @@ interface PhotoGridProps {
   photos: Photo[];
   /** The front-page preview is a single row; the full page lets landscapes span two columns. */
   variant: 'glance' | 'full';
+  /** Load the first photo eagerly — set where the grid sits above the fold. */
+  eager?: boolean;
 }
 
-export function PhotoGrid({ photos, variant }: PhotoGridProps) {
+export function PhotoGrid({ photos, variant, eager = false }: PhotoGridProps) {
   const isWide = (photo: Photo) => variant === 'full' && Boolean(photo.wide);
   // Phones show two columns, so an odd cell count strands the last photo alone on its row.
   const cells = photos.reduce((sum, photo) => sum + (isWide(photo) ? 2 : 1), 0);
@@ -28,7 +30,8 @@ export function PhotoGrid({ photos, variant }: PhotoGridProps) {
                 alt={photo.alt}
                 width={photo.width}
                 height={photo.height}
-                loading="lazy"
+                loading={eager && index === 0 ? 'eager' : 'lazy'}
+                fetchPriority={eager && index === 0 ? 'high' : undefined}
                 decoding="async"
                 style={photo.focus ? { objectPosition: photo.focus } : undefined}
               />

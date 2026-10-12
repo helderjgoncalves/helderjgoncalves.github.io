@@ -31,7 +31,7 @@ export function OffTheClockPage() {
 
       <main>
         <Section id={adventures.id} title={adventures.title} icon={adventures.icon}>
-          <PhotoGrid photos={adventures.photos} variant="full" />
+          <PhotoGrid photos={adventures.photos} variant="full" eager />
         </Section>
 
         <Section id="wonders" title="Wonders of the World" icon="star">

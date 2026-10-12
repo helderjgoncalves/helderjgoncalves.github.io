@@ -35,7 +35,10 @@ npm run cards        # re-render the social cards into public/ (needs Chrome)
 
 All CV content lives in **[`src/data/cv.ts`](src/data/cv.ts)** as a single typed
 object. To update a bullet, change a tag, or add a new award, you only edit that
-file — the components are presentation-only.
+file — the components are presentation-only. The other pages each have their own
+data file: [`frontDoor.ts`](src/data/frontDoor.ts) (front page),
+[`homelab.ts`](src/data/homelab.ts) and [`offTheClock.ts`](src/data/offTheClock.ts)
+(photos and captions).
 
 The TypeScript types in **[`src/types.ts`](src/types.ts)** describe the shape of
 the data, so the compiler will catch missing fields if you add new entries.
@@ -125,13 +128,15 @@ helderjgoncalves.github.io/
 │   ├── favicon.svg
 │   ├── og-home.png        # 1200x630 social cards (see scripts/og-cards)
 │   ├── og-homelab.png
+│   ├── og-off-the-clock.jpg  # a photo crop, not a rendered card
+│   ├── photos/            # Off the clock photos, metadata stripped
 │   └── portrait.jpg
 ├── scripts/
 │   ├── og-cards/          # HTML sources for the social cards (`npm run cards`)
 │   └── prerender.mjs      # SSR injection, head metadata, sitemap.xml
 ├── src/
-│   ├── components/        # one component per CV section + Nav, Hero, Pill, Icon, Section
-│   ├── data/cv.ts         # all CV content
+│   ├── components/        # CV sections + page components, PhotoGrid, Nav, Hero, Icon…
+│   ├── data/              # cv.ts, frontDoor.ts, homelab.ts, offTheClock.ts
 │   ├── hooks/useReveal.ts # scroll-reveal hook
 │   ├── styles/            # SASS partials
 │   ├── App.tsx

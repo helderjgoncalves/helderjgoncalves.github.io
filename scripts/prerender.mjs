@@ -183,7 +183,8 @@ function offTheClockJsonLd(dateModified) {
         associatedMedia: allPhotos.map((photo) => ({
           '@type': 'ImageObject',
           contentUrl: `${SITE}${photo.src}`,
-          caption: photo.caption,
+          caption: photo.place ? `${photo.caption} — ${photo.place}` : photo.caption,
+          description: photo.alt,
           width: photo.width,
           height: photo.height,
         })),
