@@ -101,6 +101,14 @@ export const offTheClock: OffTheClockPageData = {
           width: 600,
           height: 800,
         },
+        {
+          src: '/photos/paragliding.jpg',
+          alt: 'Lifting off under a blue and yellow paraglider from a grassy launch, wind turbines on the ridge behind',
+          caption: 'Paragliding',
+          place: 'Leaving the ground',
+          width: 600,
+          height: 800,
+        },
       ],
     },
     {
