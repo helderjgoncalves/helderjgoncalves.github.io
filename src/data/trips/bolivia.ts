@@ -15,11 +15,11 @@ export const bolivia: Trip = {
     },
     {
       title: 'Riding the Death Road',
-      text: 'A full day downhill on a mountain bike, from a cold pass in the clouds to warm, green jungle, along a road cut into the cliff.',
+      text: 'Downhill on a mountain bike, from a cold pass in the clouds to warm, green jungle, along a road cut into the cliff.',
     },
     {
       title: 'Salt, lagoons and stars',
-      text: 'Three days across the Salar de Uyuni and the far south-west: cactus islands, red and green lagoons full of flamingos, geysers at dawn and a night sky worth the cold.',
+      text: 'The Salar de Uyuni and the far south-west: cactus islands, red and green lagoons full of flamingos, geysers at dawn and a night sky worth the cold.',
     },
     {
       title: 'Cities with a story',

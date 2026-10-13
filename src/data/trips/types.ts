@@ -4,6 +4,12 @@ import type { Photo } from '../photos';
 export interface TripStop {
   name: string;
   country: string;
+  /**
+   * The town or park a trail or viewpoint belongs to, e.g. 'El Chaltén', so one
+   * base with several day hikes can give each its own stop. Shown after the
+   * country on the route; the cards on /trips/ show the area once instead.
+   */
+  area?: string;
   /** Section icon on the trip page. Defaults to the globe. */
   icon?: IconName;
   /** A line or two about the stop. Hidden while empty. */

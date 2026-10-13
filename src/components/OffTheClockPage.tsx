@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react';
 import { allPhotos, offTheClock } from '../data/offTheClock';
 import { largeSrc, type Photo } from '../data/photos';
-import { tripHref, tripOf } from '../data/trips';
+import { tripLink } from '../data/trips';
 import { Footer } from './Footer';
 import { Icon } from './Icon';
 import { PhotoGrid } from './PhotoGrid';
@@ -16,11 +16,6 @@ export function OffTheClockPage() {
   // walks the page top to bottom.
   const [viewing, setViewing] = useState<number | null>(null);
   const open = (photo: Photo) => setViewing(allPhotos.indexOf(photo));
-  const tripLink = (photo: Photo) => {
-    const trip = tripOf(photo);
-    const href = tripHref(photo);
-    return trip && href ? { href, label: `${trip.title} trip` } : undefined;
-  };
 
   const goalSection = (goal: (typeof goals)[number]) => {
     const seen = goal.wonders.filter((wonder) => wonder.seen).length;

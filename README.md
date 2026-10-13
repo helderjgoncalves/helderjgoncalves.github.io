@@ -132,7 +132,7 @@ helderjgoncalves.github.io/
 │   ├── og-home.png        # 1200x630 social cards (see scripts/og-cards)
 │   ├── og-homelab.png
 │   ├── og-off-the-clock.jpg  # a photo crop, not a rendered card
-│   ├── photos/            # Off the clock photos, metadata stripped
+│   ├── photos/            # photos/<trip>/<size>/<name>, metadata stripped (800, 1280, 2048, 2880)
 │   └── portrait.jpg
 ├── scripts/
 │   ├── og-cards/          # HTML sources for the social cards (`npm run cards`)

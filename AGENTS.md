@@ -102,6 +102,7 @@ public/                   # static assets copied verbatim (favicon, portrait, og
 scripts/prerender.mjs     # post-build SSR injection + head metadata + sitemap
 scripts/dist.test.mjs     # post-build assertions on dist/ (`npm test`)
 scripts/og-cards/         # HTML sources for the social cards + `npm run cards`
+scripts/media-worker.js   # Cloudflare Worker serving the clips from R2 (dashboard, not built)
 .github/workflows/deploy.yml  # GitHub Pages deploy on push to main
 index.html                # source entry (loaded by `vite dev`); pre-rendered at build
 vite.config.ts            # base = '/' (user/org GitHub Pages site)
@@ -136,7 +137,12 @@ has a front-page card; Off the clock's Travel section links to it.
   spans borders stays one page (Patagonia), while one journey through two
   rich countries becomes two (Peru, Bolivia). Trip pages don't link to each
   other; each leads back to `/trips/`.
-- **Stops** are in travel order. A stop without photos still shows on the
+- **Stops** are in travel order. A base with several day hikes gives each
+ trail its own stop, with the base as its `area` (El Chaltén's three trails):
+ the route folds consecutive trails into one ordinary card for the area
+ (`Country · 3 trails`), so every card keeps the same size; below, the
+ area gets one photo section with each trail under its own heading; and
+ the cards on `/trips/` show only the area's name. A stop without photos still shows on the
   numbered route but gets no section. `note` and the trip's `practical` notes
   are hidden while empty — leave them empty rather than invent copy.
 - **Why go** (`highlights`) sits between a trip's hero and its route: about
@@ -160,9 +166,9 @@ has a front-page card; Off the clock's Travel section links to it.
   per-country grid there. Arrange photos by hand: wide first, similar poses
   (like the two open-arms shots) not side by side. A photo may appear only
   once per page (its tile id is the file name).
-- Theme photos on Off the clock open the viewer, whose caption links to the
-  photo's trip when it has one. The front-page glance links straight to the
-  photo on its trip page.
+- Theme photos on Off the clock, and the front-page glance, open the viewer
+  in place (no navigation), whose caption links to the photo's trip when it
+  has one.
 - `/trips/` and every trip page close with `TripHelp`, a quiet offer of free
   tips by email (copy in `tripsPage.help`, address from `cv.ts`). Keep it a
   friend's offer: no form, no pricing, nothing in the top bar.
@@ -178,20 +184,104 @@ has a front-page card; Off the clock's Travel section links to it.
   eyebrow (`tripsPage.wip`, `tripEyebrow`); both disappear on their own once
   the last sample is replaced.
 
-Each photo ships twice: `public/photos/<name>.jpg` (≤800px, for
-the grid) and `public/photos/large/<name>.jpg` (the source's full size, opened
-by the photo viewer, `PhotoViewer.tsx`). `npm test` fails if a page references
-a `/photos/` file that isn't in `dist/`. The viewer is a native `<dialog>` with
+Each photo ships at several sizes, all made from the phone original, as AVIF
+(`avifSrc`, taken through `<picture>`), plus a JPEG at 800 and 2048 px only.
+The JPEGs are for Safari before macOS 13 (which can't decode AVIF), crawlers,
+the JSON-LD and the no-JS link; phones and big screens all get AVIF, so the
+other sizes don't need one:
+
+| Path | Long side | Used by |
+| --- | --- | --- |
+| `public/photos/<trip>/800/<name>` | ≤800 px | grid tile (`src`) |
+| `public/photos/<trip>/1280/<name>.avif` | 1280 px, AVIF only | viewer, phones |
+| `public/photos/<trip>/2048/<name>` | 2048 px | viewer, laptops; the tile's link (`largeSrc`) |
+| `public/photos/<trip>/2880/<name>.avif` | 2880 px, AVIF only | viewer, 4K/5K |
+
+Photos are filed by trip, then by size: `<trip>` is the trip's slug, or
+`other` for a photo no trip shows (the hobby shots), and each size folder is
+named for its long side (`sizedSrc`). The build throws if a photo's folder
+doesn't match the trip whose stops list it, so moving a photo to another trip
+means moving its files too (which changes its URL). A lowRes photo or sample
+keeps its one viewer copy in `2048/` even though it's smaller.
+
+The viewer (`PhotoViewer.tsx`) offers its sizes through `srcset`
+(`largeSrcSet`), so each screen fetches the one it needs. It sizes each photo
+from its shape (`--aspect`), not from the file, and shows the grid tile —
+usually already in the browser's cache — as the background until the full
+copy arrives, so it never opens empty on a slow network. When the visitor has
+turned on Save-Data (`navigator.connection.saveData`), it offers nothing over
+1280 px, skips preloading the neighbours and doesn't auto-play clips. It
+deliberately doesn't guess from connection speed: Safari doesn't report it,
+and the estimates are unreliable.
+
+- **JPEG:** `sips -s format jpeg -s formatOptions 82 -Z <size>`, then strip
+ as below.
+- **AVIF:** from a lossless PNG (`sips -s format png`, resized), encoded with
+ `avifenc -q 80 -d 10 -y 444 -s 4 --ignore-exif --ignore-xmp -a tune=ssim`
+ (Homebrew `libavif`). That keeps the JPEG's detail at about a third less
+ size, with full-resolution colour; `avifenc` turns the Display P3 profile
+ into AVIF's colour tags. ffmpeg's SVT-AV1 is built for video and keeps
+ visibly less texture in stills.
+- **Orientation:** iPhone HEICs often store their pixels sideways with
+ `Orientation: 6`. `sips` keeps that tag while writing sideways pixels, and
+ stripping drops it, so rotate with `sips -r 90` first — then strip the tag
+ from the PNG too, or ffmpeg and `avifenc` will rotate it a second time.
+- **Exceptions:** a photo with no original keeps the one JPEG it has in
+ `2048/` and is marked `lowRes` (no AVIF, no other sizes); one whose
+ original is under 2880 px sets `originalLong` and skips the 2880 copy.
+
+The build throws if any of these copies is missing, and `npm test` fails if a
+page references a `/photos/` file that isn't in `dist/`. The viewer is a native `<dialog>` with
 previous/next, arrow keys, swipe and Esc — deliberately no auto-advance.
 
-**Videos** are photos with a `video` (a clip under `public/videos/`): the
+**Videos** are photos with a `video` (a clip at `media('<name>.mp4')`): the
 photo is the grid tile and poster, and the clip downloads only once it is the
 item on screen in the viewer — never on scroll — and plays muted, with the
-sound one tap away in the controls. The poster has an HDR AVIF beside its JPEG
-(`hdrSrc`). Ship HDR HEVC (`-tag:v hvc1`)
-with all metadata dropped (`-map_metadata -1`, video and audio streams only:
-iPhone clips carry GPS in data tracks). GitHub rejects files over 100 MB and
-warns above 50 MB, so re-encode long clips rather than commit the original.
+sound one tap away in the controls. If the clip fails to load (say the
+Worker's daily limit is spent), the viewer shows the still with a quiet note
+(`videoUnavailable`) instead of a dead player; moving away and back retries.
+A browser that can play neither copy (`canPlayType`) gets the still straight
+away, with `videoUnsupported` instead, since retrying won't help.
+The poster's AVIF (`avifSrc`) is HDR, cut from the clip, so it matches it.
+
+Each clip ships twice, both made from the phone original (never from an
+earlier encode) and both 1080p, 10-bit HLG HDR with the original's colour tags:
+
+| Copy | Encoder | Plays on |
+| --- | --- | --- |
+| `<trip>/av1/<name>.mp4` | `libsvtav1 -preset 4 -crf 32 -svtav1-params tune=0` | Chrome, Edge, Firefox; Safari on M3+ Macs and iPhone 15 Pro+ |
+| `<trip>/hevc/<name>.mp4` | `libx265 -preset slow -crf 24 -tag:v hvc1` | every Apple device, Chrome/Edge with hardware HEVC |
+
+The viewer lists AV1 first and HEVC second as `<source>`s with codec strings,
+so each browser downloads only the one it can play. Don't drop either: AV1
+alone leaves M1/M2 Macs and most iPhones without the clip, and HEVC alone
+leaves Firefox and many Chrome installs without it. The settings were picked
+on `paine-massif` by VMAF against the original (about 95 for both, half the
+phone's bitrate); the phone's own 21 Mbps encode buffered on slow
+connections. Clips are 60 fps by default; drop to 30 only when Hélder asks
+for it on a specific clip (so far only `paine-massif`, a slow scene). Keep a
+60 fps clip's own timestamps (`-fps_mode passthrough`): iPhone clips stretch
+one frame by a tick every ~217 frames, and ffmpeg's default constant-rate
+output then doubles one frame and drops another, a visible stutter. When
+scoring with VMAF, pair frames by number (`setpts=N/(60*TB)` on both inputs),
+not by timestamp, or the scorer misaligns them and reports a false loss. Drop all metadata
+(`-map_metadata -1`, video and audio streams only: iPhone clips carry GPS in
+data tracks); `ffmpeg` turns sideways portrait clips upright when it
+re-encodes. Dolby Vision's extra layer isn't kept; HLG is the HDR every
+screen understands. `compare/originals.tsv` (local, not committed) maps every
+published photo and clip to its phone original, with each clip's cut.
+
+Clips are **not in the repo**. Cloudflare's terms forbid serving video through
+its proxy unless it comes from R2, so they sit in the private R2 bucket
+`videos`, filed like the photos (`<trip>/<codec>/<name>.mp4`; `photo.video` is
+just the name, and the trip comes from the photo's folder), served at
+`media.hgoncalves.uk` by a Worker whose source is
+`scripts/media-worker.js` (pasted into the dashboard, bucket bound as `MEDIA`;
+not part of the build). To add a clip, upload it to the bucket by hand. The
+Worker stays on the Workers Free plan so that past its daily request limit
+it fails rather than bills, and the bucket must stay private (no `r2.dev`
+URL, no custom domain on the bucket) so the Worker is the only way in. Clips
+are cached for a week, not forever, because a re-encode keeps its name.
 
 Photo captions on Off the clock follow one format: `caption` is the place's
 proper name, `place` is `Country · one short detail`. Omit `place` rather than

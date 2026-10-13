@@ -1,4 +1,4 @@
-import { regions, sampleTrips, tripPath, trips, type Trip } from '../data/trips';
+import { regions, routeNames, sampleTrips, tripPath, trips, type Trip } from '../data/trips';
 import { tripEyebrow, tripsPage } from '../data/tripsPage';
 import { Footer } from './Footer';
 import { Section } from './Section';
@@ -34,7 +34,7 @@ function TripCard({ trip, compact = false, eager = false }: TripCardProps) {
         {!compact && (
           <>
             <span className="trip-card__summary">{trip.summary}</span>
-            <span className="trip-card__route">{trip.stops.map((stop) => stop.name).join(' · ')}</span>
+            <span className="trip-card__route">{routeNames(trip).join(' · ')}</span>
             <span className="trip-card__cta">View trip</span>
           </>
         )}

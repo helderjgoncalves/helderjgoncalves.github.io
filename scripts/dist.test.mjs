@@ -253,7 +253,7 @@ describe('sitemap.xml', () => {
 });
 
 describe('photos', () => {
-  // Grid tiles link to /photos/large/<name>; a missing large copy builds
+  // Grid tiles link to /photos/<trip>/2048/<name>; a missing large copy builds
   // cleanly and only shows up as a broken photo viewer.
   test('every /photos/ file the pages reference exists', async () => {
     for (const page of pages) {

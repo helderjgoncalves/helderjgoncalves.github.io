@@ -9,6 +9,7 @@ export { offTheClock, allPhotos } from './data/offTheClock';
 export { tripsPage } from './data/tripsPage';
 export { frontDoor } from './data/frontDoor';
 export { trips, sampleTrips, tripPath, tripPhotos, tripCountries } from './data/trips';
+export { photos, largeSrcSet, hasAvif, avifSrc, largeSrc } from './data/photos';
 
 export function render(url = '/'): string {
   return renderToString(

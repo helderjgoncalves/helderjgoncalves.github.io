@@ -1,4 +1,5 @@
 export interface Photo {
+  /** The grid tile, /photos/<trip>/800/<name>.jpg; the other sizes sit beside it (sizedSrc). */
   src: string;
   alt: string;
   caption: string;
@@ -13,11 +14,43 @@ export interface Photo {
   /** A placeholder standing in for a trip's real photos. The build lists them. */
   sample?: boolean;
   /**
-   * A short clip under /videos/, played in the viewer in place of the photo,
-   * which becomes its poster. Loaded only on play. Strip its metadata like a photo's.
+   * No original to rebuild from, so 2048/ holds the one copy there is (about
+   * 1024 px) and there's no 1280/ or AVIF. Every other still is made from the
+   * original at both sizes; see largeSrcSet.
+   */
+  lowRes?: boolean;
+  /** The original's long side, when it's too small for the 2880 px AVIF. */
+  originalLong?: number;
+  /**
+   * The name of a short clip on the media host, played in the viewer in place
+   * of the photo, which becomes its poster. Loaded only on play. See videoSources.
    */
   video?: string;
 }
+
+/** Clips live in R2 behind scripts/media-worker.js, not in the repo. */
+const MEDIA_HOST = 'https://media.hgoncalves.uk';
+
+/**
+ * A clip's copies, in the order the browser should try them: AV1, then HEVC
+ * for Apple devices without an AV1 decoder. Both are 10-bit HLG; the codec
+ * strings let a browser skip the one it can't play without downloading it.
+ * Filed in R2 like the photos: <trip>/<codec>/<name>.mp4.
+ */
+export function videoSources(photo: Photo): { src: string; type: string }[] {
+  if (!photo.video) return [];
+  const trip = photo.src.split('/')[2];
+  return [
+    { src: `${MEDIA_HOST}/${trip}/av1/${photo.video}.mp4`, type: 'video/mp4; codecs="av01.0.09M.10"' },
+    { src: `${MEDIA_HOST}/${trip}/hevc/${photo.video}.mp4`, type: 'video/mp4; codecs="hvc1.2.4.L123.B0"' },
+  ];
+}
+
+/** Shown in the viewer, over the still, when a clip fails to load. */
+export const videoUnavailable = 'The video isn’t available right now.';
+
+/** Shown instead when the browser can play none of the clip's copies. */
+export const videoUnsupported = 'This browser can’t play this video.';
 
 /**
  * Every photo on the site, described once. Off the clock and the trip pages
@@ -25,7 +58,7 @@ export interface Photo {
  */
 export const photos = {
   summitNight: {
-    src: '/photos/summit-night.jpg',
+    src: '/photos/bolivia/800/summit-night.jpg',
     alt: 'On the snowy summit of Huayna Potosí at night in crampons and a helmet, the lights of La Paz far below',
     caption: 'Huayna Potosí',
     place: 'Bolivia · the 6,088\u00a0m summit, before dawn',
@@ -35,7 +68,7 @@ export const photos = {
     focus: '70% 50%',
   },
   aboveTheClouds: {
-    src: '/photos/above-the-clouds.jpg',
+    src: '/photos/bolivia/800/above-the-clouds.jpg',
     alt: 'Sunrise over a sea of clouds from the snow ridge of Huayna Potosí',
     caption: 'Huayna Potosí',
     place: 'Bolivia · sunrise above the clouds',
@@ -43,7 +76,7 @@ export const photos = {
     height: 800,
   },
   volcano: {
-    src: '/photos/volcano.jpg',
+    src: '/photos/guatemala/800/volcano.jpg',
     alt: 'Volcán de Fuego erupting at night, lava running down its flanks under the stars',
     caption: 'Volcán de Fuego',
     place: 'Guatemala · seen from 4,000\u00a0m',
@@ -51,7 +84,7 @@ export const photos = {
     height: 800,
   },
   torresDelPaine: {
-    src: '/photos/torres-del-paine.jpg',
+    src: '/photos/patagonia/800/torres-del-paine.jpg',
     alt: 'Jumping star-shaped on a rock at the turquoise lagoon below the granite towers of Torres del Paine',
     caption: 'Torres del Paine',
     place: 'Chile · Base Las Torres',
@@ -60,35 +93,35 @@ export const photos = {
     focus: '50% 60%',
   },
   lagoPehoe: {
-    src: '/photos/lago-pehoe.jpg',
+    src: '/photos/patagonia/800/lago-pehoe.jpg',
     alt: 'Video from a catamaran crossing turquoise Lago Pehoé, panning from the dark-capped Cuernos del Paine to snowy peaks',
     caption: 'Lago Pehoé',
     place: 'Chile · crossing under the Cuernos',
     width: 450,
     height: 800,
-    video: '/videos/lago-pehoe.mp4',
+    video: 'lago-pehoe',
   },
   paineMassif: {
-    src: '/photos/paine-massif.jpg',
+    src: '/photos/patagonia/800/paine-massif.jpg',
     alt: 'Video across Lago Pehoé to the snowy Paine massif and the dark-capped Cuernos under drifting clouds',
     caption: 'Lago Pehoé',
     place: 'Chile · the Paine massif across the water',
     width: 800,
     height: 450,
     wide: true,
-    video: '/videos/paine-massif.mp4',
+    video: 'paine-massif',
   },
   lagoGreyClip: {
-    src: '/photos/lago-grey-clip.jpg',
+    src: '/photos/patagonia/800/lago-grey-clip.jpg',
     alt: 'Video from the rocks above Lago Grey, icebergs drifting on the pale water below the mountains',
     caption: 'Lago Grey',
     place: 'Chile · icebergs on the lake',
     width: 450,
     height: 800,
-    video: '/videos/lago-grey.mp4',
+    video: 'lago-grey',
   },
   chileanFlag: {
-    src: '/photos/chilean-flag.jpg',
+    src: '/photos/patagonia/800/chilean-flag.jpg',
     alt: 'A frayed Chilean flag snapping in the wind from a white mast against a deep blue sky',
     caption: 'Lago Grey',
     place: 'Chile · a flag worn by the wind',
@@ -96,7 +129,7 @@ export const photos = {
     height: 800,
   },
   lasTorres: {
-    src: '/photos/las-torres.jpg',
+    src: '/photos/patagonia/800/las-torres.jpg',
     alt: 'The three granite towers of Torres del Paine rising above a pale turquoise lagoon under a clear blue sky',
     caption: 'Las Torres',
     place: 'Chile · the three granite towers',
@@ -104,7 +137,7 @@ export const photos = {
     height: 800,
   },
   cuernosDelPaine: {
-    src: '/photos/cuernos-del-paine.jpg',
+    src: '/photos/patagonia/800/cuernos-del-paine.jpg',
     alt: 'The dark-capped peaks of the Cuernos del Paine above golden grassy hills and a turquoise lake',
     caption: 'Cuernos del Paine',
     place: 'Chile · Torres del Paine',
@@ -112,7 +145,7 @@ export const photos = {
     height: 800,
   },
   fitzRoy: {
-    src: '/photos/fitz-roy.jpg',
+    src: '/photos/patagonia/800/fitz-roy.jpg',
     alt: 'Hikers on a rocky trail climbing towards the jagged, snow-flecked peaks of Fitz Roy under a deep blue sky',
     caption: 'Fitz Roy',
     place: 'Argentina · trail to Laguna de los Tres',
@@ -120,7 +153,7 @@ export const photos = {
     height: 800,
   },
   rioDeLasVueltas: {
-    src: '/photos/rio-de-las-vueltas.jpg',
+    src: '/photos/patagonia/800/rio-de-las-vueltas.jpg',
     alt: 'A braided turquoise river winding along a wide valley floor between dry mountains, seen from a rocky slope above',
     caption: 'Río de las Vueltas',
     place: 'Argentina · El Chaltén',
@@ -128,15 +161,108 @@ export const photos = {
     height: 800,
   },
   lomaDelPliegueTumbado: {
-    src: '/photos/loma-del-pliegue-tumbado.jpg',
+    src: '/photos/patagonia/800/loma-del-pliegue-tumbado.jpg',
     alt: 'A hiker with trekking poles and an orange backpack walking a stony path across a bare ridge under a cloudless sky',
     caption: 'Loma del Pliegue Tumbado',
     place: 'Argentina · El Chaltén',
     width: 600,
     height: 800,
   },
+  pliegueTumbadoSummit: {
+    src: '/photos/patagonia/800/pliegue-tumbado-summit.jpg',
+    alt: 'From a stony summit, bare brown hills fall away to a wide plain and a long turquoise lake under a deep blue sky',
+    caption: 'Loma del Pliegue Tumbado',
+    place: 'Argentina · Lago Viedma from the top',
+    width: 600,
+    height: 800,
+  },
+  falcon: {
+    src: '/photos/patagonia/800/falcon.jpg',
+    alt: 'A brown falcon perched on a rock, the turquoise lake and the steppe spread out far below',
+    caption: 'Loma del Pliegue Tumbado',
+    place: 'Argentina · a falcon at the top',
+    width: 600,
+    height: 800,
+  },
+  rioElectricoBridge: {
+    src: '/photos/patagonia/800/rio-electrico-bridge.jpg',
+    alt: 'Video from the stony bank of a turquoise river, panning from a red steel footbridge to a rocky peak up the valley',
+    caption: 'Río Eléctrico',
+    place: 'Argentina · the footbridge over the river',
+    width: 450,
+    height: 800,
+    video: 'rio-electrico-bridge',
+  },
+  rioElectrico: {
+    src: '/photos/patagonia/800/rio-electrico.jpg',
+    alt: 'A wide turquoise river braiding over gravel bars towards a rust-coloured peak and snowy mountains under soft cloud',
+    caption: 'Río Eléctrico',
+    place: 'Argentina · snow peaks up the valley',
+    width: 600,
+    height: 800,
+  },
+  rioElectricoValley: {
+    src: '/photos/patagonia/800/rio-electrico-valley.jpg',
+    alt: 'A clear stream running through green scrub and stones on a valley floor, snowy peaks ahead under a wide blue sky',
+    caption: 'Río Eléctrico',
+    place: 'Argentina · along the valley floor',
+    width: 600,
+    height: 800,
+  },
+  lagunaTorre: {
+    src: '/photos/patagonia/800/laguna-torre.jpg',
+    alt: 'Video from a stony slope panning from the spires of Cerro Torre and Fitz Roy, above a pale lagoon, out over the valley to the steppe',
+    caption: 'Laguna Torre',
+    place: 'Argentina · under Cerro Torre',
+    width: 450,
+    height: 800,
+    video: 'laguna-torre',
+  },
+  losTresBoardwalk: {
+    src: '/photos/patagonia/800/los-tres-boardwalk.jpg',
+    alt: 'Video walking a wooden boardwalk across a green marsh, ending on the snowy spires of Fitz Roy',
+    caption: 'Laguna de los Tres',
+    place: 'Argentina · boardwalk over the marsh',
+    width: 450,
+    height: 800,
+    video: 'los-tres-boardwalk',
+  },
+  lagunaDeLosTres: {
+    src: '/photos/patagonia/800/laguna-de-los-tres.jpg',
+    alt: 'Video panning from a turquoise lagoon in a rocky bowl up to the granite spires of Fitz Roy',
+    caption: 'Laguna de los Tres',
+    place: 'Argentina · under Fitz Roy',
+    width: 450,
+    height: 800,
+    video: 'laguna-de-los-tres',
+  },
+  miradorDeLosCondores: {
+    src: '/photos/patagonia/800/mirador-de-los-condores.jpg',
+    alt: 'Video panning from dry hills and a bare white tree across a green slope to a river winding down the valley',
+    caption: 'Mirador de los Cóndores',
+    place: 'Argentina · over the valley',
+    width: 450,
+    height: 800,
+    video: 'mirador-de-los-condores',
+  },
+  miradorDeLasAguilas: {
+    src: '/photos/patagonia/800/mirador-de-las-aguilas.jpg',
+    alt: 'From a rocky viewpoint, golden steppe runs down to a turquoise lake and distant mountains under big white clouds',
+    caption: 'Mirador de las Águilas',
+    place: 'Argentina · over the steppe to Lago Viedma',
+    width: 600,
+    height: 800,
+  },
+  lagoViedma: {
+    src: '/photos/patagonia/800/lago-viedma.jpg',
+    alt: 'A turquoise lake with a pale inlet in the foreground, low mountains behind it and white clouds above',
+    caption: 'Mirador de las Águilas',
+    place: 'Argentina · Lago Viedma',
+    width: 600,
+    height: 800,
+  },
   glacier: {
-    src: '/photos/glacier.jpg',
+    src: '/photos/patagonia/800/glacier.jpg',
     alt: 'The blue-white front of the Perito Moreno Glacier meeting a grey-green lake',
     caption: 'Perito Moreno Glacier',
     place: 'Argentina · Patagonia',
@@ -144,7 +270,7 @@ export const photos = {
     height: 800,
   },
   rainbowMountain: {
-    src: '/photos/rainbow-mountain.jpg',
+    src: '/photos/peru/800/rainbow-mountain.jpg',
     alt: 'Crouching in a beanie and down jacket on a dusty ridge, the red, ochre and green stripes of Rainbow Mountain behind under a cloudy sky',
     caption: 'Rainbow Mountain',
     place: 'Peru · Vinicunca',
@@ -152,7 +278,7 @@ export const photos = {
     height: 800,
   },
   saltFlatJump: {
-    src: '/photos/salt-flat-jump.jpg',
+    src: '/photos/bolivia/800/salt-flat-jump.jpg',
     alt: 'Jumping mid-air on the mirrored Salar de Uyuni at sunset, reflection below',
     caption: 'Salar de Uyuni',
     place: 'Bolivia · the world’s largest salt flat',
@@ -160,7 +286,7 @@ export const photos = {
     height: 800,
   },
   machuPicchu: {
-    src: '/photos/machu-picchu.jpg',
+    src: '/photos/peru/800/machu-picchu.jpg',
     alt: 'Arms wide in front of Machu Picchu and the green peaks behind it',
     caption: 'Machu Picchu',
     place: 'Peru · a New Seven Wonder',
@@ -168,7 +294,7 @@ export const photos = {
     height: 800,
   },
   lakeSunset: {
-    src: '/photos/lake-sunset.jpg',
+    src: '/photos/peru/800/lake-sunset.jpg',
     alt: 'Silhouette watching the sun set over Lake Titicaca from Amantaní Island',
     caption: 'Amantaní Island',
     place: 'Peru · sunset over Lake Titicaca',
@@ -177,28 +303,31 @@ export const photos = {
     focus: '50% 30%',
   },
   motorcycle: {
-    src: '/photos/motorcycle.jpg',
+    src: '/photos/other/800/motorcycle.jpg',
     alt: 'Sitting on a dark red motorcycle on a forest road',
     caption: 'Forest roads',
     width: 600,
     height: 800,
+    lowRes: true,
   },
   snowboard: {
-    src: '/photos/snowboard.jpg',
+    src: '/photos/other/800/snowboard.jpg',
     alt: 'Smiling in sunglasses, holding a red snowboard upright on a sunny snow slope',
     caption: 'Snowboarding',
     width: 599,
     height: 800,
+    originalLong: 2049,
   },
   paragliding: {
-    src: '/photos/paragliding.jpg',
+    src: '/photos/other/800/paragliding.jpg',
     alt: 'Lifting off under a blue and yellow paraglider from a grassy launch, wind turbines on the ridge behind',
     caption: 'Paragliding',
     width: 600,
     height: 800,
+    lowRes: true,
   },
   fuegoAsh: {
-    src: '/photos/fuego-ash.jpg',
+    src: '/photos/guatemala/800/fuego-ash.jpg',
     alt: 'A tall ash cloud rising from Volcán de Fuego above a sea of clouds, a line of people silhouetted on the ridge in front',
     caption: 'Volcán de Fuego',
     place: 'Guatemala · an ash cloud at dawn',
@@ -206,7 +335,7 @@ export const photos = {
     height: 800,
   },
   saltTables: {
-    src: '/photos/salt-tables.jpg',
+    src: '/photos/bolivia/800/salt-tables.jpg',
     alt: 'Tables built from salt bricks on the white Salar de Uyuni, distant mountains under a wide blue sky',
     caption: 'Salar de Uyuni',
     place: 'Bolivia · salt-brick tables',
@@ -214,7 +343,7 @@ export const photos = {
     height: 800,
   },
   saltSunset: {
-    src: '/photos/salt-sunset.jpg',
+    src: '/photos/bolivia/800/salt-sunset.jpg',
     alt: 'Golden sunset mirrored in a thin layer of water on the Salar de Uyuni, low hills on the horizon',
     caption: 'Salar de Uyuni',
     place: 'Bolivia · sunset on the mirror',
@@ -222,7 +351,7 @@ export const photos = {
     height: 800,
   },
   milkyWay: {
-    src: '/photos/milky-way.jpg',
+    src: '/photos/bolivia/800/milky-way.jpg',
     alt: 'The Milky Way arching over a still lagoon, the moon rising in an orange glow behind dark hills',
     caption: 'Eduardo Avaroa Reserve',
     place: 'Bolivia · the Milky Way at moonrise',
@@ -230,7 +359,7 @@ export const photos = {
     height: 800,
   },
   semucChampey: {
-    src: '/photos/semuc-champey.jpg',
+    src: '/photos/guatemala/800/semuc-champey.jpg',
     alt: 'The turquoise limestone pools of Semuc Champey seen from a wooden lookout high above the jungle',
     caption: 'Semuc Champey',
     place: 'Guatemala · the pools from the lookout',
@@ -239,7 +368,7 @@ export const photos = {
     wide: true,
   },
   ollantaytambo: {
-    src: '/photos/ollantaytambo.jpg',
+    src: '/photos/peru/800/ollantaytambo.jpg',
     alt: 'An Inca stone water channel running through the ruins of Ollantaytambo, terraced mountains behind',
     caption: 'Ollantaytambo',
     place: 'Peru · Inca water channels',
@@ -247,7 +376,7 @@ export const photos = {
     height: 800,
   },
   sacsayhuaman: {
-    src: '/photos/sacsayhuaman.jpg',
+    src: '/photos/peru/800/sacsayhuaman.jpg',
     alt: 'The zigzag stone walls of Sacsayhuamán along a green esplanade above Cusco, under big clouds',
     caption: 'Sacsayhuamán',
     place: 'Peru · above Cusco',
@@ -255,7 +384,7 @@ export const photos = {
     height: 800,
   },
   alpacas: {
-    src: '/photos/alpacas.jpg',
+    src: '/photos/peru/800/alpacas.jpg',
     alt: 'Alpacas grazing in a high green valley below snow-capped Andean peaks',
     caption: 'Ausangate',
     place: 'Peru · alpacas below the snow',
@@ -263,7 +392,7 @@ export const photos = {
     height: 800,
   },
   deathRoad: {
-    src: '/photos/death-road.jpg',
+    src: '/photos/bolivia/800/death-road.jpg',
     alt: 'On a mountain bike under the "Welcome to Death Road" sign at the bottom of the ride',
     caption: 'Death Road',
     place: 'Bolivia · made it to the bottom',
@@ -271,7 +400,7 @@ export const photos = {
     height: 800,
   },
   islaIncahuasi: {
-    src: '/photos/isla-incahuasi.jpg',
+    src: '/photos/bolivia/800/isla-incahuasi.jpg',
     alt: 'Standing on the rocks beside a giant cactus on Isla Incahuasi, in the middle of the salt flat',
     caption: 'Isla Incahuasi',
     place: 'Bolivia · giant cacti in a sea of salt',
@@ -279,7 +408,7 @@ export const photos = {
     height: 800,
   },
   lagunaHedionda: {
-    src: '/photos/laguna-hedionda.jpg',
+    src: '/photos/bolivia/800/laguna-hedionda.jpg',
     alt: 'Flamingos feeding in a blue lagoon below a reddish volcano',
     caption: 'Laguna Hedionda',
     place: 'Bolivia · flamingos below the volcanoes',
@@ -287,7 +416,7 @@ export const photos = {
     height: 800,
   },
   flamingos: {
-    src: '/photos/flamingos.jpg',
+    src: '/photos/bolivia/800/flamingos.jpg',
     alt: 'A flock of pink flamingos wading in a lagoon under a deep blue sky',
     caption: 'Laguna Hedionda',
     place: 'Bolivia · a flock of flamingos',
@@ -295,7 +424,7 @@ export const photos = {
     height: 800,
   },
   arbolDePiedra: {
-    src: '/photos/arbol-de-piedra.jpg',
+    src: '/photos/bolivia/800/arbol-de-piedra.jpg',
     alt: 'The Árbol de Piedra, a wind-carved rock shaped like a tree, on the sandy Siloli Desert',
     caption: 'Árbol de Piedra',
     place: 'Bolivia · the stone tree of the Siloli Desert',
@@ -303,7 +432,7 @@ export const photos = {
     height: 800,
   },
   solDeManana: {
-    src: '/photos/sol-de-manana.jpg',
+    src: '/photos/bolivia/800/sol-de-manana.jpg',
     alt: 'Standing with arms out in the steam of the Sol de Mañana geysers',
     caption: 'Sol de Mañana',
     place: 'Bolivia · geysers at almost 5,000\u00a0m',
@@ -311,7 +440,7 @@ export const photos = {
     height: 800,
   },
   sanTelmoMarket: {
-    src: '/photos/san-telmo-market.jpg',
+    src: '/photos/argentina/800/san-telmo-market.jpg',
     alt: 'Food stalls under the iron roof of the San Telmo market',
     caption: 'Mercado de San Telmo',
     place: 'Argentina · Buenos Aires',
@@ -319,7 +448,7 @@ export const photos = {
     height: 800,
   },
   sanTelmo: {
-    src: '/photos/san-telmo.jpg',
+    src: '/photos/argentina/800/san-telmo.jpg',
     alt: 'A busy street in San Telmo lined with old buildings and balconies',
     caption: 'San Telmo',
     place: 'Argentina · Buenos Aires',
@@ -327,7 +456,7 @@ export const photos = {
     height: 800,
   },
   torreMonumental: {
-    src: '/photos/torre-monumental.jpg',
+    src: '/photos/argentina/800/torre-monumental.jpg',
     alt: 'The brick clock tower of the Torre Monumental against a pink evening sky',
     caption: 'Torre Monumental',
     place: 'Argentina · Buenos Aires at dusk',
@@ -335,7 +464,7 @@ export const photos = {
     height: 800,
   },
   peritoMorenoLake: {
-    src: '/photos/perito-moreno-lake.jpg',
+    src: '/photos/patagonia/800/perito-moreno-lake.jpg',
     alt: 'A walkway above Lago Argentino, a small boat on the water and mountains behind',
     caption: 'Perito Moreno Glacier',
     place: 'Argentina · Lago Argentino from the walkways',
@@ -343,7 +472,7 @@ export const photos = {
     height: 800,
   },
   peritoMorenoIcebergs: {
-    src: '/photos/perito-moreno-icebergs.jpg',
+    src: '/photos/patagonia/800/perito-moreno-icebergs.jpg',
     alt: 'The jagged blue front of the Perito Moreno Glacier, icebergs floating below',
     caption: 'Perito Moreno Glacier',
     place: 'Argentina · icebergs off the ice front',
@@ -351,7 +480,7 @@ export const photos = {
     height: 800,
   },
   lagoGrey: {
-    src: '/photos/lago-grey.jpg',
+    src: '/photos/patagonia/800/lago-grey.jpg',
     alt: 'Waving from the rocks on the shore of Lago Grey, icebergs and the glacier behind',
     caption: 'Lago Grey',
     place: 'Chile · icebergs from Grey Glacier',
@@ -361,7 +490,7 @@ export const photos = {
 
   // Placeholders until the real photos arrive — swap each for a real entry.
   sampleYucatan: {
-    src: '/photos/sample-yucatan.jpg',
+    src: '/photos/yucatan/800/sample-yucatan.jpg',
     alt: 'Placeholder: photos of Chichén Itzá to come',
     caption: 'Chichén Itzá',
     place: 'Mexico · sample photo',
@@ -370,7 +499,7 @@ export const photos = {
     sample: true,
   },
   sampleBelize: {
-    src: '/photos/sample-belize.jpg',
+    src: '/photos/belize/800/sample-belize.jpg',
     alt: 'Placeholder: photos of the Belize coast to come',
     caption: 'Caye Caulker',
     place: 'Belize · sample photo',
@@ -379,7 +508,7 @@ export const photos = {
     sample: true,
   },
   sampleMorocco: {
-    src: '/photos/sample-morocco.jpg',
+    src: '/photos/morocco/800/sample-morocco.jpg',
     alt: 'Placeholder: photos of Morocco to come',
     caption: 'Marrakech',
     place: 'Morocco · sample photo',
@@ -388,7 +517,7 @@ export const photos = {
     sample: true,
   },
   sampleRio: {
-    src: '/photos/sample-rio-de-janeiro.jpg',
+    src: '/photos/rio-de-janeiro/800/sample-rio-de-janeiro.jpg',
     alt: 'Placeholder: photos of Christ the Redeemer to come',
     caption: 'Christ the Redeemer',
     place: 'Brazil · sample photo',
@@ -397,7 +526,7 @@ export const photos = {
     sample: true,
   },
   sampleArgentina: {
-    src: '/photos/sample-argentina.jpg',
+    src: '/photos/argentina/800/sample-argentina.jpg',
     alt: 'Placeholder: photos of Argentina to come',
     caption: 'Iguazú Falls',
     place: 'Argentina · sample photo',
@@ -406,7 +535,7 @@ export const photos = {
     sample: true,
   },
   sampleChile: {
-    src: '/photos/sample-chile.jpg',
+    src: '/photos/chile/800/sample-chile.jpg',
     alt: 'Placeholder: photos of Valparaíso to come',
     caption: 'Valparaíso',
     place: 'Chile · sample photo',
@@ -417,18 +546,68 @@ export const photos = {
 } satisfies Record<string, Photo>;
 
 /**
- * The bigger copy opened in the photo viewer. Every photo needs one at
- * /photos/large/<same name> — `npm test` fails if it's missing.
+ * A photo at another size. Photos live by trip, then size:
+ * /photos/<trip slug or other>/<long side>/<name>. `src` is the 800 px grid
+ * tile, 1280 is for phones in the viewer, 2048 for laptops and 2880 (AVIF
+ * only) for 4K and 5K. The build checks each photo sits in its trip's folder.
  */
-export function largeSrc(photo: Photo): string {
-  return photo.src.replace('/photos/', '/photos/large/');
+function sizedSrc(photo: Photo, long: 1280 | 2048 | 2880): string {
+  return photo.src.replace('/800/', `/${long}/`);
 }
 
 /**
- * A clip's HDR poster: an AVIF beside its JPEG, cut from the clip's first
- * second. The JPEG stays as the fallback and for crawlers.
+ * The viewer's main copy, also the tile's link: 2048 px when made from the
+ * original, or the one copy there is for lowRes photos and samples. Every
+ * photo needs one — `npm test` fails if it's missing.
  */
-export function hdrSrc(src: string): string {
+export function largeSrc(photo: Photo): string {
+  return sizedSrc(photo, 2048);
+}
+
+/**
+ * The viewer's AVIF srcset and sizes, so phones fetch the 1280 px copy,
+ * laptops the 2048 px one and 4K/5K screens the 2880 px one. The JPEG is
+ * only a fallback for browsers without AVIF (Safari before macOS 13), so it
+ * ships at 2048 alone. Undefined when there's only one copy (lowRes,
+ * samples, video stills). Widths are in real pixels: a portrait photo's long
+ * side is its height. The viewer fits the photo within the screen's width
+ * and its height less the caption (`.viewer__img`), so the screen's shape
+ * against the photo's says which one binds.
+ */
+export function largeSrcSet(
+  photo: Photo,
+  /** The biggest long side to offer, e.g. 1280 when the visitor asks to save data. */
+  cap = Infinity,
+): { srcSet: string; sizes: string } | undefined {
+  if (photo.lowRes || photo.sample || photo.video) return undefined;
+  const aspect = photo.width / photo.height;
+  const width = (long: number) => Math.round(long * Math.min(1, aspect));
+  const copies: [string, number][] = [
+    [sizedSrc(photo, 1280), 1280],
+    [largeSrc(photo), 2048],
+  ];
+  if ((photo.originalLong ?? Infinity) >= 2880) copies.push([sizedSrc(photo, 2880), 2880]);
+  return {
+    srcSet: copies
+      .filter(([, long], i) => i === 0 || long <= cap)
+      .map(([src, long]) => `${avifSrc(src)} ${width(long)}w`)
+      .join(', '),
+    sizes: `(min-aspect-ratio: ${photo.width}/${photo.height}) calc((100vh - 9rem) * ${aspect.toFixed(3)}), 100vw`,
+  };
+}
+
+/**
+ * Whether a photo has AVIFs, at every size it ships in; JPEGs exist only at
+ * 800 and 2048 px. The AVIFs are made from the original (10-bit,
+ * full-resolution colour); a clip's are its HDR poster. Samples and lowRes
+ * photos have JPEGs only.
+ */
+export function hasAvif(photo: Photo): boolean {
+  return !photo.sample && !photo.lowRes;
+}
+
+/** The AVIF beside a JPEG. The JPEG stays as the fallback and for crawlers. */
+export function avifSrc(src: string): string {
   return src.replace(/\.jpg$/, '.avif');
 }
 

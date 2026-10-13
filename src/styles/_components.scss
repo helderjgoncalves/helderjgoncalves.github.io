@@ -655,14 +655,24 @@
     max-width: 100%;
   }
 
+  &__figure picture { display: contents; }
+
+  // Sized from the photo's shape (--aspect, set inline) rather than from the
+  // file, so the frame is right before anything loads and the grid tile
+  // (inline background) fills it until the full copy arrives. The gutters
+  // and 9rem match the stage's padding and the caption below.
   &__img {
+    --viewer-gutter: 2rem;
+
     display: block;
-    max-width: 100%;
-    max-height: calc(100dvh - 9rem);
-    width: auto;
+    width: min(100vw - var(--viewer-gutter), (100dvh - 9rem) * var(--aspect, 1));
     height: auto;
+    aspect-ratio: var(--aspect, auto);
     border-radius: $radius-md;
+    background: center / cover no-repeat;
     animation: viewer-in $dur-med $ease;
+
+    @include md-up { --viewer-gutter: 10rem; }
   }
 
   &__caption {
@@ -675,6 +685,26 @@
   &__title { font-weight: 600; }
 
   &__place { color: rgba($white, 0.78); }
+
+  // A clip that couldn't load: its still, with the note over it rather than
+  // under the caption, so the frame keeps its size and nothing drops off screen.
+  &__media { position: relative; }
+
+  &__note {
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    translate: -50% 0;
+    width: max-content;
+    max-width: calc(100% - 2rem);
+    padding: 0.4rem 0.85rem;
+    border-radius: $radius-pill;
+    background: rgba($ink-900, 0.72);
+    backdrop-filter: blur(6px);
+    font-size: $fs-xs;
+    color: $white;
+    text-align: center;
+  }
 
   // The counter and, for photos from a trip, a link to it — one line, so the
   // link costs the photo no height.
@@ -779,6 +809,8 @@
     grid-template-columns: auto 1fr;
     column-gap: 0.75rem;
     align-items: center;
+    // Keeps name and country together when a wider neighbour sets the row's height.
+    align-content: center;
     padding: 0.8rem 0.9rem;
 
     &::before {
@@ -795,6 +827,7 @@
       font-weight: 700;
       font-variant-numeric: tabular-nums;
     }
+
   }
 
   &__name {
@@ -805,6 +838,18 @@
   &__country {
     font-size: $fs-xs;
     color: $color-text-muted;
+  }
+}
+
+// One trail inside an area's section (El Chaltén's day hikes), under its own heading.
+.trip-stop {
+  & + & { margin-top: 2rem; }
+
+  &__title {
+    margin-bottom: 0.75rem;
+    font-size: $fs-md;
+    font-weight: 600;
+    color: $color-heading;
   }
 }
 

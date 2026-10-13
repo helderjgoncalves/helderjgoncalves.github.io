@@ -1,5 +1,5 @@
 import type { MouseEvent } from 'react';
-import { hdrSrc, photoId, type Photo } from '../data/photos';
+import { avifSrc, hasAvif, photoId, type Photo } from '../data/photos';
 import { Icon } from './Icon';
 
 interface PhotoGridProps {
@@ -8,7 +8,7 @@ interface PhotoGridProps {
   variant: 'glance' | 'full';
   /** Load the first photo eagerly — set where the grid sits above the fold. */
   eager?: boolean;
-  /** Makes each tile a link, e.g. from the front-page glance to the photo on the full page. */
+  /** Makes each tile a link, e.g. to the photo's 2048 px copy, for when onOpen can't run. */
   linkTo?: (photo: Photo) => string;
   /** Intercepts a plain click on a linked tile, e.g. to open the photo viewer. */
   onOpen?: (photo: Photo) => void;
@@ -52,9 +52,9 @@ export function PhotoGrid({ photos, variant, eager = false, linkTo, onOpen }: Ph
 
         const figure = (
           <figure className="gallery__figure">
-            {photo.video ? (
+            {hasAvif(photo) ? (
               <picture>
-                <source type="image/avif" srcSet={hdrSrc(photo.src)} />
+                <source type="image/avif" srcSet={avifSrc(photo.src)} />
                 {img}
               </picture>
             ) : (

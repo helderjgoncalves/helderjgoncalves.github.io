@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { largeSrc, type Photo } from '../data/photos';
-import { stopId, tripPath, tripPhotos, type Trip } from '../data/trips';
+import { photoSections, routeSteps, stopId, tripPath, tripPhotos, type Trip } from '../data/trips';
 import { tripEyebrow } from '../data/tripsPage';
 import { Footer } from './Footer';
 import { PhotoGrid } from './PhotoGrid';
@@ -14,7 +14,6 @@ export function TripPage({ trip }: { trip: Trip }) {
   const photos = tripPhotos(trip);
   const [viewing, setViewing] = useState<number | null>(null);
   const open = (photo: Photo) => setViewing(photos.indexOf(photo));
-  const stopsWithPhotos = trip.stops.filter((stop) => stop.photos.length > 0);
   return (
     <>
       <SiteNav current={tripPath(trip)} section="/trips/" />
@@ -44,25 +43,41 @@ export function TripPage({ trip }: { trip: Trip }) {
 
         <Section id="route" title="The route" icon="globe">
           <ol className="trip-route">
-            {trip.stops.map((stop) => (
-              <li key={stop.name} className="trip-route__stop">
-                <span className="trip-route__name">{stop.name}</span>
-                <span className="trip-route__country">{stop.country}</span>
+            {routeSteps(trip).map((step) => (
+              <li key={step.name} className="trip-route__stop">
+                <span className="trip-route__name">{step.name}</span>
+                <span className="trip-route__country">
+                  {step.trails.length > 0 ? `${step.country} · ${step.trails.length} trails` : step.country}
+                </span>
               </li>
             ))}
           </ol>
         </Section>
 
-        {stopsWithPhotos.map((stop, index) => (
-          <Section key={stop.name} id={stopId(stop)} title={stop.name} icon={stop.icon ?? 'globe'}>
-            {stop.note && <p className="gallery__intro">{stop.note}</p>}
-            <PhotoGrid
-              photos={stop.photos}
-              variant="full"
-              eager={index === 0}
-              linkTo={largeSrc}
-              onOpen={open}
-            />
+        {photoSections(trip).map((section, index) => (
+          <Section
+            key={section.name}
+            id={stopId(section)}
+            title={section.name}
+            icon={section.stops[0].icon ?? 'globe'}
+          >
+            {section.stops.map((stop) => (
+              <div key={stop.name} className="trip-stop">
+                {section.trails && (
+                  <h3 id={stopId(stop)} className="trip-stop__title">
+                    {stop.name}
+                  </h3>
+                )}
+                {stop.note && <p className="gallery__intro">{stop.note}</p>}
+                <PhotoGrid
+                  photos={stop.photos}
+                  variant="full"
+                  eager={index === 0}
+                  linkTo={largeSrc}
+                  onOpen={open}
+                />
+              </div>
+            ))}
           </Section>
         ))}
 

@@ -60,6 +60,44 @@ export function tripPhotos(trip: Trip): Photo[] {
   return trip.stops.flatMap((stop) => stop.photos);
 }
 
+/** One numbered place on the route: a stop, or an area with its trails in travel order. */
+export interface RouteStep {
+  name: string;
+  country: string;
+  trails: string[];
+}
+
+/** The route with consecutive stops in one area folded into it. */
+export function routeSteps(trip: Trip): RouteStep[] {
+  const steps: RouteStep[] = [];
+  for (const stop of trip.stops) {
+    const last = steps[steps.length - 1];
+    if (stop.area && last?.name === stop.area) last.trails.push(stop.name);
+    else steps.push({ name: stop.area ?? stop.name, country: stop.country, trails: stop.area ? [stop.name] : [] });
+  }
+  return steps;
+}
+
+/**
+ * The trip page's photo sections: one per stop with photos, except that
+ * consecutive trails in one area share the area's section, each under its
+ * own heading (`trails`).
+ */
+export function photoSections(trip: Trip): { name: string; stops: TripStop[]; trails: boolean }[] {
+  const sections: { name: string; stops: TripStop[]; trails: boolean }[] = [];
+  for (const stop of trip.stops.filter((s) => s.photos.length > 0)) {
+    const last = sections[sections.length - 1];
+    if (stop.area && last?.trails && last.name === stop.area) last.stops.push(stop);
+    else sections.push({ name: stop.area ?? stop.name, stops: [stop], trails: stop.area !== undefined });
+  }
+  return sections;
+}
+
+/** The route in a line: the cards on /trips/. */
+export function routeNames(trip: Trip): string[] {
+  return routeSteps(trip).map((step) => step.name);
+}
+
 export function tripCountries(trip: Trip): string[] {
   return [...new Set(trip.stops.map((stop) => stop.country))];
 }
@@ -75,8 +113,15 @@ export function tripHref(photo: Photo): string | undefined {
   return trip && `${tripPath(trip)}#${photoId(photo)}`;
 }
 
-/** Section anchor for a stop: 'Huayna Potosí' → 'huayna-potosi'. */
-export function stopId(stop: TripStop): string {
+/** The photo viewer's link under the caption, to the photo on its trip page. */
+export function tripLink(photo: Photo): { href: string; label: string } | undefined {
+  const trip = tripOf(photo);
+  const href = tripHref(photo);
+  return trip && href ? { href, label: `${trip.title} trip` } : undefined;
+}
+
+/** Section anchor for a stop or area: 'Huayna Potosí' → 'huayna-potosi'. */
+export function stopId(stop: { name: string }): string {
   return stop.name
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')

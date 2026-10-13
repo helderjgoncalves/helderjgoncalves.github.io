@@ -35,7 +35,37 @@ const {
   tripPath,
   tripPhotos,
   tripCountries,
+  photos,
+  largeSrcSet,
+  hasAvif,
+  avifSrc,
+  largeSrc,
 } = await import(pathToFileURL(ssrEntry).href);
+
+// Photos are filed by trip (/photos/<slug>/<size>/<name>), or under other/
+// when no trip shows them. The folder must agree with the trips' stops.
+const tripOf = new Map();
+for (const trip of trips) for (const photo of tripPhotos(trip)) tripOf.set(photo, trip.slug);
+for (const [key, photo] of Object.entries(photos)) {
+  const folder = tripOf.get(photo) ?? 'other';
+  if (!photo.src.startsWith(`/photos/${folder}/800/`)) {
+    throw new Error(`photos.${key} (${photo.src}) belongs in /photos/${folder}/: move all its sizes there.`);
+  }
+}
+
+// The viewer's copies load only on click, and the AVIFs sit in srcset, so
+// nothing `npm test` reads from the pre-rendered HTML would show one missing.
+for (const [key, photo] of Object.entries(photos)) {
+  const files = (largeSrcSet(photo)?.srcSet.split(', ') ?? []).map((candidate) => candidate.split(' ')[0]);
+  if (hasAvif(photo)) files.push(avifSrc(photo.src), avifSrc(largeSrc(photo)));
+  for (const file of files) {
+    try {
+      await fs.access(path.join(distDir, file));
+    } catch {
+      throw new Error(`photos.${key} has no ${file}. Make every size from the original, or mark it lowRes.`);
+    }
+  }
+}
 
 /**
  * Last commit date touching any of `paths`, as an ISO string. Falls back to the
@@ -287,7 +317,9 @@ function tripJsonLd(dateModified, page) {
             item: {
               '@type': 'TouristDestination',
               name: stop.name,
-              containedInPlace: { '@type': 'Country', name: stop.country },
+              containedInPlace: stop.area
+                ? { '@type': 'Place', name: stop.area, containedInPlace: { '@type': 'Country', name: stop.country } }
+                : { '@type': 'Country', name: stop.country },
             },
           })),
         },
