@@ -139,6 +139,10 @@ has a front-page card; Off the clock's Travel section links to it.
 - **Stops** are in travel order. A stop without photos still shows on the
   numbered route but gets no section. `note` and the trip's `practical` notes
   are hidden while empty — leave them empty rather than invent copy.
+- **Why go** (`highlights`) sits between a trip's hero and its route: about
+ four short reasons to go, each a title and a sentence or two. They may cover
+ places without photos (the trips went further than the photos show), and
+ they follow the never-copy rule below. Hidden while absent.
 - **`/trips/`** is an informative index, not another photo wall. Trips marked
   `featured` get a big card (cover, countries, summary, route); keep that to
   a couple. Every other trip gets a compact card under "More trips" — cover,
@@ -162,6 +166,9 @@ has a front-page card; Off the clock's Travel section links to it.
 - `/trips/` and every trip page close with `TripHelp`, a quiet offer of free
   tips by email (copy in `tripsPage.help`, address from `cv.ts`). Keep it a
   friend's offer: no form, no pricing, nothing in the top bar.
+- Never copy or closely paraphrase other sites' travel copy (tour operators,
+  guides, blogs), even translated. Their pages may inform which stops exist,
+  never the wording or the images in it; every line here is written fresh.
 - Trips carry no dates — no months, years or "last spring". Durations
   ("three weeks") are fine.
 - **Sample photos** (`sample: true` in `photos.ts`, gradient JPEGs named
@@ -176,6 +183,15 @@ the grid) and `public/photos/large/<name>.jpg` (the source's full size, opened
 by the photo viewer, `PhotoViewer.tsx`). `npm test` fails if a page references
 a `/photos/` file that isn't in `dist/`. The viewer is a native `<dialog>` with
 previous/next, arrow keys, swipe and Esc — deliberately no auto-advance.
+
+**Videos** are photos with a `video` (a clip under `public/videos/`): the
+photo is the grid tile and poster, and the clip downloads only once it is the
+item on screen in the viewer — never on scroll — and plays muted, with the
+sound one tap away in the controls. The poster has an HDR AVIF beside its JPEG
+(`hdrSrc`). Ship HDR HEVC (`-tag:v hvc1`)
+with all metadata dropped (`-map_metadata -1`, video and audio streams only:
+iPhone clips carry GPS in data tracks). GitHub rejects files over 100 MB and
+warns above 50 MB, so re-encode long clips rather than commit the original.
 
 Photo captions on Off the clock follow one format: `caption` is the place's
 proper name, `place` is `Country · one short detail`. Omit `place` rather than

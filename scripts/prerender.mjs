@@ -132,7 +132,7 @@ function profileJsonLd() {
         'Lead Software Engineer at OutSystems with 10+ years on developer tools in React, TypeScript and .NET — now integrating Mentor, the platform’s agentic AI, into ODC Studio.',
       url,
       image: `${SITE}/portrait.jpg`,
-      email: 'mailto:helderjgoncalves@proton.me',
+      email: 'mailto:helder@hgoncalves.uk',
       sameAs: [
         'https://www.linkedin.com/in/helderjgoncalves',
         'https://github.com/helderjgoncalves',

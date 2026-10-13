@@ -11,7 +11,7 @@ import { rioDeJaneiro } from './rioDeJaneiro';
 import { yucatan } from './yucatan';
 import type { Trip, TripStop } from './types';
 
-export type { Region, Trip, TripStop, TripTip } from './types';
+export type { Rating, Region, Trip, TripFacts, TripHighlight, TripStop, TripTip } from './types';
 export { regions } from './types';
 
 /**

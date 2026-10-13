@@ -1,5 +1,5 @@
 import { useEffect, useRef, type KeyboardEvent, type MouseEvent, type TouchEvent } from 'react';
-import { largeSrc, type Photo } from '../data/photos';
+import { hdrSrc, largeSrc, type Photo } from '../data/photos';
 import { Icon } from './Icon';
 
 interface PhotoViewerProps {
@@ -90,7 +90,21 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
 
       <div className="viewer__stage">
         <figure className="viewer__figure">
-          <img key={photo.src} className="viewer__img" src={largeSrc(photo)} alt={photo.alt} />
+          {photo.video ? (
+            <video
+              key={photo.src}
+              className="viewer__img"
+              src={photo.video}
+              poster={hdrSrc(largeSrc(photo))}
+              aria-label={photo.alt}
+              controls
+              playsInline
+              autoPlay
+              muted
+            />
+          ) : (
+            <img key={photo.src} className="viewer__img" src={largeSrc(photo)} alt={photo.alt} />
+          )}
           <figcaption className="viewer__caption">
             <span className="viewer__title">{photo.caption}</span>
             {photo.place && <span className="viewer__place">{photo.place}</span>}

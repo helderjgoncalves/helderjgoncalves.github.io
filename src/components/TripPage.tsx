@@ -6,6 +6,7 @@ import { Footer } from './Footer';
 import { PhotoGrid } from './PhotoGrid';
 import { PhotoViewer } from './PhotoViewer';
 import { Section } from './Section';
+import { TripFacts } from './TripFacts';
 import { TripHelp } from './TripHelp';
 import { SiteNav } from './SiteNav';
 
@@ -23,10 +24,24 @@ export function TripPage({ trip }: { trip: Trip }) {
           <p className="page-hero__eyebrow">{tripEyebrow(trip)}</p>
           <h1 className="page-hero__title">{trip.title}</h1>
           <p className="page-hero__thesis">{trip.summary}</p>
+          {trip.facts && <TripFacts facts={trip.facts} />}
         </div>
       </header>
 
       <main>
+        {trip.highlights && (
+          <Section id="why-go" title="Why go" icon="star">
+            <ul className="trip-highlights">
+              {trip.highlights.map((highlight) => (
+                <li key={highlight.title} className="trip-highlights__item">
+                  <h3 className="trip-highlights__title">{highlight.title}</h3>
+                  <p className="trip-highlights__text">{highlight.text}</p>
+                </li>
+              ))}
+            </ul>
+          </Section>
+        )}
+
         <Section id="route" title="The route" icon="globe">
           <ol className="trip-route">
             {trip.stops.map((stop) => (

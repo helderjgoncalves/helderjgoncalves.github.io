@@ -511,6 +511,14 @@
     @include md-up { grid-template-columns: repeat(3, 1fr); }
   }
 
+  // A link to a photo (/trips/<slug>/#<photo>) lands with its stop's title in
+  // view: about one section header of room above the first row.
+  &--full > li {
+    scroll-margin-top: 4rem;
+
+    @include md-up { scroll-margin-top: 4.5rem; }
+  }
+
   &__figure {
     position: relative;
     height: 100%;
@@ -527,6 +535,10 @@
     border-radius: $radius-md;
     @include card-link;
   }
+
+  // A clip's tile wraps its img in <picture> for the HDR poster; keep the
+  // img sized against the figure as if the wrapper weren't there.
+  &__figure picture { display: contents; }
 
   &__img {
     display: block;
@@ -575,6 +587,32 @@
   &__place {
     font-size: $fs-xs;
     color: rgba($white, 0.78);
+  }
+
+  // Marks a tile that opens a clip. The grid never plays or loads it: the
+  // viewer does, once the clip is the item on screen.
+  &__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border: 1px solid rgba($white, 0.5);
+    border-radius: 50%;
+    background: rgba($ink-900, 0.45);
+    backdrop-filter: blur(4px);
+    color: $white;
+    translate: -50% -50%;
+    pointer-events: none;
+
+    svg {
+      width: 1.4rem;
+      height: 1.4rem;
+      margin-left: 0.15rem;
+      fill: currentColor;
+    }
   }
 }
 
@@ -770,6 +808,34 @@
   }
 }
 
+.trip-highlights {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+
+  @include md-up { grid-template-columns: repeat(2, 1fr); }
+
+  &__item {
+    @include card;
+    padding: 1rem 1.1rem;
+    border-left: 3px solid $color-accent;
+  }
+
+  &__title {
+    font-size: $fs-md;
+    font-weight: 700;
+    color: $color-heading;
+  }
+
+  &__text {
+    margin: 0.35rem 0 0;
+    color: $color-text-soft;
+    line-height: 1.6;
+  }
+}
+
 .trip-tips {
   margin: 1.25rem 0 0;
   display: grid;
@@ -907,6 +973,46 @@
   &--compact &__title {
     margin-top: 0.15rem;
     font-size: $fs-md;
+  }
+}
+
+// A trip's facts, in its page hero. Raw white like the rest of the hero, which
+// stays brand-blue in both themes.
+.trip-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
+
+  &__badge {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.3rem 0.85rem;
+    line-height: 1.4;
+    border: 1px solid rgba($white, 0.3);
+    border-radius: $radius-pill;
+    background: rgba($white, 0.12);
+    font-size: $fs-sm;
+    color: $white;
+  }
+
+  &__label { color: rgba($white, 0.8); }
+
+  &__meter {
+    display: flex;
+    gap: 3px;
+  }
+
+  &__step {
+    width: 14px;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba($white, 0.22);
+
+    &--on { background: $white; }
   }
 }
 

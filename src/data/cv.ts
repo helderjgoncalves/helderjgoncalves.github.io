@@ -10,7 +10,7 @@ export const cv: CvData = {
       'What stayed constant is changing a live product without interrupting the people who depend on it: replacing it underneath them a piece at a time behind feature toggles, and building the telemetry that says what a failure actually costs them.',
     ],
     contacts: [
-      { label: 'helderjgoncalves@proton.me', href: 'mailto:helderjgoncalves@proton.me', icon: 'email' },
+      { label: 'helder@hgoncalves.uk', href: 'mailto:helder@hgoncalves.uk', icon: 'email' },
       { label: 'linkedin.com/in/helderjgoncalves', href: 'https://linkedin.com/in/helderjgoncalves', icon: 'linkedin' },
       { label: 'github.com/helderjgoncalves', href: 'https://github.com/helderjgoncalves', icon: 'github' },
     ],

@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react';
-import { photoId, type Photo } from '../data/photos';
+import { hdrSrc, photoId, type Photo } from '../data/photos';
+import { Icon } from './Icon';
 
 interface PhotoGridProps {
   photos: Photo[];
@@ -35,19 +36,35 @@ export function PhotoGrid({ photos, variant, eager = false, linkTo, onOpen }: Ph
         if (isWide(photo)) classes.push('gallery__item--wide');
         if (fillLast && index === photos.length - 1) classes.push('gallery__item--fill');
 
+        const img = (
+          <img
+            className="gallery__img"
+            src={photo.src}
+            alt={photo.alt}
+            width={photo.width}
+            height={photo.height}
+            loading={eager && index === 0 ? 'eager' : 'lazy'}
+            fetchPriority={eager && index === 0 ? 'high' : undefined}
+            decoding="async"
+            style={photo.focus ? { objectPosition: photo.focus } : undefined}
+          />
+        );
+
         const figure = (
           <figure className="gallery__figure">
-            <img
-              className="gallery__img"
-              src={photo.src}
-              alt={photo.alt}
-              width={photo.width}
-              height={photo.height}
-              loading={eager && index === 0 ? 'eager' : 'lazy'}
-              fetchPriority={eager && index === 0 ? 'high' : undefined}
-              decoding="async"
-              style={photo.focus ? { objectPosition: photo.focus } : undefined}
-            />
+            {photo.video ? (
+              <picture>
+                <source type="image/avif" srcSet={hdrSrc(photo.src)} />
+                {img}
+              </picture>
+            ) : (
+              img
+            )}
+            {photo.video && (
+              <span className="gallery__play">
+                <Icon name="play" />
+              </span>
+            )}
             <figcaption className="gallery__caption">
               <span className="gallery__title">{photo.caption}</span>
               {photo.place && <span className="gallery__place">{photo.place}</span>}

@@ -8,6 +8,8 @@ export interface TripsPageData {
   intro: string;
   /** While trips still use sample photos: a hero badge, and a note on those trips. */
   wip: { badge: string; samples: string };
+  /** Labels for a trip's facts on its page, each scored out of 5. */
+  facts: { difficulty: string; comfort: string };
   /** A quiet offer of free tips, closing /trips/ and every trip page. */
   help: {
     /** The heading on /trips/; trip pages ask "Heading to <trip>?". */
@@ -37,6 +39,7 @@ export const tripsPage: TripsPageData = {
   intro:
     'Waking up above the clouds, trails that run for hours, the light shifting over a salt flat at sunset. Then the rush: a summit before dawn, a night beside an erupting volcano, a bike ride down the Death Road. The kind of trip you come home from rested and buzzing at the same time.',
   wip: { badge: 'Work in progress', samples: 'Photos soon' },
+  facts: { difficulty: 'Difficulty', comfort: 'Comfort' },
   help: {
     title: 'Planning something similar?',
     text: "Happy to share what I learned: the route, how long to stay, what I'd skip. Just drop me a line.",

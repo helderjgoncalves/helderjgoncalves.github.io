@@ -18,6 +18,22 @@ export interface TripTip {
   text: string;
 }
 
+/** One reason to go, e.g. "Condors over Colca" and a sentence or two. */
+export interface TripHighlight {
+  title: string;
+  text: string;
+}
+
+/** 1 is the least, 5 the most. */
+export type Rating = 1 | 2 | 3 | 4 | 5;
+
+/** At-a-glance facts for someone deciding whether the trip suits them. */
+export interface TripFacts {
+  difficulty: Rating;
+  /** Never below 3: these are trips to enjoy, not endure. */
+  comfort: Exclude<Rating, 1 | 2>;
+}
+
 /** The groups on /trips/, in page order. Add one here when a trip needs it. */
 export const regions = ['Mexico & Central America', 'South America', 'Africa'] as const;
 export type Region = (typeof regions)[number];
@@ -29,10 +45,17 @@ export interface Trip {
   /** Which group the trip's card sits in on /trips/. */
   region: Region;
   /**
-   * One line, shown under the title: what the trip feels like, not where it
+   * Two lines at most, shown under the title: what the trip feels like, not where it
    * goes — the route is listed right below it. No dates: trips are undated on purpose.
    */
   summary: string;
+  /** Shown under the summary on the trip page. Hidden while absent. */
+  facts?: TripFacts;
+  /**
+   * "Why go": what the trip has to offer, four reads best. May cover places
+   * without photos. Written fresh, never borrowed. The section is hidden while absent.
+   */
+  highlights?: TripHighlight[];
   /** In the order travelled. */
   stops: TripStop[];
   /**

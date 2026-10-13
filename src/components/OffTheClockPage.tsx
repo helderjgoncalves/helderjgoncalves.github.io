@@ -48,14 +48,12 @@ export function OffTheClockPage() {
               key={wonder.name}
               className={wonder.seen ? 'wonders__item wonders__item--seen' : 'wonders__item'}
             >
-              <span className="wonders__mark" aria-hidden="true">
+              <span className="wonders__mark" role="img" aria-label={wonder.seen ? 'Seen' : 'Still to go'}>
                 {wonder.seen && <Icon name="check" />}
               </span>
               <span>
                 <span className="wonders__name">{wonder.name}</span>
-                <span className="wonders__place">
-                  {wonder.place} · {wonder.seen ? 'seen' : 'still to go'}
-                </span>
+                <span className="wonders__place">{wonder.place}</span>
               </span>
             </li>
           ))}

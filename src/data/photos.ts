@@ -12,6 +12,11 @@ export interface Photo {
   focus?: string;
   /** A placeholder standing in for a trip's real photos. The build lists them. */
   sample?: boolean;
+  /**
+   * A short clip under /videos/, played in the viewer in place of the photo,
+   * which becomes its poster. Loaded only on play. Strip its metadata like a photo's.
+   */
+  video?: string;
 }
 
 /**
@@ -53,6 +58,42 @@ export const photos = {
     width: 450,
     height: 800,
     focus: '50% 60%',
+  },
+  lagoPehoe: {
+    src: '/photos/lago-pehoe.jpg',
+    alt: 'Video from a catamaran crossing turquoise Lago Pehoé, panning from the dark-capped Cuernos del Paine to snowy peaks',
+    caption: 'Lago Pehoé',
+    place: 'Chile · crossing under the Cuernos',
+    width: 450,
+    height: 800,
+    video: '/videos/lago-pehoe.mp4',
+  },
+  paineMassif: {
+    src: '/photos/paine-massif.jpg',
+    alt: 'Video across Lago Pehoé to the snowy Paine massif and the dark-capped Cuernos under drifting clouds',
+    caption: 'Lago Pehoé',
+    place: 'Chile · the Paine massif across the water',
+    width: 800,
+    height: 450,
+    wide: true,
+    video: '/videos/paine-massif.mp4',
+  },
+  lagoGreyClip: {
+    src: '/photos/lago-grey-clip.jpg',
+    alt: 'Video from the rocks above Lago Grey, icebergs drifting on the pale water below the mountains',
+    caption: 'Lago Grey',
+    place: 'Chile · icebergs on the lake',
+    width: 450,
+    height: 800,
+    video: '/videos/lago-grey.mp4',
+  },
+  chileanFlag: {
+    src: '/photos/chilean-flag.jpg',
+    alt: 'A frayed Chilean flag snapping in the wind from a white mast against a deep blue sky',
+    caption: 'Lago Grey',
+    place: 'Chile · a flag worn by the wind',
+    width: 600,
+    height: 800,
   },
   lasTorres: {
     src: '/photos/las-torres.jpg',
@@ -180,6 +221,143 @@ export const photos = {
     width: 600,
     height: 800,
   },
+  milkyWay: {
+    src: '/photos/milky-way.jpg',
+    alt: 'The Milky Way arching over a still lagoon, the moon rising in an orange glow behind dark hills',
+    caption: 'Eduardo Avaroa Reserve',
+    place: 'Bolivia · the Milky Way at moonrise',
+    width: 600,
+    height: 800,
+  },
+  semucChampey: {
+    src: '/photos/semuc-champey.jpg',
+    alt: 'The turquoise limestone pools of Semuc Champey seen from a wooden lookout high above the jungle',
+    caption: 'Semuc Champey',
+    place: 'Guatemala · the pools from the lookout',
+    width: 800,
+    height: 600,
+    wide: true,
+  },
+  ollantaytambo: {
+    src: '/photos/ollantaytambo.jpg',
+    alt: 'An Inca stone water channel running through the ruins of Ollantaytambo, terraced mountains behind',
+    caption: 'Ollantaytambo',
+    place: 'Peru · Inca water channels',
+    width: 600,
+    height: 800,
+  },
+  sacsayhuaman: {
+    src: '/photos/sacsayhuaman.jpg',
+    alt: 'The zigzag stone walls of Sacsayhuamán along a green esplanade above Cusco, under big clouds',
+    caption: 'Sacsayhuamán',
+    place: 'Peru · above Cusco',
+    width: 600,
+    height: 800,
+  },
+  alpacas: {
+    src: '/photos/alpacas.jpg',
+    alt: 'Alpacas grazing in a high green valley below snow-capped Andean peaks',
+    caption: 'Ausangate',
+    place: 'Peru · alpacas below the snow',
+    width: 600,
+    height: 800,
+  },
+  deathRoad: {
+    src: '/photos/death-road.jpg',
+    alt: 'On a mountain bike under the "Welcome to Death Road" sign at the bottom of the ride',
+    caption: 'Death Road',
+    place: 'Bolivia · made it to the bottom',
+    width: 600,
+    height: 800,
+  },
+  islaIncahuasi: {
+    src: '/photos/isla-incahuasi.jpg',
+    alt: 'Standing on the rocks beside a giant cactus on Isla Incahuasi, in the middle of the salt flat',
+    caption: 'Isla Incahuasi',
+    place: 'Bolivia · giant cacti in a sea of salt',
+    width: 600,
+    height: 800,
+  },
+  lagunaHedionda: {
+    src: '/photos/laguna-hedionda.jpg',
+    alt: 'Flamingos feeding in a blue lagoon below a reddish volcano',
+    caption: 'Laguna Hedionda',
+    place: 'Bolivia · flamingos below the volcanoes',
+    width: 600,
+    height: 800,
+  },
+  flamingos: {
+    src: '/photos/flamingos.jpg',
+    alt: 'A flock of pink flamingos wading in a lagoon under a deep blue sky',
+    caption: 'Laguna Hedionda',
+    place: 'Bolivia · a flock of flamingos',
+    width: 600,
+    height: 800,
+  },
+  arbolDePiedra: {
+    src: '/photos/arbol-de-piedra.jpg',
+    alt: 'The Árbol de Piedra, a wind-carved rock shaped like a tree, on the sandy Siloli Desert',
+    caption: 'Árbol de Piedra',
+    place: 'Bolivia · the stone tree of the Siloli Desert',
+    width: 600,
+    height: 800,
+  },
+  solDeManana: {
+    src: '/photos/sol-de-manana.jpg',
+    alt: 'Standing with arms out in the steam of the Sol de Mañana geysers',
+    caption: 'Sol de Mañana',
+    place: 'Bolivia · geysers at almost 5,000\u00a0m',
+    width: 600,
+    height: 800,
+  },
+  sanTelmoMarket: {
+    src: '/photos/san-telmo-market.jpg',
+    alt: 'Food stalls under the iron roof of the San Telmo market',
+    caption: 'Mercado de San Telmo',
+    place: 'Argentina · Buenos Aires',
+    width: 600,
+    height: 800,
+  },
+  sanTelmo: {
+    src: '/photos/san-telmo.jpg',
+    alt: 'A busy street in San Telmo lined with old buildings and balconies',
+    caption: 'San Telmo',
+    place: 'Argentina · Buenos Aires',
+    width: 600,
+    height: 800,
+  },
+  torreMonumental: {
+    src: '/photos/torre-monumental.jpg',
+    alt: 'The brick clock tower of the Torre Monumental against a pink evening sky',
+    caption: 'Torre Monumental',
+    place: 'Argentina · Buenos Aires at dusk',
+    width: 600,
+    height: 800,
+  },
+  peritoMorenoLake: {
+    src: '/photos/perito-moreno-lake.jpg',
+    alt: 'A walkway above Lago Argentino, a small boat on the water and mountains behind',
+    caption: 'Perito Moreno Glacier',
+    place: 'Argentina · Lago Argentino from the walkways',
+    width: 600,
+    height: 800,
+  },
+  peritoMorenoIcebergs: {
+    src: '/photos/perito-moreno-icebergs.jpg',
+    alt: 'The jagged blue front of the Perito Moreno Glacier, icebergs floating below',
+    caption: 'Perito Moreno Glacier',
+    place: 'Argentina · icebergs off the ice front',
+    width: 600,
+    height: 800,
+  },
+  lagoGrey: {
+    src: '/photos/lago-grey.jpg',
+    alt: 'Waving from the rocks on the shore of Lago Grey, icebergs and the glacier behind',
+    caption: 'Lago Grey',
+    place: 'Chile · icebergs from Grey Glacier',
+    width: 600,
+    height: 800,
+  },
 
   // Placeholders until the real photos arrive — swap each for a real entry.
   sampleYucatan: {
@@ -229,8 +407,8 @@ export const photos = {
   },
   sampleChile: {
     src: '/photos/sample-chile.jpg',
-    alt: 'Placeholder: photos of the Atacama Desert to come',
-    caption: 'Atacama Desert',
+    alt: 'Placeholder: photos of Valparaíso to come',
+    caption: 'Valparaíso',
     place: 'Chile · sample photo',
     width: 600,
     height: 800,
@@ -244,6 +422,14 @@ export const photos = {
  */
 export function largeSrc(photo: Photo): string {
   return photo.src.replace('/photos/', '/photos/large/');
+}
+
+/**
+ * A clip's HDR poster: an AVIF beside its JPEG, cut from the clip's first
+ * second. The JPEG stays as the fallback and for crawlers.
+ */
+export function hdrSrc(src: string): string {
+  return src.replace(/\.jpg$/, '.avif');
 }
 
 /** Anchor id for a photo on the full page, from its file name: '/photos/volcano.jpg' → 'volcano'. */
