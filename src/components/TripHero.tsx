@@ -14,6 +14,7 @@ export function TripHero({ trip }: { trip: Trip }) {
       )}
       <img
         className={className}
+        draggable={false}
         src={largeSrc(photo)}
         alt={alt}
         width={photo.width}

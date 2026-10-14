@@ -4,6 +4,7 @@ import type { Trip } from './types';
 export const peru: Trip = {
   slug: 'peru',
   title: 'The Andes, the desert and the lake',
+  place: 'Peru',
   region: 'South America',
   summary:
     'Stone the Incas cut to fit without a gap, mountains painted in stripes, and a slow sunset over a lake on the roof of the Andes.',
@@ -41,10 +42,7 @@ export const peru: Trip = {
   cover: { photo: photos.machuPicchu, focus: '50% 45%' },
   practical: [],
   meta: {
-    title: 'The Andes, the desert and the lake · Trips · Hélder Gonçalves',
+    title: 'Peru, the Andes, the desert and the lake · Trips · Hélder Gonçalves',
     description:
-      'Peru, stop by stop: Ollantaytambo, Machu Picchu, Cusco, Rainbow Mountain and Amantaní Island on Lake Titicaca.',
-    image: 'https://hgoncalves.uk/og-off-the-clock.jpg',
-    imageAlt: 'Standing on the snowy summit of Huayna Potosí at night, the lights of La Paz far below',
-  },
+      'Peru, stop by stop: Ollantaytambo, Machu Picchu, Cusco, Rainbow Mountain and Amantaní Island on Lake Titicaca.',  },
 };

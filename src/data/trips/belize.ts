@@ -15,8 +15,5 @@ export const belize: Trip = {
   practical: [],
   meta: {
     title: 'Belize · Trips · Hélder Gonçalves',
-    description: 'Belize, stop by stop: the sea at Caye Caulker and the jungle around San Ignacio.',
-    image: 'https://hgoncalves.uk/og-off-the-clock.jpg',
-    imageAlt: 'Standing on the snowy summit of Huayna Potosí at night, the lights of La Paz far below',
-  },
+    description: 'Belize, stop by stop: the sea at Caye Caulker and the jungle around San Ignacio.',  },
 };

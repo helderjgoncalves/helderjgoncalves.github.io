@@ -102,6 +102,10 @@ export function tripCountries(trip: Trip): string[] {
   return [...new Set(trip.stops.map((stop) => stop.country))];
 }
 
+export function tripPlace(trip: Trip): string {
+  return trip.place ?? trip.title;
+}
+
 /** The trip a photo belongs to, if any. */
 export function tripOf(photo: Photo): Trip | undefined {
   return trips.find((trip) => tripPhotos(trip).some((p) => p.src === photo.src));
@@ -117,7 +121,7 @@ export function tripHref(photo: Photo): string | undefined {
 export function tripLink(photo: Photo): { href: string; label: string } | undefined {
   const trip = tripOf(photo);
   const href = tripHref(photo);
-  return trip && href ? { href, label: `${trip.title} trip` } : undefined;
+  return trip && href ? { href, label: `${tripPlace(trip)} trip` } : undefined;
 }
 
 /** Section anchor for a stop or area: 'Huayna Potosí' → 'huayna-potosi'. */

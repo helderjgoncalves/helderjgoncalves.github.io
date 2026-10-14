@@ -3,7 +3,8 @@ import type { Trip } from './types';
 
 export const patagonia: Trip = {
   slug: 'patagonia',
-  title: 'Patagonia',
+  title: 'From the glacier to the towers',
+  place: 'Patagonia',
   region: 'South America',
   summary:
     'Wind that pushes you sideways, ice crashing into the lake and granite at the end of long days on foot. You come home feeling small, in the best way.',
@@ -51,6 +52,7 @@ export const patagonia: Trip = {
       country: 'Argentina',
       area: 'El Chaltén',
       icon: 'mountain',
+      note: 'Fitz Roy stands over the lagoon. The cloud the wind pins to its summit is why the Tehuelche called the mountain Chaltén, the smoking mountain, and the town below kept the name.',
       photos: [photos.rioDeLasVueltas, photos.fitzRoy, photos.lagunaDeLosTres, photos.losTresBoardwalk],
     },
     {
@@ -71,19 +73,22 @@ export const patagonia: Trip = {
       name: 'Torres del Paine',
       country: 'Chile',
       icon: 'mountain',
+      note: 'The dark caps on the Cuernos are older than the pale rock below them. Some 12.5 million years ago molten granite pushed in underneath and baked them dark; ice-age glaciers scraped the rest away and left only these scraps on top.',
       photos: [photos.torresDelPaine, photos.lasTorres, photos.cuernosDelPaine],
     },
     { name: 'Lago Pehoé', country: 'Chile', photos: [photos.paineMassif, photos.lagoPehoe] },
-    { name: 'Lago Grey', country: 'Chile', photos: [photos.lagoGrey, photos.lagoGreyClip, photos.chileanFlag] },
+    {
+      name: 'Lago Grey',
+      country: 'Chile',
+      note: 'These icebergs and the Perito Moreno Glacier are two edges of the same ice field, the largest in the southern hemisphere outside Antarctica. It crosses the border. From either shore you only see the rim.',
+      photos: [photos.lagoGrey, photos.lagoGreyClip, photos.chileanFlag],
+    },
   ],
   cover: { photo: photos.cuernosDelPaine },
   featured: true,
   practical: [],
   meta: {
-    title: 'Patagonia · Trips · Hélder Gonçalves',
+    title: 'Patagonia, from the glacier to the towers · Trips · Hélder Gonçalves',
     description:
-      'Patagonia in Argentina and Chile: the Perito Moreno Glacier, El Chaltén and the granite towers of Torres del Paine, stop by stop.',
-    image: 'https://hgoncalves.uk/og-off-the-clock.jpg',
-    imageAlt: 'Standing on the snowy summit of Huayna Potosí at night, the lights of La Paz far below',
-  },
+      'Patagonia in Argentina and Chile: the Perito Moreno Glacier, El Chaltén and the granite towers of Torres del Paine, stop by stop.',  },
 };

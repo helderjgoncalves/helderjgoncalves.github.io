@@ -132,7 +132,11 @@ has a front-page card; Off the clock's Travel section links to it.
 - **A trip** is a file in `src/data/trips/` registered in `trips/index.ts`
   (oldest first). That's all: routing, prerendering (with `TouristTrip`
   JSON-LD), the sitemap, the cards on `/trips/` and the front-page card's
-  counts follow from the list.
+  counts follow from the list. A bigger trip's title describes it ("From the
+  glacier to the towers") and sets `place` to the name people plan by
+  ("Patagonia"): that fills "Heading to …?", the viewer's trip link and the
+  front of `meta.title`. The eyebrow lists countries only. Titles use "and",
+  not "&".
 - **One page per destination** someone would plan as a trip: a region that
   spans borders stays one page (Patagonia), while one journey through two
   rich countries becomes two (Peru, Bolivia). Trip pages don't link to each
@@ -145,6 +149,12 @@ has a front-page card; Off the clock's Travel section links to it.
  the cards on `/trips/` show only the area's name. A stop without photos still shows on the
   numbered route but gets no section. `note` and the trip's `practical` notes
   are hidden while empty — leave them empty rather than invent copy.
+- **Curiosities** (a stop's `note`) are one to three per trip, never on
+  neighbouring stops: something about the place that makes people want to
+  go, never logistics (those stay in the email offer). `PhotoGrid` sets one as a labelled card: on desktop in the
+  cells a short last row leaves open, level with the photo's top edge; as a
+  band under the photos when the row is full and on phones. Facts are
+  checked and the wording is fresh, like every other line.
 - **Why go** (`highlights`) sits between a trip's hero and its route: about
  four short reasons to go, each a title and a sentence or two. They may cover
  places without photos (the trips went further than the photos show), and
@@ -178,8 +188,10 @@ has a front-page card; Off the clock's Travel section links to it.
   in place (no navigation), whose caption links to the photo's trip when it
   has one.
 - `/trips/` and every trip page close with `TripHelp`, a quiet offer of free
-  tips by email (copy in `tripsPage.help`, address from `cv.ts`). Keep it a
-  friend's offer: no form, no pricing, nothing in the top bar.
+  tips by email (copy in `tripsPage.help`, address from `cv.ts`). Trip pages
+  also say it once under the route, a single line, so a long run of photos
+  doesn't hide the offer. Keep it a friend's offer: no form, no pricing,
+  nothing in the top bar.
 - Never copy or closely paraphrase other sites' travel copy (tour operators,
   guides, blogs), even translated. Their pages may inform which stops exist,
   never the wording or the images in it; every line here is written fresh.
@@ -312,19 +324,43 @@ canonical source**; the PDF is a printable mirror of it. When the content of
 both stay in sync. Keep the filename stable (`helder-goncalves-cv.pdf`) —
 versioned names like `CV-2026-v2.pdf` would break the saved download URL.
 
-### Social cards (`public/og-home.png`, `public/og-homelab.png`)
+### Social cards (`public/og-*`)
 
-Both are 1200×630 and committed. Their sources are plain HTML in
-`scripts/og-cards/`, rendered by `npm run cards`, which screenshots them with
-an already-installed Chrome (override with `CHROME=/path/to/binary`). This is
-deliberately *not* part of `npm run build`: no headless-browser dependency gets
-added for an asset that changes a few times a year. The card copy duplicates a
-little of `cv.ts` / `homelab.ts` by necessity — when a name, role, or thesis
-changes there, update the template and re-run `npm run cards`.
+Every page has its own 1200×630 card, committed. The photo cards mirror
+`TripHero`: the photo full-bleed, cropped at its `focus`, the words on the
+same frosted band over its foot. Home, CV and home lab have no photo to
+lead with, so they keep their fuller copy (role, focus, stack) over a
+generic blurred backdrop — soft colour light in the hero's blue, not a
+photo — which gives them the photo cards' depth without inventing a picture:
 
-`public/og-off-the-clock.jpg` is the exception: a 1200×630 crop of a photo rather than
-a rendered template. Photos under `public/photos/` are resized for display and
-stripped of all metadata except the colour profile before they are committed
+| Card | Template | Page |
+| --- | --- | --- |
+| `og-home.png` | `home.html?tag=…` (the four pages) | `/` |
+| `og-cv.png` | `home.html?eyebrow=…` | `/cv/` |
+| `og-homelab.png` | `homelab.html` | `/homelab/` |
+| `og-off-the-clock.jpg` | `photo.html` | `/off-the-clock/` (`offTheClock.meta.card`) |
+| `og-trips.jpg` | `photo.html` | `/trips/` (`tripsPage.meta.card`) |
+| `og-trip-<slug>.jpg` | `photo.html` | each trip, with its `cover` |
+
+The sources are plain HTML in `scripts/og-cards/`, rendered by `npm run
+cards`, which screenshots them with an already-installed Chrome (override
+with `CHROME=/path/to/binary`) and re-encodes the photo cards as JPEG with
+`sips`. This is deliberately *not* part of `npm run build`: no
+headless-browser dependency gets added for an asset that changes a few times
+a year. Instead the build throws when a page's card is missing, so a new trip
+fails until `npm run cards` has run. Re-run it when a trip's title, countries
+or cover changes, too — the build can't tell a card is stale.
+
+`photo.html` takes its copy and photo from the data files (through a
+throwaway SSR bundle), so trips need nothing in the script. The photos on
+Off the clock and `/trips/` are never a trip's cover, so no two cards match.
+Sample trips get a sample card until their photos arrive. The home, CV and
+home-lab copy is in their templates and duplicates a little of `cv.ts` /
+`homelab.ts` — when a name, role, or thesis changes there, update the
+template too.
+
+Photos under `public/photos/` are resized for display and stripped of all
+metadata except the colour profile before they are committed
 (`exiftool -all= -tagsfromfile @ -icc_profile`), so no GPS or camera data ships.
 
 ## Styling rules

@@ -11,6 +11,7 @@ export type IconName =
   | 'lab'
   | 'code'
   | 'star'
+  | 'spark'
   | 'globe'
   | 'badge'
   | 'user'
@@ -84,6 +85,12 @@ const PATHS: Record<IconName, JSX.Element> = {
   ),
   star: (
     <path d="M12 3l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9z" />
+  ),
+  spark: (
+    <>
+      <path d="M12 3.2l1.15 5.15L18.3 9.5l-5.15 1.15L12 15.8l-1.15-5.15L5.7 9.5l5.15-1.15z" />
+      <path d="M17.6 14.8l.55 2.15 2.15.55-2.15.55-.55 2.15-.55-2.15-2.15-.55 2.15-.55z" />
+    </>
   ),
   badge: (
     <>

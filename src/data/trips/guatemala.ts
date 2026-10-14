@@ -4,6 +4,7 @@ import type { Trip } from './types';
 export const guatemala: Trip = {
   slug: 'guatemala',
   title: 'Volcanoes to the Caribbean',
+  place: 'Guatemala',
   region: 'Mexico & Central America',
   summary:
     'Lava lighting up the night from a cold camp high on a volcano, then slow days doing nothing at all in warm, turquoise jungle pools.',
@@ -38,10 +39,7 @@ export const guatemala: Trip = {
   cover: { photo: photos.volcano, focus: '50% 65%' },
   practical: [],
   meta: {
-    title: 'Volcanoes to the Caribbean · Trips · Hélder Gonçalves',
+    title: 'Guatemala, volcanoes to the Caribbean · Trips · Hélder Gonçalves',
     description:
-      'A night on Acatenango in Guatemala, watching Volcán de Fuego erupt at night and send up an ash cloud at dawn.',
-    image: 'https://hgoncalves.uk/og-off-the-clock.jpg',
-    imageAlt: 'Standing on the snowy summit of Huayna Potosí at night, the lights of La Paz far below',
-  },
+      'A night on Acatenango in Guatemala, watching Volcán de Fuego erupt at night and send up an ash cloud at dawn.',  },
 };

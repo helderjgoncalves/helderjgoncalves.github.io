@@ -16,8 +16,5 @@ export const yucatan: Trip = {
   practical: [],
   meta: {
     title: 'Yucatán · Trips · Hélder Gonçalves',
-    description: 'The Yucatán Peninsula in Mexico, stop by stop: Chichén Itzá, Valladolid and Tulum.',
-    image: 'https://hgoncalves.uk/og-off-the-clock.jpg',
-    imageAlt: 'Standing on the snowy summit of Huayna Potosí at night, the lights of La Paz far below',
-  },
+    description: 'The Yucatán Peninsula in Mexico, stop by stop: Chichén Itzá, Valladolid and Tulum.',  },
 };

@@ -15,8 +15,5 @@ export const morocco: Trip = {
   practical: [],
   meta: {
     title: 'Morocco · Trips · Hélder Gonçalves',
-    description: 'Morocco, stop by stop: the streets of Marrakech and the dunes of the Sahara.',
-    image: 'https://hgoncalves.uk/og-off-the-clock.jpg',
-    imageAlt: 'Standing on the snowy summit of Huayna Potosí at night, the lights of La Paz far below',
-  },
+    description: 'Morocco, stop by stop: the streets of Marrakech and the dunes of the Sahara.',  },
 };

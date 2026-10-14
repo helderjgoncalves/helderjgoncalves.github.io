@@ -17,7 +17,7 @@ export function FrontDoor() {
           <p className="front__intro">{frontDoor.intro}</p>
           <div className="doors">
             {frontDoor.doors.map((door) => (
-              <a key={door.href} className="door" href={door.href}>
+              <a key={door.href} className="door" href={door.href} draggable={false}>
                 <span className="door__eyebrow">{door.eyebrow}</span>
                 <h2 className="door__title">{door.title}</h2>
                 <span className="door__line">{door.line}</span>

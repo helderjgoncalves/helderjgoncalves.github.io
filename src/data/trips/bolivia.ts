@@ -4,6 +4,7 @@ import type { Trip } from './types';
 export const bolivia: Trip = {
   slug: 'bolivia',
   title: 'The altiplano and the cities',
+  place: 'Bolivia',
   region: 'South America',
   summary:
     'Thin air and endless salt: sunrise from above the clouds, flamingos in still lagoons, and skies so full of stars it is hard to go to bed.',
@@ -27,7 +28,12 @@ export const bolivia: Trip = {
     },
   ],
   stops: [
-    { name: 'Death Road', country: 'Bolivia', photos: [photos.deathRoad] },
+    {
+      name: 'Death Road',
+      country: 'Bolivia',
+      note: 'The one road in Bolivia where traffic keeps to the left. It puts the driver on the cliff side, close enough to watch the outer wheel against a drop of hundreds of metres.',
+      photos: [photos.deathRoad],
+    },
     {
       name: 'Huayna Potosí',
       country: 'Bolivia',
@@ -37,24 +43,27 @@ export const bolivia: Trip = {
     {
       name: 'Salar de Uyuni',
       country: 'Bolivia',
+      note: 'Flat enough that NASA used it to check a satellite built to measure polar ice to the centimetre. Across the 2,000 km² that were surveyed, the salt rises and falls by less than 80 cm.',
       photos: [photos.saltFlatJump, photos.saltTables, photos.saltSunset],
     },
     { name: 'Isla Incahuasi', country: 'Bolivia', photos: [photos.islaIncahuasi] },
-    { name: 'Laguna Hedionda', country: 'Bolivia', photos: [photos.lagunaHedionda, photos.flamingos] },
+    {
+      name: 'Laguna Hedionda',
+      country: 'Bolivia',
+      note: "Hedionda means stinking, for the sulphur in the springs that feed it. The flamingos don't seem to mind: three of the world's six species feed here.",
+      photos: [photos.lagunaHedionda, photos.flamingos],
+    },
     {
       name: 'Eduardo Avaroa Reserve',
       country: 'Bolivia',
       photos: [photos.arbolDePiedra, photos.solDeManana, photos.milkyWay],
     },
   ],
-  cover: { photo: photos.summitNight },
+  cover: { photo: photos.summitNight, focus: '50% 25%' },
   featured: true,
   practical: [],
   meta: {
-    title: 'The altiplano and the cities · Trips · Hélder Gonçalves',
+    title: 'Bolivia, the altiplano and the cities · Trips · Hélder Gonçalves',
     description:
-      'Bolivia, stop by stop: the Death Road, a night climb of Huayna Potosí, the Salar de Uyuni, and the flamingo lagoons and geysers of the far south-west.',
-    image: 'https://hgoncalves.uk/og-off-the-clock.jpg',
-    imageAlt: 'Standing on the snowy summit of Huayna Potosí at night, the lights of La Paz far below',
-  },
+      'Bolivia, stop by stop: the Death Road, a night climb of Huayna Potosí, the Salar de Uyuni, and the flamingo lagoons and geysers of the far south-west.',  },
 };

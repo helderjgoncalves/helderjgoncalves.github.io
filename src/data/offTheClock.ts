@@ -47,8 +47,12 @@ export interface OffTheClockPageData {
     title: string;
     description: string;
     canonical: string;
-    /** Absolute URL of the 1200x630 social card for this page. */
-    image: string;
+    /**
+     * The social card (`public/og-off-the-clock.jpg`, made by `npm run cards`):
+     * this photo full-bleed, cropped to 1200x630 at `focus`, under the title
+     * and the thesis. Not a trip's cover.
+     */
+    card: { photo: Photo; focus?: string };
   };
 }
 
@@ -128,7 +132,7 @@ export const offTheClock: OffTheClockPageData = {
     description:
       'What I do away from the laptop: travel, motorbikes, snowboarding, paragliding and photography — and a slow quest to see every wonder of the world, built and natural.',
     canonical: 'https://hgoncalves.uk/off-the-clock/',
-    image: 'https://hgoncalves.uk/og-off-the-clock.jpg',
+    card: { photo: photos.motorcycle, focus: '50% 12%' },
   },
 };
 

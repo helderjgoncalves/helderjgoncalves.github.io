@@ -106,7 +106,7 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
 
   const lite = saveData();
   const cap = lite ? SAVE_DATA_CAP : Infinity;
-  const imgProps = { className: 'viewer__img', src: largeSrc(photo), alt: photo.alt, style: placeholderStyle(photo) };
+  const imgProps = { className: 'viewer__img', draggable: false, src: largeSrc(photo), alt: photo.alt, style: placeholderStyle(photo) };
   const avifSet = hasAvif(photo) ? (largeSrcSet(photo, cap) ?? { srcSet: avifSrc(largeSrc(photo)) }) : undefined;
   const still = avifSet ? (
     <picture key={photo.src}>

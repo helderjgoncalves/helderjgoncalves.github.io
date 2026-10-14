@@ -15,8 +15,5 @@ export const rioDeJaneiro: Trip = {
   practical: [],
   meta: {
     title: 'Rio de Janeiro · Trips · Hélder Gonçalves',
-    description: 'Rio de Janeiro, stop by stop: Christ the Redeemer and Sugarloaf Mountain.',
-    image: 'https://hgoncalves.uk/og-off-the-clock.jpg',
-    imageAlt: 'Standing on the snowy summit of Huayna Potosí at night, the lights of La Paz far below',
-  },
+    description: 'Rio de Janeiro, stop by stop: Christ the Redeemer and Sugarloaf Mountain.',  },
 };

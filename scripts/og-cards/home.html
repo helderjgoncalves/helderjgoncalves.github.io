@@ -1,7 +1,8 @@
 <!doctype html>
 <!--
-  Source for public/og-home.png (1200x630 social card).
-  Regenerate with `npm run cards` after changing the copy here.
+  Source for public/og-cv.png and, with ?tag=…, public/og-home.png
+  (1200x630 social cards; ?eyebrow=… sets the eyebrow). Regenerate with `npm run cards` after changing
+  the copy here.
 -->
 <html lang="en">
 <head>
@@ -19,10 +20,20 @@
     color: #fff; display: flex; align-items: center;
     padding: 0 76px; gap: 64px; overflow: hidden; position: relative;
   }
-  body::after {
-    content: ''; position: absolute; width: 620px; height: 620px;
-    right: -180px; top: -220px; border-radius: 50%;
-    background: rgba(255,255,255,.06);
+  /* A generic blurred backdrop, not a photo: soft light like the photo
+     cards have, in the hero's blue, warm behind the portrait's sunset. The
+     left is shaded so the text keeps its contrast. */
+  .backdrop {
+    position: absolute; inset: -120px; filter: blur(70px);
+    background:
+      radial-gradient(40% 58% at 80% 45%, rgba(255,150,84,.85), transparent 72%),
+      radial-gradient(44% 58% at 12% 95%, rgba(52,176,200,.7), transparent 72%),
+      radial-gradient(50% 50% at 46% 0%, rgba(124,104,220,.6), transparent 72%),
+      linear-gradient(135deg, #24496f 0%, #3a6ea5 100%);
+  }
+  .shade {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(20,30,46,.38), rgba(20,30,46,.08) 62%, transparent);
   }
   .text { flex: 1; position: relative; z-index: 1; }
   .eyebrow {
@@ -45,13 +56,30 @@
 </style>
 </head>
 <body>
+  <div class="backdrop"></div>
+  <div class="shade"></div>
   <div class="text">
-    <div class="eyebrow">hgoncalves.uk</div>
+    <div class="eyebrow" id="eyebrow">hgoncalves.uk</div>
     <h1>Hélder Gonçalves</h1>
     <div class="role">Lead Software Engineer</div>
     <div class="rule"></div>
-    <div class="tag">Developer tools · Agentic AI<br/>React, TypeScript &amp; .NET</div>
+    <div class="tag" id="tag">Developer tools · Agentic AI<br/>React, TypeScript &amp; .NET</div>
   </div>
   <div class="photo"><img src="../../public/portrait.jpg" alt=""/></div>
+  <script>
+    const query = new URLSearchParams(location.search);
+    const eyebrow = query.get('eyebrow');
+    if (eyebrow) document.getElementById('eyebrow').textContent = eyebrow;
+    // `tag` rows are separated by newlines.
+    const tag = query.get('tag');
+    if (tag) {
+      const el = document.getElementById('tag');
+      el.replaceChildren();
+      tag.split('\n').forEach((row, i) => {
+        if (i) el.append(document.createElement('br'));
+        el.append(row);
+      });
+    }
+  </script>
 </body>
 </html>

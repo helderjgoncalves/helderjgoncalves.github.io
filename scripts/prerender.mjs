@@ -216,7 +216,7 @@ function offTheClockJsonLd(dateModified) {
         name: page.meta.title,
         description: page.meta.description,
         url,
-        image: page.meta.image,
+        image: `${SITE}/og-off-the-clock.jpg`,
         dateModified,
         inLanguage: 'en-GB',
         author: { '@id': PERSON_ID },
@@ -259,7 +259,7 @@ function tripsJsonLd(dateModified) {
         name: page.meta.title,
         description: page.meta.description,
         url,
-        image: page.meta.image,
+        image: `${SITE}/og-trips.jpg`,
         dateModified,
         inLanguage: 'en-GB',
         author: { '@id': PERSON_ID },
@@ -396,8 +396,8 @@ const pages = [
       'Lead Software Engineer at OutSystems with 10+ years on developer tools in React, TypeScript and .NET — now integrating Mentor, the platform’s agentic AI, into ODC Studio.',
     canonical: `${SITE}/cv/`,
     ogType: 'profile',
-    image: `${SITE}/og-home.png`,
-    imageAlt: 'Hélder Gonçalves — Lead Software Engineer at OutSystems',
+    image: `${SITE}/og-cv.png`,
+    imageAlt: 'Curriculum vitae of Hélder Gonçalves, Lead Software Engineer at OutSystems',
     sources: ['src/data/cv.ts', 'src/components', 'src/App.tsx'],
     jsonLd: 'profile',
   },
@@ -425,8 +425,8 @@ const pages = [
     description: offTheClock.meta.description,
     canonical: offTheClock.meta.canonical,
     ogType: 'website',
-    image: offTheClock.meta.image,
-    imageAlt: 'Standing on a snowy summit at night, city lights far below',
+    image: `${SITE}/og-off-the-clock.jpg`,
+    imageAlt: `${offTheClock.title}. ${offTheClock.meta.card.photo.alt}`,
     sources: [
       'src/data/offTheClock.ts',
       'src/data/photos.ts',
@@ -444,8 +444,8 @@ const pages = [
     description: tripsPage.meta.description,
     canonical: tripsPage.meta.canonical,
     ogType: 'website',
-    image: tripsPage.meta.image,
-    imageAlt: tripsPage.meta.imageAlt,
+    image: `${SITE}/og-trips.jpg`,
+    imageAlt: `${tripsPage.title}. ${tripsPage.meta.card.photo.alt}`,
     sources: [
       'src/data/tripsPage.ts',
       'src/data/trips',
@@ -464,8 +464,8 @@ const pages = [
     description: trip.meta.description,
     canonical: `${SITE}${tripPath(trip)}`,
     ogType: 'article',
-    image: trip.meta.image,
-    imageAlt: trip.meta.imageAlt,
+    image: `${SITE}/og-trip-${trip.slug}.jpg`,
+    imageAlt: `${trip.title}. ${trip.cover.photo.alt}`,
     sources: [
       `src/data/trips/${trip.slug}.ts`,
       'src/data/photos.ts',
@@ -476,6 +476,17 @@ const pages = [
     trip,
   })),
 ];
+
+// Social cards are committed assets made by `npm run cards`, so a new trip
+// has none until that runs; fail here rather than ship a broken preview.
+for (const page of pages) {
+  const card = path.join(distDir, new URL(page.image).pathname);
+  try {
+    await fs.access(card);
+  } catch {
+    throw new Error(`${page.path}: no social card at public${new URL(page.image).pathname}. Run \`npm run cards\`.`);
+  }
+}
 
 const template = await fs.readFile(templatePath, 'utf-8');
 

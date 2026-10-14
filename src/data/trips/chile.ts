@@ -4,7 +4,7 @@ import type { Trip } from './types';
 // Sample: photos are placeholders until the real ones arrive.
 export const chile: Trip = {
   slug: 'chile',
-  title: 'Santiago & the coast',
+  title: 'Santiago and the coast',
   region: 'South America',
   summary:
     'A capital ringed by snowy Andes, then down to the Pacific: steep hills of painted houses, rattling funiculars and murals on every wall.',
@@ -35,9 +35,6 @@ export const chile: Trip = {
   cover: { photo: photos.sampleChile },
   practical: [],
   meta: {
-    title: 'Santiago & the coast · Trips · Hélder Gonçalves',
-    description: 'Santiago and the Chilean coast: the city under the Andes, the painted hills of Valparaíso and the beaches of Viña del Mar.',
-    image: 'https://hgoncalves.uk/og-off-the-clock.jpg',
-    imageAlt: 'Standing on the snowy summit of Huayna Potosí at night, the lights of La Paz far below',
-  },
+    title: 'Santiago and the coast · Trips · Hélder Gonçalves',
+    description: 'Santiago and the Chilean coast: the city under the Andes, the painted hills of Valparaíso and the beaches of Viña del Mar.',  },
 };

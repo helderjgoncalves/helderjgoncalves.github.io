@@ -1,13 +1,18 @@
 import { useState } from 'react';
+import { cv } from '../data/cv';
 import { largeSrc, type Photo } from '../data/photos';
-import { photoSections, routeSteps, stopId, tripPath, tripPhotos, type Trip } from '../data/trips';
+import { photoSections, routeSteps, stopId, tripPath, tripPhotos, tripPlace, type Trip } from '../data/trips';
+import { tripsPage } from '../data/tripsPage';
 import { Footer } from './Footer';
+import { Icon } from './Icon';
 import { PhotoGrid } from './PhotoGrid';
 import { PhotoViewer } from './PhotoViewer';
 import { Section } from './Section';
 import { TripHelp } from './TripHelp';
 import { TripHero } from './TripHero';
 import { SiteNav } from './SiteNav';
+
+const email = cv.profile.contacts.find((contact) => contact.icon === 'email');
 
 export function TripPage({ trip }: { trip: Trip }) {
   const photos = tripPhotos(trip);
@@ -44,6 +49,17 @@ export function TripPage({ trip }: { trip: Trip }) {
               </li>
             ))}
           </ol>
+          {email && (
+            <p className="trip-route__ask">
+              <span className="trip-route__ask-mark">
+                <Icon name="email" />
+              </span>
+              <span>
+                {tripsPage.help.prompt}{' '}
+                <a href={email.href}>{tripsPage.help.promptLink}</a>.
+              </span>
+            </p>
+          )}
         </Section>
 
         {photoSections(trip).map((section, index) => (
@@ -60,13 +76,13 @@ export function TripPage({ trip }: { trip: Trip }) {
                     {stop.name}
                   </h3>
                 )}
-                {stop.note && <p className="gallery__intro">{stop.note}</p>}
                 <PhotoGrid
                   photos={stop.photos}
                   variant="full"
                   eager={index === 0}
                   linkTo={largeSrc}
                   onOpen={open}
+                  note={stop.note ? { label: tripsPage.curiosity, text: stop.note } : undefined}
                 />
               </div>
             ))}
@@ -86,7 +102,7 @@ export function TripPage({ trip }: { trip: Trip }) {
           </Section>
         )}
 
-        <TripHelp title={`Heading to ${trip.title}?`} back />
+        <TripHelp title={`Heading to ${tripPlace(trip)}?`} back />
       </main>
 
       <Footer />

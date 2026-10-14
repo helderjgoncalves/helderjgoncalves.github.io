@@ -1,0 +1,69 @@
+<!doctype html>
+<!--
+  Source for the photo social cards (1200x630): /off-the-clock/, /trips/ and
+  every trip page. Mirrors the trip page's hero (.trip-cover): the photo
+  full-bleed, the words on a frosted band over its foot. `npm run cards` fills
+  it from the data files through the query string (eyebrow, title, line,
+  photo, focus); opened bare it shows a sample.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet"/>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; }
+  body {
+    font-family: Inter, sans-serif; color: #fff; background: #1c2330;
+    position: relative; overflow: hidden;
+  }
+  .photo {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }  /* The hero's band: ink-900 from 0.6 at the foot to 0.15, blurred, fading in. */
+  .band {
+    --fade: 100px;
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: var(--fade) 72px 52px;
+    background: linear-gradient(0deg, rgba(28,35,48,.62), rgba(28,35,48,.15));
+    backdrop-filter: blur(10px) saturate(1.2);
+    mask-image: linear-gradient(
+      180deg,
+      transparent,
+      rgba(0,0,0,.1) calc(var(--fade) * .3),
+      rgba(0,0,0,.45) calc(var(--fade) * .6),
+      rgba(0,0,0,.85) calc(var(--fade) * .85),
+      #000 var(--fade)
+    );
+    text-shadow: 0 1px 10px rgba(28,35,48,.4);
+  }
+  .eyebrow {
+    font-size: 22px; font-weight: 600; letter-spacing: .10em;
+    text-transform: uppercase; color: rgba(255,255,255,.82); margin-bottom: 14px;
+  }
+  h1 { font-size: 72px; font-weight: 800; letter-spacing: -.025em; line-height: 1.04; text-wrap: balance; }
+  h1.long { font-size: 60px; }
+  .line { font-size: 28px; font-weight: 500; color: rgba(255,255,255,.92); margin-top: 14px; }
+</style>
+</head>
+<body>
+  <img class="photo" id="photo" src="../../public/photos/patagonia/2048/cuernos-del-paine.jpg" alt=""/>  <div class="band">
+    <div class="eyebrow" id="eyebrow">Argentina · Chile</div>
+    <h1 id="title">From the glacier to the towers</h1>
+    <div class="line" id="line"></div>
+  </div>
+  <script>
+    const params = new URLSearchParams(location.search);
+    for (const id of ['eyebrow', 'title', 'line']) {
+      const el = document.getElementById(id);
+      if (params.has(id)) el.textContent = params.get(id);
+      el.hidden = el.textContent === '';
+    }
+    const photo = document.getElementById('photo');
+    if (params.has('photo')) photo.src = params.get('photo');
+    if (params.has('focus')) photo.style.objectPosition = params.get('focus');    const title = document.getElementById('title');
+    title.classList.toggle('long', title.textContent.length > 26);
+  </script>
+</body>
+</html>

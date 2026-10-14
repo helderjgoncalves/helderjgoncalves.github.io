@@ -4,7 +4,7 @@ import type { Trip } from './types';
 // Iguazú is still a placeholder until its real photos arrive.
 export const argentina: Trip = {
   slug: 'argentina',
-  title: 'Buenos Aires & Iguazú',
+  title: 'Buenos Aires and Iguazú',
   region: 'South America',
   summary:
     'Nights that start late and end in tango, Sundays among the stalls of old San Telmo, then hundreds of waterfalls thundering into the jungle.',
@@ -38,9 +38,6 @@ export const argentina: Trip = {
   cover: { photo: photos.torreMonumental, focus: '50% 30%' },
   practical: [],
   meta: {
-    title: 'Buenos Aires & Iguazú · Trips · Hélder Gonçalves',
-    description: 'Buenos Aires and the Iguazú Falls: tango, San Telmo on a Sunday and hundreds of waterfalls in the jungle.',
-    image: 'https://hgoncalves.uk/og-off-the-clock.jpg',
-    imageAlt: 'Standing on the snowy summit of Huayna Potosí at night, the lights of La Paz far below',
-  },
+    title: 'Buenos Aires and Iguazú · Trips · Hélder Gonçalves',
+    description: 'Buenos Aires and the Iguazú Falls: tango, San Telmo on a Sunday and hundreds of waterfalls in the jungle.',  },
 };

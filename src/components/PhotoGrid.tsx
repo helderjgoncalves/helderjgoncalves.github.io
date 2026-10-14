@@ -12,9 +12,11 @@ interface PhotoGridProps {
   linkTo?: (photo: Photo) => string;
   /** Intercepts a plain click on a linked tile, e.g. to open the photo viewer. */
   onOpen?: (photo: Photo) => void;
+  /** A curiosity, placed in the grid rather than above it. Full grids only. */
+  note?: { label: string; text: string };
 }
 
-export function PhotoGrid({ photos, variant, eager = false, linkTo, onOpen }: PhotoGridProps) {
+export function PhotoGrid({ photos, variant, eager = false, linkTo, onOpen, note }: PhotoGridProps) {
   // Modified clicks keep the browser's own behaviour (new tab, save link…).
   function handleClick(event: MouseEvent, photo: Photo) {
     if (!onOpen || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
@@ -39,6 +41,7 @@ export function PhotoGrid({ photos, variant, eager = false, linkTo, onOpen }: Ph
         const img = (
           <img
             className="gallery__img"
+            draggable={false}
             src={photo.src}
             alt={photo.alt}
             width={photo.width}
@@ -79,7 +82,11 @@ export function PhotoGrid({ photos, variant, eager = false, linkTo, onOpen }: Ph
             className={classes.join(' ')}
           >
             {linkTo ? (
-              <a className="gallery__link" href={linkTo(photo)} onClick={(event) => handleClick(event, photo)}>
+              <a
+                className="gallery__link"
+                href={linkTo(photo)}
+                draggable={false}
+                onClick={(event) => handleClick(event, photo)}>
                 {figure}
               </a>
             ) : (
@@ -88,6 +95,17 @@ export function PhotoGrid({ photos, variant, eager = false, linkTo, onOpen }: Ph
           </li>
         );
       })}
+      {note && variant === 'full' && (
+        <li className="gallery__note" data-rest={cells % 3}>
+          <span className="gallery__note-mark">
+            <Icon name="spark" />
+          </span>
+          <div>
+            <p className="gallery__note-label">{note.label}</p>
+            <p className="gallery__note-text">{note.text}</p>
+          </div>
+        </li>
+      )}
     </ul>
   );
 }

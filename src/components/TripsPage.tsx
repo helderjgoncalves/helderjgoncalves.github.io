@@ -17,9 +17,10 @@ function TripCard({ trip, compact = false, eager = false }: TripCardProps) {
   // Compact cards sit under "More trips" (h2) and their region (h3).
   const Title = compact ? 'h4' : 'h2';
   return (
-    <a className={compact ? 'trip-card trip-card--compact' : 'trip-card'} href={tripPath(trip)}>
+    <a className={compact ? 'trip-card trip-card--compact' : 'trip-card'} href={tripPath(trip)} draggable={false}>
       <img
         className="trip-card__img"
+        draggable={false}
         src={photo.src}
         alt={photo.alt}
         width={photo.width}

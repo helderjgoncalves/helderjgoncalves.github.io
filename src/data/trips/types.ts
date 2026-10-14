@@ -12,7 +12,10 @@ export interface TripStop {
   area?: string;
   /** Section icon on the trip page. Defaults to the globe. */
   icon?: IconName;
-  /** A line or two about the stop. Hidden while empty. */
+  /**
+   * A curiosity about the place, a sentence or two: what makes someone want
+   * to go, never how to get there. Set among the stop's photos. Hidden while empty.
+   */
   note?: string;
   /** A stop without photos still shows on the route, just without a section. */
   photos: Photo[];
@@ -48,6 +51,12 @@ export interface Trip {
   /** URL segment: /trips/<slug>/. Keep it stable once published. */
   slug: string;
   title: string;
+  /**
+   * The name someone planning it would use, when the title is a description
+   * ('Patagonia', 'Peru'). Fills "Heading to …?" and the viewer's trip link.
+   * The eyebrow stays countries only. Defaults to the title.
+   */
+  place?: string;
   /** Which group the trip's card sits in on /trips/. */
   region: Region;
   /**
@@ -74,11 +83,9 @@ export interface Trip {
   featured?: boolean;
   /** Season, transport, operators, altitude… The section is hidden while empty. */
   practical: TripTip[];
+  /** The social card is `public/og-trip-<slug>.jpg`, the cover beside the title (`npm run cards`). */
   meta: {
     title: string;
     description: string;
-    /** Absolute URL of a 1200x630 social card. */
-    image: string;
-    imageAlt: string;
   };
 }

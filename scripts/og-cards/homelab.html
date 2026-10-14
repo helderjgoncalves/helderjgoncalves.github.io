@@ -18,10 +18,20 @@
     color: #fff; display: flex; flex-direction: column; justify-content: center;
     padding: 0 84px; overflow: hidden; position: relative;
   }
-  body::after {
-    content: ''; position: absolute; width: 560px; height: 560px;
-    right: -200px; bottom: -240px; border-radius: 50%;
-    background: rgba(255,255,255,.06);
+  /* A generic blurred backdrop, not a photo: soft light like the photo
+     cards have, in cooler tones than the home card's. The left is shaded so
+     the text keeps its contrast. */
+  .backdrop {
+    position: absolute; inset: -120px; filter: blur(70px);
+    background:
+      radial-gradient(44% 58% at 84% 80%, rgba(52,196,204,.75), transparent 72%),
+      radial-gradient(46% 56% at 72% 6%, rgba(124,104,220,.68), transparent 72%),
+      radial-gradient(40% 50% at 6% 8%, rgba(80,150,230,.55), transparent 72%),
+      linear-gradient(135deg, #24496f 0%, #3a6ea5 100%);
+  }
+  .shade {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(20,30,46,.38), rgba(20,30,46,.08) 62%, transparent);
   }
   .inner { position: relative; z-index: 1; }
   .eyebrow {
@@ -42,6 +52,8 @@
 </style>
 </head>
 <body>
+  <div class="backdrop"></div>
+  <div class="shade"></div>
   <div class="inner">
     <div class="eyebrow">Case study · hgoncalves.uk/homelab</div>
     <h1>Self-Hosted Home Lab</h1>
