@@ -30,8 +30,8 @@ dist-ssr
 *.tsbuildinfo
 vite.config.ts.timestamp-*
 
-# Local CV extraction scratch output
-.cv-extract-tmp/cv-raw.*
+# Local CV extraction scratch — never commit
+.cv-extract-tmp/
 
 # Private CV working notes — never commit
 cv-from-pdf.md
