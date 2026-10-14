@@ -110,7 +110,7 @@ export const homelab: HomelabPageData = {
     description:
       'Case study of a NAS-based private cloud: no inbound ports, Cloudflare Tunnel into a Traefik reverse proxy, zero-trust Access, AdGuard Home with DoH, and monitoring — declarative in Git.',
     canonical: 'https://hgoncalves.uk/homelab/',
-    image: 'https://hgoncalves.uk/og-homelab.png',
+    image: 'https://hgoncalves.uk/og-homelab.jpg',
     datePublished: '2026-08-10',
   },
 };

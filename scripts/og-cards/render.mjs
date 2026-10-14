@@ -61,9 +61,9 @@ const photoQuery = ({ photo, focus }) => ({ photo: photoUrl(photo), ...(focus ? 
 
 /** @type {{ template: string, out: string, query?: Record<string, string> }[]} */
 const cards = [
-  { template: 'home.html', out: 'og-home.png', query: { tag: 'CV · Home lab\nOff the clock · Trips' } },
-  { template: 'home.html', out: 'og-cv.png', query: { eyebrow: 'hgoncalves.uk/cv · Curriculum vitae' } },
-  { template: 'homelab.html', out: 'og-homelab.png' },
+  { template: 'home.html', out: 'og-home.jpg', query: { tag: 'CV · Home lab\nOff the clock · Trips' } },
+  { template: 'home.html', out: 'og-cv.jpg', query: { eyebrow: 'hgoncalves.uk/cv · Curriculum vitae' } },
+  { template: 'homelab.html', out: 'og-homelab.jpg' },
   {
     template: 'photo.html',
     out: 'og-off-the-clock.jpg',
@@ -98,10 +98,10 @@ const cards = [
 for (const card of cards) {
   const url = pathToFileURL(path.join(__dirname, card.template));
   if (card.query) url.search = new URLSearchParams(card.query).toString();
-  const jpeg = card.out.endsWith('.jpg');
   const dest = path.join(publicDir, card.out);
-  // Chrome only writes PNG; the photo cards are re-encoded as JPEG below.
-  const shot = jpeg ? path.join(work, card.out.replace(/\.jpg$/, '.png')) : dest;
+  // Chrome only writes PNG; every card is re-encoded as JPEG below, since
+  // WhatsApp may drop a link image much over 300 KB.
+  const shot = path.join(work, card.out.replace(/\.jpg$/, '.png'));
   execFileSync(
     chrome,
     [
@@ -118,11 +118,11 @@ for (const card of cards) {
     ],
     { stdio: ['ignore', 'ignore', 'ignore'] },
   );
-  if (jpeg) {
-    execFileSync('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', '82', shot, '--out', dest], {
-      stdio: 'ignore',
-    });
-  }
+  // Text over flat colour shows JPEG ringing sooner than a photo does.
+  const quality = card.template === 'photo.html' ? '82' : '92';
+  execFileSync('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', quality, shot, '--out', dest], {
+    stdio: 'ignore',
+  });
 
   const { size } = fs.statSync(dest);
   console.log(`✓ ${card.out} (${(size / 1024).toFixed(0)} KB)`);

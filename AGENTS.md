@@ -36,7 +36,7 @@ npm run build    # tsc -b → vite build → vite SSR build → prerender → di
 npm run preview  # serve ./dist at http://localhost:4173 (matches production)
 npm run lint     # tsc -b --noEmit (no ESLint configured)
 npm test         # node --test scripts/dist.test.mjs — checks ./dist (after build)
-npm run cards    # re-render public/og-*.png from scripts/og-cards/ (manual)
+npm run cards    # re-render public/og-*.jpg from scripts/og-cards/ (manual)
 ```
 
 `npm test` asserts the *build output*, not the source: per-route agreement
@@ -335,9 +335,9 @@ photo — which gives them the photo cards' depth without inventing a picture:
 
 | Card | Template | Page |
 | --- | --- | --- |
-| `og-home.png` | `home.html?tag=…` (the four pages) | `/` |
-| `og-cv.png` | `home.html?eyebrow=…` | `/cv/` |
-| `og-homelab.png` | `homelab.html` | `/homelab/` |
+| `og-home.jpg` | `home.html?tag=…` (the four pages) | `/` |
+| `og-cv.jpg` | `home.html?eyebrow=…` | `/cv/` |
+| `og-homelab.jpg` | `homelab.html` | `/homelab/` |
 | `og-off-the-clock.jpg` | `photo.html` | `/off-the-clock/` (`offTheClock.meta.card`) |
 | `og-trips.jpg` | `photo.html` | `/trips/` (`tripsPage.meta.card`) |
 | `og-trip-<slug>.jpg` | `photo.html` | each trip, with its `cover` |

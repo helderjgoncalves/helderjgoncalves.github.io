@@ -377,7 +377,7 @@ const pages = [
     description: frontDoor.meta.description,
     canonical: `${SITE}/`,
     ogType: 'website',
-    image: `${SITE}/og-home.png`,
+    image: `${SITE}/og-home.jpg`,
     imageAlt: 'Hélder Gonçalves — Lead Software Engineer at OutSystems',
     sources: [
       'src/data/frontDoor.ts',
@@ -396,7 +396,7 @@ const pages = [
       'Lead Software Engineer at OutSystems with 10+ years on developer tools in React, TypeScript and .NET — now integrating Mentor, the platform’s agentic AI, into ODC Studio.',
     canonical: `${SITE}/cv/`,
     ogType: 'profile',
-    image: `${SITE}/og-cv.png`,
+    image: `${SITE}/og-cv.jpg`,
     imageAlt: 'Curriculum vitae of Hélder Gonçalves, Lead Software Engineer at OutSystems',
     sources: ['src/data/cv.ts', 'src/components', 'src/App.tsx'],
     jsonLd: 'profile',
