@@ -1089,30 +1089,49 @@
 
   @include md-up { padding-top: 4rem; }
 
-  // Fills the sides once the photo stops widening; until then the photo
-  // covers it, so it isn't painted below lg, where the photo always fills.
-  &__ambient {
+  // Once the photo stops widening, each side carries it on: the photo flipped
+  // against its own edge, so the pixels at the seam match. Under the photo
+  // itself sits an unflipped copy, so its edge fade crosses from sharp to
+  // the same picture softened, never to the dark background. The three are
+  // blurred as one layer: blurred one by one, each edge goes see-through and
+  // the seam shows dark. Undimmed, since any change in tone shows the seam
+  // too. Off screen until the photo stops widening, so not painted below lg,
+  // where it always fills.
+  &__extend {
     display: none;
 
     @include lg-up { display: block; }
     position: absolute;
     inset: 0;
-    width: 100%;
+    filter: blur(14px);
+    // The blur's see-through top and bottom edges, pushed past the hero's clip.
+    transform: scaleY(1.1);
+  }
+
+  &__copy {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: var(--trip-cover-photo);
     height: 100%;
     object-fit: cover;
-    filter: blur(40px);
-    transform: scale(1.15);
+    transform: translateX(-50%);
+
+    &--left { transform: translateX(-150%) scaleX(-1); }
+
+    &--right { transform: translateX(50%) scaleX(-1); }
   }
 
   // No wider than 2.1:1, or an ultra-wide screen would show a thin slice of a
   // portrait cover, its subject cut off. Past that it sits centred, its sides
-  // fading into the ambient copy. Sized from the hero's min-height, since a
+  // fading into its blurred extension. Sized from the hero's min-height, since a
   // percentage can't reach its height; a taller hero only crops a little more.
-  // The fade is as wide as the gap beside it (at most 15% of the photo), so
+  // The fade is as wide as the gap beside it, up to 8rem: long enough to
+  // soften gradually into its blurred copy, which matches it underneath. So
   // while the photo fills the hero its edges stay sharp, and the fade grows
   // in smoothly as the window widens past that.
   &__img {
-    --edge: clamp(0px, var(--trip-cover-gap), calc(var(--trip-cover-photo) * 0.15));
+    --edge: clamp(0px, var(--trip-cover-gap), 8rem);
     position: absolute;
     top: 0;
     left: 50%;

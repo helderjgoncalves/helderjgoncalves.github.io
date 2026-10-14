@@ -6,7 +6,7 @@ import { TripFacts } from './TripFacts';
 /** A trip page's hero: its cover photo full-bleed, the title and summary over its foot. */
 export function TripHero({ trip }: { trip: Trip }) {
   const { photo, focus } = trip.cover;
-  // Both layers pick the same copy from the same srcset, so the photo downloads once.
+  // Every layer picks the same copy from the same srcset, so the photo downloads once.
   const layer = (className: string, alt: string) => (
     <picture>
       {hasAvif(photo) && (
@@ -26,7 +26,11 @@ export function TripHero({ trip }: { trip: Trip }) {
   );
   return (
     <header className="page-hero trip-cover">
-      {layer('trip-cover__ambient', '')}
+      <div className="trip-cover__extend" aria-hidden="true">
+        {layer('trip-cover__copy trip-cover__copy--left', '')}
+        {layer('trip-cover__copy', '')}
+        {layer('trip-cover__copy trip-cover__copy--right', '')}
+      </div>
       {layer('trip-cover__img', photo.alt)}
       <div className="trip-cover__band">
         <div className="container page-hero__inner">
