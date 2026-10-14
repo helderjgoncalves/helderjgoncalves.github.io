@@ -83,7 +83,7 @@ export function OffTheClockPage() {
               />
               {theme.more && (
                 <div className="project__actions">
-                  <a className="project__link project__link--primary" href={theme.more.href}>
+                  <a className="project__link project__link--primary" href={theme.more.href} draggable={false}>
                     {theme.more.label}
                   </a>
                 </div>

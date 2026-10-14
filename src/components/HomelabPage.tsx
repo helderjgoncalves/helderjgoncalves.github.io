@@ -51,6 +51,7 @@ export function HomelabPage() {
                   cta.primary ? 'homelab-cta homelab-cta--primary' : 'homelab-cta'
                 }
                 href={cta.href}
+                draggable={false}
                 target={cta.external ? '_blank' : undefined}
                 rel={cta.external ? 'noopener noreferrer' : undefined}
               >
@@ -81,6 +82,7 @@ export function HomelabPage() {
                     <a
                       className="homelab-decisions__evidence"
                       href={decision.evidence.href}
+                      draggable={false}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -108,6 +110,7 @@ export function HomelabPage() {
               href="https://github.com/helderjgoncalves/Homelab-Infrastructure"
               target="_blank"
               rel="noopener noreferrer"
+              draggable={false}
             >
               Homelab Infrastructure
             </a>{' '}

@@ -18,7 +18,7 @@ export function OffTheClockGlance() {
       <Section id="off-the-clock" title="Off the clock" icon="globe">
         <PhotoGrid photos={glance} variant="glance" linkTo={largeSrc} onOpen={open} />
         <div className="project__actions">
-          <a className="project__link project__link--primary" href="/off-the-clock/">
+          <a className="project__link project__link--primary" href="/off-the-clock/" draggable={false}>
             More off the clock
           </a>
         </div>

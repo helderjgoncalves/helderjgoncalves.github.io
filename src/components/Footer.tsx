@@ -6,12 +6,12 @@ export function Footer() {
       <div className="container">
         <p>
           © {new Date().getFullYear()}{' '}
-          <a href="/">{cv.profile.name}</a> ·{' '}
-          <a href="https://github.com/helderjgoncalves" target="_blank" rel="noopener noreferrer">
+          <a href="/" draggable={false}>{cv.profile.name}</a> ·{' '}
+          <a href="https://github.com/helderjgoncalves" target="_blank" rel="noopener noreferrer" draggable={false}>
             GitHub
           </a>{' '}
           ·{' '}
-          <a href="https://linkedin.com/in/helderjgoncalves" target="_blank" rel="noopener noreferrer">
+          <a href="https://linkedin.com/in/helderjgoncalves" target="_blank" rel="noopener noreferrer" draggable={false}>
             LinkedIn
           </a>
         </p>

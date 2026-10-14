@@ -382,8 +382,10 @@ Conventions:
   is how `.nav`'s `backdrop-filter` shipped as `-webkit-` only, which Chromium
   does not alias, so the nav blur worked in Safari and not in Chrome. Write the
   standard property alone; `npm test` fails if a prefixed declaration reaches
-  `dist/` without its standard counterpart. `-webkit-font-smoothing` and
-  `-moz-osx-font-smoothing` are the exception — they have no standard form.
+  `dist/` without its standard counterpart. `-webkit-font-smoothing`,
+  `-moz-osx-font-smoothing`, and `-webkit-user-drag` are the exception — they
+  have no standard form. The last one is what stops Safari dragging a link;
+  `draggable="false"` is enough for an image, and Safari ignores it on `<a>`.
 - Colours that change with theme should reference the CSS custom properties
   (e.g. `var(--color-text)`) or the SASS aliases at the bottom of
   `_variables.scss` (`$color-text`, `$color-accent`, …). Reach for raw palette

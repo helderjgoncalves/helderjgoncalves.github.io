@@ -42,6 +42,7 @@ export function Hero({ profile, showDownload = false }: HeroProps) {
               key={contact.href}
               className="hero__contact"
               href={contact.href}
+              draggable={false}
               target={contact.href.startsWith('http') ? '_blank' : undefined}
               rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
             >

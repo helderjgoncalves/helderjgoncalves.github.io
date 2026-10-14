@@ -48,6 +48,7 @@ export function SiteNav({ current, section }: SiteNavProps) {
         <a
           href="/"
           className="nav__brand"
+          draggable={false}
           aria-label={isHome ? undefined : 'Home'}
           aria-current={isHome ? 'page' : undefined}
         >
@@ -58,6 +59,7 @@ export function SiteNav({ current, section }: SiteNavProps) {
             <a
               key={link.href}
               href={link.href}
+              draggable={false}
               aria-current={
                 link.href === current ? 'page' : link.href === section ? 'true' : undefined
               }

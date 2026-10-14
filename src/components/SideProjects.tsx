@@ -20,7 +20,7 @@ export function SideProjects({ items }: SideProjectsProps) {
           {(project.caseStudyHref || project.href) && (
             <div className="project__actions">
               {project.caseStudyHref && (
-                <a className="project__link project__link--primary" href={project.caseStudyHref}>
+                <a className="project__link project__link--primary" href={project.caseStudyHref} draggable={false}>
                   View case study
                 </a>
               )}
@@ -30,6 +30,7 @@ export function SideProjects({ items }: SideProjectsProps) {
                   href={project.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  draggable={false}
                 >
                   View on GitHub
                 </a>

@@ -52,7 +52,7 @@ export function TripPage({ trip }: { trip: Trip }) {
             </span>
             <span>
               {tripsPage.help.prompt}{' '}
-              <a href={`mailto:${tripsPage.help.email}`}>{tripsPage.help.promptLink}</a>.
+              <a href={`mailto:${tripsPage.help.email}`} draggable={false}>{tripsPage.help.promptLink}</a>.
             </span>
           </p>
         </Section>

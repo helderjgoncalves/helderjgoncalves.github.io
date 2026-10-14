@@ -200,7 +200,7 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
                 {index + 1} / {photos.length}
               </span>
               {link && (
-                <a className="viewer__link" href={link.href}>
+                <a className="viewer__link" href={link.href} draggable={false}>
                   {link.label}
                   <Icon name="chevronRight" />
                 </a>

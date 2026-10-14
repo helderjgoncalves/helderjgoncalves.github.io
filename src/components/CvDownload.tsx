@@ -17,7 +17,7 @@ export function CvDownload({ variant }: CvDownloadProps) {
       : 'hero__contact hero__download hero__download--icon';
 
   return (
-    <a className={className} href={CV_HREF} download={CV_FILENAME} aria-label="Download CV (PDF)">
+    <a className={className} href={CV_HREF} download={CV_FILENAME} draggable={false} aria-label="Download CV (PDF)">
       <Icon name="download" />
       <span>Download CV</span>
     </a>

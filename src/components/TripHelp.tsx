@@ -16,11 +16,11 @@ export function TripHelp({ title = tripsPage.help.title, back = false }: TripHel
         </h2>
         <p className="trip-help__text">{text}</p>
         <div className="project__actions trip-help__actions">
-          <a className="project__link project__link--primary" href={`mailto:${email}`}>
+          <a className="project__link project__link--primary" href={`mailto:${email}`} draggable={false}>
             {cta}
           </a>
           {back && (
-            <a className="project__link" href="/trips/">
+            <a className="project__link" href="/trips/" draggable={false}>
               All trips
             </a>
           )}
