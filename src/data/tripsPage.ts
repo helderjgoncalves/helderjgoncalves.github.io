@@ -17,6 +17,8 @@ export interface TripsPageData {
   help: {
     /** The heading on /trips/; trip pages ask "Heading to <trip>?". */
     title: string;
+    /** Where trip questions go: its own address, not the CV's. */
+    email: string;
     text: string;
     cta: string;
     /**
@@ -55,6 +57,7 @@ export const tripsPage: TripsPageData = {
   curiosity: 'Curiosity',
   help: {
     title: 'Planning something similar?',
+    email: 'travel@hgoncalves.uk',
     text: "Happy to share what I learned: the route, how long to stay, what I'd skip. Just drop me a line.",
     cta: 'Email me',
     prompt: "Happy to share how long to stay, and what I'd skip —",

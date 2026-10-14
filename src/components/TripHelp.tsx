@@ -1,7 +1,4 @@
-import { cv } from '../data/cv';
 import { tripsPage } from '../data/tripsPage';
-
-const email = cv.profile.contacts.find((contact) => contact.icon === 'email');
 
 interface TripHelpProps {
   title?: string;
@@ -10,8 +7,7 @@ interface TripHelpProps {
 }
 
 export function TripHelp({ title = tripsPage.help.title, back = false }: TripHelpProps) {
-  if (!email) return null;
-  const { text, cta } = tripsPage.help;
+  const { email, text, cta } = tripsPage.help;
   return (
     <aside className="container trip-help" aria-labelledby="trip-help-title">
       <div className="trip-help__card">
@@ -20,7 +16,7 @@ export function TripHelp({ title = tripsPage.help.title, back = false }: TripHel
         </h2>
         <p className="trip-help__text">{text}</p>
         <div className="project__actions trip-help__actions">
-          <a className="project__link project__link--primary" href={email.href}>
+          <a className="project__link project__link--primary" href={`mailto:${email}`}>
             {cta}
           </a>
           {back && (

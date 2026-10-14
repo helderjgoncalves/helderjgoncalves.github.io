@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { cv } from '../data/cv';
 import { largeSrc, type Photo } from '../data/photos';
 import { photoSections, routeSteps, stopId, tripPath, tripPhotos, tripPlace, type Trip } from '../data/trips';
 import { tripsPage } from '../data/tripsPage';
@@ -11,8 +10,6 @@ import { Section } from './Section';
 import { TripHelp } from './TripHelp';
 import { TripHero } from './TripHero';
 import { SiteNav } from './SiteNav';
-
-const email = cv.profile.contacts.find((contact) => contact.icon === 'email');
 
 export function TripPage({ trip }: { trip: Trip }) {
   const photos = tripPhotos(trip);
@@ -49,17 +46,15 @@ export function TripPage({ trip }: { trip: Trip }) {
               </li>
             ))}
           </ol>
-          {email && (
-            <p className="trip-route__ask">
-              <span className="trip-route__ask-mark">
-                <Icon name="email" />
-              </span>
-              <span>
-                {tripsPage.help.prompt}{' '}
-                <a href={email.href}>{tripsPage.help.promptLink}</a>.
-              </span>
-            </p>
-          )}
+          <p className="trip-route__ask">
+            <span className="trip-route__ask-mark">
+              <Icon name="email" />
+            </span>
+            <span>
+              {tripsPage.help.prompt}{' '}
+              <a href={`mailto:${tripsPage.help.email}`}>{tripsPage.help.promptLink}</a>.
+            </span>
+          </p>
         </Section>
 
         {photoSections(trip).map((section, index) => (

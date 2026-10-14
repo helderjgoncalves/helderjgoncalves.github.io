@@ -188,7 +188,7 @@ has a front-page card; Off the clock's Travel section links to it.
   in place (no navigation), whose caption links to the photo's trip when it
   has one.
 - `/trips/` and every trip page close with `TripHelp`, a quiet offer of free
-  tips by email (copy in `tripsPage.help`, address from `cv.ts`). Trip pages
+  tips by email (copy and its own address, `travel@`, in `tripsPage.help`). Trip pages
   also say it once under the route, a single line, so a long run of photos
   doesn't hide the offer. Keep it a friend's offer: no form, no pricing,
   nothing in the top bar.
