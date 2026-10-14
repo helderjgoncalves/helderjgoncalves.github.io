@@ -156,6 +156,13 @@ has a front-page card; Off the clock's Travel section links to it.
   in `trips/types.ts`; add a region there when a trip needs one), so the page
   still scans with dozens of trips. Within a region, cards follow the list. The cover is the trip's own `cover` (one of its stop
   photos, with a `focus` for the 3:2 crop) — the build throws if it isn't.
+ The same cover opens the trip page full-bleed (`TripHero.tsx`), with the
+ title and summary on a frosted band that blurs the photo behind them; the
+ band is sized by the text, so a long summary on a phone stays legible. On
+ screens wider than 2.1:1 the photo stops widening and sits centred over a
+ blurred copy of itself, so ultra-wide monitors don't crop a portrait cover
+ to a thin slice. Pick a cover with its subject in the upper half, since the
+ band covers the foot.
   The page is for people planning a trip; the **wonder goals** (the New Seven
   Wonders and the classic Seven Natural Wonders, `offTheClock.goals`) are
   personal, so they stay on Off the clock. Each goal's `after` names the

@@ -1069,6 +1069,98 @@
   }
 }
 
+// A trip page's hero: the cover photo full-bleed, the text at its foot.
+// Small viewport units so the height doesn't jump as a phone's address bar
+// slides away. Raw palette: the band behind the text has to keep white
+// legible over any photo, in either theme.
+.trip-cover {
+  display: flex;
+  align-items: flex-end;
+  // A size container, so the photo can measure the hero's width (cqw) when
+  // working out how far short of it it falls.
+  container-type: inline-size;
+  --trip-cover-height: clamp(26rem, 72svh, 64rem);
+  --trip-cover-photo: min(100cqw, calc(var(--trip-cover-height) * 2.1));
+  // How far the photo falls short of each side: 0 while it fills the hero.
+  --trip-cover-gap: calc((100cqw - var(--trip-cover-photo)) / 2);
+  min-height: var(--trip-cover-height);
+  padding: 3rem 0 0;
+  background: $ink-900;
+
+  @include md-up { padding-top: 4rem; }
+
+  // Fills the sides once the photo stops widening; until then the photo
+  // covers it, so it isn't painted below lg, where the photo always fills.
+  &__ambient {
+    display: none;
+
+    @include lg-up { display: block; }
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(40px);
+    transform: scale(1.15);
+  }
+
+  // No wider than 2.1:1, or an ultra-wide screen would show a thin slice of a
+  // portrait cover, its subject cut off. Past that it sits centred, its sides
+  // fading into the ambient copy. Sized from the hero's min-height, since a
+  // percentage can't reach its height; a taller hero only crops a little more.
+  // The fade is as wide as the gap beside it (at most 15% of the photo), so
+  // while the photo fills the hero its edges stay sharp, and the fade grows
+  // in smoothly as the window widens past that.
+  &__img {
+    --edge: clamp(0px, var(--trip-cover-gap), calc(var(--trip-cover-photo) * 0.15));
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: var(--trip-cover-photo);
+    height: 100%;
+    object-fit: cover;
+    transform: translateX(-50%);
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 var(--edge),
+      #000 calc(100% - var(--edge)),
+      transparent
+    );
+  }
+
+  // Frosted band behind the text, sized by the text rather than the photo,
+  // so a summary that wraps to five lines on a phone stays covered. Full
+  // width, inside the hero: overhanging the hero's clip left a sharp strip at
+  // its edge. It fades in over its top padding on an eased curve, long on big
+  // screens: a short fade over a smooth sky reads as a grey box.
+  &__band {
+    --fade: 6rem;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: var(--fade) 0 2.5rem;
+    background: linear-gradient(0deg, rgba($ink-900, 0.6), rgba($ink-900, 0.15));
+    backdrop-filter: blur(10px) saturate(1.2);
+    mask-image: linear-gradient(
+      180deg,
+      transparent,
+      rgba($ink-900, 0.1) calc(var(--fade) * 0.3),
+      rgba($ink-900, 0.45) calc(var(--fade) * 0.6),
+      rgba($ink-900, 0.85) calc(var(--fade) * 0.85),
+      #000 var(--fade)
+    );
+    text-shadow: 0 1px 10px rgba($ink-900, 0.35);
+
+    @include md-up {
+      --fade: 10rem;
+      padding-bottom: 3.25rem;
+    }
+  }
+
+  .page-hero__thesis { max-width: 40rem; }
+}
+
 // The offer of tips that closes /trips/ and each trip page.
 // A sign-off, not another card: a card here reads as a trip without a photo.
 .trip-help {

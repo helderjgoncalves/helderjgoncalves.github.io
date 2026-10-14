@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { largeSrc, type Photo } from '../data/photos';
 import { photoSections, routeSteps, stopId, tripPath, tripPhotos, type Trip } from '../data/trips';
-import { tripEyebrow } from '../data/tripsPage';
 import { Footer } from './Footer';
 import { PhotoGrid } from './PhotoGrid';
 import { PhotoViewer } from './PhotoViewer';
 import { Section } from './Section';
-import { TripFacts } from './TripFacts';
 import { TripHelp } from './TripHelp';
+import { TripHero } from './TripHero';
 import { SiteNav } from './SiteNav';
 
 export function TripPage({ trip }: { trip: Trip }) {
@@ -18,14 +17,7 @@ export function TripPage({ trip }: { trip: Trip }) {
     <>
       <SiteNav current={tripPath(trip)} section="/trips/" />
 
-      <header className="page-hero">
-        <div className="container page-hero__inner">
-          <p className="page-hero__eyebrow">{tripEyebrow(trip)}</p>
-          <h1 className="page-hero__title">{trip.title}</h1>
-          <p className="page-hero__thesis">{trip.summary}</p>
-          {trip.facts && <TripFacts facts={trip.facts} />}
-        </div>
-      </header>
+      <TripHero trip={trip} />
 
       <main>
         {trip.highlights && (

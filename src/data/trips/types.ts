@@ -65,8 +65,9 @@ export interface Trip {
   /** In the order travelled. */
   stops: TripStop[];
   /**
-   * The trip's card on /trips/: one of its own photos, cropped to 3:2. `focus`
-   * is the object-position that keeps the subject in frame.
+   * The trip's card on /trips/ (cropped to 3:2) and its page's full-bleed hero
+   * (wide on desktop, tall on phones): one of its own photos. `focus` is the
+   * object-position that keeps the subject in frame in both.
    */
   cover: { photo: Photo; focus?: string };
   /** Shown as a big card at the top of /trips/; the rest get compact cards. */
