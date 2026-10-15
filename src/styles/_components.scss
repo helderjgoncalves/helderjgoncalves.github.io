@@ -707,7 +707,7 @@
     display: grid;
     place-items: center;
     height: 100%;
-    padding: 3.75rem 1rem 1.25rem;
+    padding: 3.75rem 0.5rem 1.25rem;
 
     @include md-up { padding: 2rem 5rem; }
   }
@@ -725,20 +725,26 @@
 
   // Sized from the photo's shape (--aspect, set inline) rather than from the
   // file, so the frame is right before anything loads and the grid tile
-  // (inline background) fills it until the full copy arrives. The gutters
-  // and 9rem match the stage's padding and the caption below.
+  // (inline background) fills it until the full copy arrives. The gutter is
+  // the stage's side padding; the reserve is its vertical padding plus the
+  // caption, with a line spare so a wrapped place doesn't push the counter
+  // off screen. Phones reserve more: their arrows sit in the caption row.
   &__img {
-    --viewer-gutter: 2rem;
+    --viewer-gutter: 1rem;
+    --viewer-reserve: 13rem;
 
     display: block;
-    width: min(100vw - var(--viewer-gutter), (100dvh - 9rem) * var(--aspect, 1));
+    width: min(100vw - var(--viewer-gutter), (100dvh - var(--viewer-reserve)) * var(--aspect, 1));
     height: auto;
     aspect-ratio: var(--aspect, auto);
     border-radius: $radius-md;
     background: center / cover no-repeat;
     animation: viewer-in $dur-med $ease;
 
-    @include md-up { --viewer-gutter: 10rem; }
+    @include md-up {
+      --viewer-gutter: 10rem;
+      --viewer-reserve: 10.5rem;
+    }
   }
 
   &__caption {
@@ -781,6 +787,12 @@
     flex-wrap: wrap;
     gap: 0.75rem;
     margin-top: 0.25rem;
+  }
+
+  &__pager {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
   }
 
   &__count {
@@ -830,14 +842,17 @@
     right: 0.75rem;
   }
 
-  // top, not a translate, centres them: hero-button's hover lift is a transform.
+  // On phones they sit in the caption row, beside the counter, so they never
+  // cover the photo. From md up they're placed against the dialog (nothing
+  // between is positioned), in the margins. top, not a translate, centres
+  // them: hero-button's hover lift is a transform.
   &__nav {
-    top: calc(50% - 22px);
-
-    &--prev { left: 0.5rem; }
-    &--next { right: 0.5rem; }
+    position: static;
 
     @include md-up {
+      position: absolute;
+      top: calc(50% - 22px);
+
       &--prev { left: 1.25rem; }
       &--next { right: 1.25rem; }
     }

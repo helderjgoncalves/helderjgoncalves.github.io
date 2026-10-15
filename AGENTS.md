@@ -253,6 +253,8 @@ and the estimates are unreliable.
 The build throws if any of these copies is missing, and `npm test` fails if a
 page references a `/photos/` file that isn't in `dist/`. The viewer is a native `<dialog>` with
 previous/next, arrow keys, swipe and Esc — deliberately no auto-advance.
+On phones the previous/next buttons sit beside the counter under the photo,
+never on it; from md up they sit in the side margins.
 
 **Videos** are photos with a `video` (a clip at `media('<name>.mp4')`): the
 photo is the grid tile and poster, and the clip downloads only once it is the
@@ -527,3 +529,5 @@ project-page repo.
   `dist/` rather than from a list of their own.
 - Respect `prefers-reduced-motion` when adding animations (see `useReveal`
   and existing CSS for the pattern).
+- Never push without Hélder's explicit go-ahead for that push. Committing
+  locally is fine; `main` deploys straight to production.

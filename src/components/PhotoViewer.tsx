@@ -84,7 +84,12 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
-    if (index !== null && !dialog.open) dialog.showModal();
+    if (index !== null && !dialog.open) {
+      dialog.showModal();
+      // showModal() focuses the close button, and Safari rings it even after
+      // a tap. Focusing the dialog keeps that off; Tab still reaches it first.
+      dialog.focus();
+    }
     if (index === null && dialog.open) dialog.close();
 
     const root = document.documentElement;
@@ -160,6 +165,7 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
       ref={dialogRef}
       className="viewer"
       aria-label="Photo viewer"
+      tabIndex={-1}
       onClose={() => onChange(null)}
       onKeyDown={onKeyDown}
       onClick={onClick}
@@ -220,8 +226,17 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
             <span className="viewer__title">{photo.caption}</span>
             {photo.place && <span className="viewer__place">{photo.place}</span>}
             <span className="viewer__meta">
-              <span className="viewer__count" aria-live="polite">
-                {index + 1} / {photos.length}
+              {/* On phones the arrows flank the counter, off the photo; from md up they sit in the margins. */}
+              <span className="viewer__pager">
+                <button type="button" className="viewer__button viewer__nav viewer__nav--prev" aria-label="Previous photo" onClick={() => step(-1)}>
+                  <Icon name="chevronLeft" />
+                </button>
+                <span className="viewer__count" aria-live="polite">
+                  {index + 1} / {photos.length}
+                </span>
+                <button type="button" className="viewer__button viewer__nav viewer__nav--next" aria-label="Next photo" onClick={() => step(1)}>
+                  <Icon name="chevronRight" />
+                </button>
               </span>
               {link && (
                 <a className="viewer__link" href={link.href} draggable={false}>
@@ -233,13 +248,6 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
           </figcaption>
         </figure>
       </div>
-
-      <button type="button" className="viewer__button viewer__nav viewer__nav--prev" aria-label="Previous photo" onClick={() => step(-1)}>
-        <Icon name="chevronLeft" />
-      </button>
-      <button type="button" className="viewer__button viewer__nav viewer__nav--next" aria-label="Next photo" onClick={() => step(1)}>
-        <Icon name="chevronRight" />
-      </button>
     </dialog>
   );
 }
