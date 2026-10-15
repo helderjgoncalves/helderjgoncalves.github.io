@@ -613,10 +613,12 @@
     color: $color-heading;
   }
 
+  // Body size, like the rest of the page's prose: the trail headings around
+  // it are $fs-md, and the note must not outweigh them.
   &__note-text {
     margin: 0;
-    font-size: $fs-md;
-    line-height: 1.5;
+    font-size: $fs-base;
+    line-height: 1.55;
     color: $color-text;
     text-wrap: pretty;
   }
