@@ -64,9 +64,17 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
   // The clip that failed to load, shown as its still instead. Moving to
   // another item (or closing) forgets it, so opening it again retries.
   const [failedVideo, setFailedVideo] = useState<string | null>(null);
+  // A clip playing on its own keeps the browser's controls off it; they come
+  // back once the visitor reaches for them, or whenever it isn't playing.
+  const [playing, setPlaying] = useState(false);
+  const [wantsControls, setWantsControls] = useState(false);
   const photo = index === null ? null : photos[index];
 
-  useEffect(() => setFailedVideo(null), [index]);
+  useEffect(() => {
+    setFailedVideo(null);
+    setPlaying(false);
+    setWantsControls(false);
+  }, [index]);
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -166,7 +174,13 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
               poster={avifSrc(largeSrc(photo))}
               style={placeholderStyle(photo)}
               aria-label={photo.alt}
-              controls
+              controls={wantsControls || !playing}
+              tabIndex={0}
+              onPlaying={() => setPlaying(true)}
+              onEnded={() => setPlaying(false)}
+              onClick={() => setWantsControls(true)}
+              onFocus={() => setWantsControls(true)}
+              onPointerMove={(event) => event.pointerType === 'mouse' && setWantsControls(true)}
               playsInline
               autoPlay={!lite}
               preload={lite ? 'none' : 'auto'}
