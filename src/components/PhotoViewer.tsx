@@ -30,6 +30,9 @@ interface PhotoViewerProps {
 
 const SWIPE_PX = 50;
 
+/** How long the controls stay once play is pressed; the browser's own wait is about 3 s. */
+const CONTROLS_AFTER_PLAY_MS = 1000;
+
 /** With Save-Data, the viewer offers at most this size. */
 const SAVE_DATA_CAP = 1280;
 
@@ -68,12 +71,14 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
   // back once the visitor reaches for them, or whenever it isn't playing.
   const [playing, setPlaying] = useState(false);
   const [wantsControls, setWantsControls] = useState(false);
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const photo = index === null ? null : photos[index];
 
   useEffect(() => {
     setFailedVideo(null);
     setPlaying(false);
     setWantsControls(false);
+    return () => clearTimeout(hideTimer.current);
   }, [index]);
 
   useEffect(() => {
@@ -176,7 +181,12 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
               aria-label={photo.alt}
               controls={wantsControls || !playing}
               tabIndex={0}
-              onPlaying={() => setPlaying(true)}
+              onPlaying={() => {
+                setPlaying(true);
+                clearTimeout(hideTimer.current);
+                hideTimer.current = setTimeout(() => setWantsControls(false), CONTROLS_AFTER_PLAY_MS);
+              }}
+              onPause={() => clearTimeout(hideTimer.current)}
               onEnded={() => setPlaying(false)}
               onClick={() => setWantsControls(true)}
               onFocus={() => setWantsControls(true)}
