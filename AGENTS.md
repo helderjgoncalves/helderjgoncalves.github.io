@@ -399,23 +399,64 @@ Conventions:
 
 ### Interaction vocabulary
 
-Every interactive element belongs to one of six named families, each a mixin
-in `_mixins.scss`. **Never invent a sixth at the call site** — that is how the
+Every interactive element belongs to one of seven named families, each a mixin
+in `_mixins.scss`. **Never invent an eighth at the call site** — that is how the
 same affordance ended up with three different hover states across two pages.
 Reach for the mixin; if nothing fits, add a family here and document why.
 
 | Family | Mixin | Used by | Hover |
 | --- | --- | --- | --- |
 | Action link | `action-link` (+ `action-link-primary`) | "View case study", "Live status page" | accent text + accent rule |
-| Prose link | `prose-link` | `.homelab-stack__note a`, `.footer a` | accent → accent-dark |
+| Prose link | `prose-link` | `.homelab-stack__note a`, `.footer a`, `.trip-help__back a` | accent → accent-dark |
 | Nav control | `nav-control` | `.theme-toggle`, `.nav__menu` | accent tint deepens, border firms, press scales |
 | Hero button | `hero-button` | `.hero__contact`, `.hero__download`, `.homelab-cta`, `.viewer__button`, `.viewer__link` | white glass brightens, lifts 1px |
 | Nav link | — (`.nav__links a`) | `SiteNav` page links (every page; below md they live in the ☰ panel, which closes on Esc, an outside tap or a link) | soft → accent; the current page rests in accent |
 | Card link | `card-link` | `.door` (front-page cards), `.trip-card` (`/trips/`), `.gallery__link` (photo tiles) | card lifts 2px, shadow deepens, inner action line turns accent |
+| Primary button | `primary-button` | `.trip-help__email` ("Email me" closing the trip pages) | fill deepens to accent-dark, lifts 1px, gains a shadow |
 
 `card-link` exists because the front-page doors are whole-surface targets: a
 lone underlined link inside a card left most of the card dead to clicks. Its
 action line is a `<span>` styled with `action-link`, never a nested `<a>`.
+
+#### Buttons
+
+Every button is a pill (`$radius-pill`), `$fs-sm` at weight 600, usually with
+an icon before the label. What changes is colour, and **the surface picks
+it, not the importance**: a primary button is the inverse of what it sits on.
+
+| Surface | Primary | Secondary |
+| --- | --- | --- |
+| Blue hero (brand blue in both themes) | `.homelab-cta--primary`: solid white, `$blue-700` text | `hero-button`: white glass (`.homelab-cta`, `.hero__contact`, `.hero__download`) |
+| Themed page (`--color-bg`) | `primary-button`: solid brand blue, the pill pair | a link (`action-link` or `prose-link`), never a second button |
+
+So the home lab's white pill and the trips' blue pill are the same role in
+the same shape. They differ because their backgrounds do:
+
+- On the blue hero, white is the strongest mark there is. A blue button would
+  sink into the gradient, which is also why the hero's glass buttons use
+  `rgba($white, …)` instead of accent tokens.
+- On the page, white is no mark at all in the light theme (white on
+  `#f7f9fc`) and a glaring slab in the dark one, so the strongest mark is the
+  brand blue. `primary-button` takes it from the pill pair (`--pill-bg` and
+  `--pill-text`) rather than a new colour: `$blue-600` with white text in
+  light (5.3:1), `$blue-400` with `$ink-900` in dark (6:1), the same
+  combination the tag pills already use. Hover deepens it to
+  `--color-accent-dark`, which keeps the contrast in both themes.
+
+`primary-button` exists because the email offer closing `/trips/` and each
+trip page is the one thing those pages ask of the reader, and an underlined
+link beside another couldn't say so: a muted second link read as disabled.
+Rules for both primaries:
+
+- One per view, or it stops meaning "this one".
+- On the hero, a glass secondary can sit beside the white primary (the home
+  lab's row): glass against solid is a clear enough difference. On the page,
+  the primary stands alone. Its secondary goes on its own line below as a link
+  (the trip page's "‹ All trips"), because there is no outline or glass button
+  for themed surfaces, and adding one would start a second, competing button
+  style.
+- Don't use a white pill on the page or a blue pill on a hero, even to "match"
+  the other page. Each one only works on its own surface.
 
 The families own *interaction*, not geometry: callers keep their own size,
 padding, radius, and resting colour. Two rules that follow from that:

@@ -28,6 +28,8 @@
     --color-heading: #{$blue-700};
     --pill-bg: #{$blue-600};
     --pill-text: #{$white};
+    --note-bg: #{$blue-100};
+    --note-border: #{rgba($blue-600, 0.22)};
     --shadow-card: none;
     --shadow-hover: none;
   }

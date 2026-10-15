@@ -1,4 +1,5 @@
 import { tripsPage } from '../data/tripsPage';
+import { Icon } from './Icon';
 
 interface TripHelpProps {
   title?: string;
@@ -15,16 +16,18 @@ export function TripHelp({ title = tripsPage.help.title, back = false }: TripHel
           {title}
         </h2>
         <p className="trip-help__text">{text}</p>
-        <div className="project__actions trip-help__actions">
-          <a className="project__link project__link--primary" href={`mailto:${email}`} draggable={false}>
-            {cta}
-          </a>
-          {back && (
-            <a className="project__link" href="/trips/" draggable={false}>
+        <a className="trip-help__email" href={`mailto:${email}`} draggable={false}>
+          <Icon name="email" />
+          {cta}
+        </a>
+        {back && (
+          <p className="trip-help__back">
+            <a href="/trips/" draggable={false}>
+              <Icon name="chevronLeft" />
               All trips
             </a>
-          )}
-        </div>
+          </p>
+        )}
       </div>
     </aside>
   );

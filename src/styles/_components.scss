@@ -571,12 +571,11 @@
     align-items: start;
     margin: 0;
     padding: 1.15rem 1.25rem 1.25rem;
-    border: 1px solid color-mix(in srgb, $color-accent 25%, transparent);
+    border: 1px solid $color-note-border;
     border-radius: $radius-md;
     background:
-      radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, $color-accent 14%, transparent), transparent 65%),
-      $color-accent-soft;
-    box-shadow: $shadow-card;
+      radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, $color-accent 7%, transparent), transparent 65%),
+      $color-note-bg;
 
     @include md-up {
       padding: 1.4rem 1.6rem;
@@ -611,13 +610,12 @@
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: $color-accent;
+    color: $color-heading;
   }
 
   &__note-text {
     margin: 0;
     font-size: $fs-md;
-    font-weight: 500;
     line-height: 1.5;
     color: $color-text;
     text-wrap: pretty;
@@ -1282,7 +1280,7 @@
 // A sign-off, not another card: a card here reads as a trip without a photo.
 .trip-help {
   padding-top: 1.5rem;
-  padding-bottom: 3rem;
+  padding-bottom: 0;
 
   &__card {
     max-width: 34rem;
@@ -1300,12 +1298,43 @@
   &__text {
     margin: 0.6rem 0 0;
     line-height: 1.6;
-    color: $color-text-soft;
+    color: $color-text;
   }
 
-  &__actions {
-    justify-content: center;
-    gap: 0.65rem 1.75rem;
+  &__email {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    padding: 0.6rem 1.25rem;
+    border-radius: $radius-pill;
+    font-size: $fs-sm;
+    font-weight: 600;
+    text-decoration: none;
+    @include primary-button;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  // The way back, on its own line so the button stands alone as the offer.
+  &__back {
+    margin: 1.5rem 0 0;
+    font-size: $fs-sm;
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      @include prose-link;
+    }
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
   }
 }
 

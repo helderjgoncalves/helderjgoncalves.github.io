@@ -141,6 +141,34 @@
   }
 }
 
+// The one filled button on a themed surface, for an action that has to win
+// over the links beside it — the email offer closing the trip pages. It takes
+// the pill pair, which each theme already tunes to clear 4.5:1, and deepens to
+// accent-dark on hover, which keeps that contrast in both themes.
+@mixin primary-button {
+  background: $color-pill-bg;
+  color: $color-pill-text;
+  border: 1px solid transparent;
+  transition:
+    background $dur-fast $ease,
+    box-shadow $dur-fast $ease,
+    transform $dur-fast $ease;
+
+  &:hover,
+  &:focus-visible {
+    background: $color-accent-dark;
+    box-shadow: $shadow-card;
+    transform: translateY(-1px);
+  }
+
+  &:active { transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:hover,
+    &:focus-visible { transform: none; }
+  }
+}
+
 @mixin pill {
   display: inline-flex;
   align-items: center;

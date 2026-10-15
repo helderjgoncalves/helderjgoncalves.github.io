@@ -53,6 +53,12 @@ $canvas:   #f7f9fc;
   --pill-bg:            #{$blue-600};
   --pill-text:          #{$white};
 
+  // The curiosity card among a trip's photos. Its own pair because the same
+  // mix of accent-soft reads strongly on the dark canvas and all but vanishes
+  // on the light one.
+  --note-bg:            #{$blue-100};
+  --note-border:        #{rgba($blue-600, 0.22)};
+
   --nav-bg:             rgba(255, 255, 255, 0.78);
 
   --shadow-card:        0 1px 2px rgba(28, 35, 48, 0.04), 0 8px 24px rgba(28, 35, 48, 0.06);
@@ -88,6 +94,9 @@ $canvas:   #f7f9fc;
   --pill-bg:            #{$blue-400};
   --pill-text:          #{$ink-900};
 
+  --note-bg:            #182233;
+  --note-border:        #{rgba($blue-400, 0.15)};
+
   --nav-bg:             rgba(14, 19, 28, 0.78);
 
   --shadow-card:        0 1px 2px rgba(0, 0, 0, 0.30), 0 8px 24px rgba(0, 0, 0, 0.25);
@@ -114,6 +123,8 @@ $color-accent-soft: var(--color-accent-soft);
 $color-heading:     var(--color-heading);
 $color-pill-bg:     var(--pill-bg);
 $color-pill-text:   var(--pill-text);
+$color-note-bg:     var(--note-bg);
+$color-note-border: var(--note-border);
 $color-rule:        var(--color-rule);
 $color-bg:          var(--color-bg);
 $color-card:        var(--color-card);

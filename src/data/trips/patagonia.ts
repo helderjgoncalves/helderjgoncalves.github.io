@@ -80,7 +80,7 @@ export const patagonia: Trip = {
     {
       name: 'Lago Grey',
       country: 'Chile',
-      note: 'These icebergs and the Perito Moreno Glacier are two edges of the same ice field, the largest in the southern hemisphere outside Antarctica. It crosses the border. From either shore you only see the rim.',
+      note: 'These icebergs and the Perito Moreno Glacier break off the same ice field, the largest in the southern hemisphere outside Antarctica. It straddles the border, and from either side you only ever see its edge.',
       photos: [photos.lagoGrey, photos.lagoGreyClip, photos.chileanFlag],
     },
   ],
