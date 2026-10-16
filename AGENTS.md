@@ -102,7 +102,7 @@ public/                   # static assets copied verbatim (favicon, portrait, og
 scripts/prerender.mjs     # post-build SSR injection + head metadata + sitemap
 scripts/dist.test.mjs     # post-build assertions on dist/ (`npm test`)
 scripts/og-cards/         # HTML sources for the social cards + `npm run cards`
-scripts/media-worker.js   # Cloudflare Worker serving the clips from R2 (dashboard, not built)
+scripts/media-guard.js    # Cloudflare cron Worker capping the clips' R2 reads (dashboard, not built)
 .github/workflows/deploy.yml  # GitHub Pages deploy on push to main
 index.html                # source entry (loaded by `vite dev`); pre-rendered at build
 vite.config.ts            # base = '/' (user/org GitHub Pages site)
@@ -295,7 +295,7 @@ the controls stay off the picture; a tap, a mouse move or keyboard focus
 brings them back, and they show whenever it isn't playing (loading, autoplay
 blocked).
 Pressing play hides them after a second, sooner than the browser's own wait. If the clip fails to load (say the
-Worker's daily limit is spent), the viewer shows the still with a quiet note
+media kill switch is on), the viewer shows the still with a quiet note
 (`videoUnavailable`) instead of a dead player; moving away and back retries.
 A browser that can play neither copy (`canPlayType`) gets the still straight
 away, with `videoUnsupported` instead, since retrying won't help.
@@ -334,16 +334,30 @@ screen understands. `compare/originals.tsv` (local, not committed) maps every
 published photo and clip to its phone original, with each clip's cut.
 
 Clips are **not in the repo**. Cloudflare's terms forbid serving video through
-its proxy unless it comes from R2, so they sit in the private R2 bucket
-`videos`, filed like the photos (`<trip>/<codec>/<name>.mp4`; `photo.video` is
-just the name, and the trip comes from the photo's folder), served at
-`media.hgoncalves.uk` by a Worker whose source is
-`scripts/media-worker.js` (pasted into the dashboard, bucket bound as `MEDIA`;
-not part of the build). To add a clip, upload it to the bucket by hand. The
-Worker stays on the Workers Free plan so that past its daily request limit
-it fails rather than bills, and the bucket must stay private (no `r2.dev`
-URL, no custom domain on the bucket) so the Worker is the only way in. Clips
-are cached for a week, not forever, because a re-encode keeps its name.
+its proxy unless it comes from R2, so they sit in the R2 bucket `videos`,
+filed like the photos (`<trip>/<codec>/<name>.mp4`; `photo.video` is just the
+name, and the trip comes from the photo's folder), served straight from the
+bucket on its custom domain, `media.hgoncalves.uk`, behind Cloudflare's cache.
+To add a clip, upload it to the bucket by hand (with `Content-Type:
+video/mp4`). No Worker sits in front: one capped each response at 4 MB
+because streams through it crawled, made every request an R2 read, and
+buffered on slow connections. The `r2.dev` URL stays off; the custom domain
+is the only way in, and the zone's rules on it carry the limits:
+
+- **Cache Rule** on the media host: eligible for cache, edge and browser TTL
+ a week. Clips are cached for a week, not forever, because a re-encode keeps
+ its name — purge its URLs after replacing one. Cache hits aren't R2 reads.
+- **WAF custom rule `media hotlink`** blocks requests to the media host with a
+ query string (each would miss the cache and read R2) or a Referer that isn't
+ the site or `localhost`. A missing Referer is let through, since some
+ privacy settings strip it.
+- **WAF custom rule `media kill switch`** blocks every request to the media
+ host. It rests disabled; `scripts/media-guard.js`, a cron Worker pasted into
+ the dashboard (not part of the build), turns it on once the account's Class
+ B reads for the billing period pass 90% of the free tier, and off when a new
+ period starts. R2 has no spending cap, so this is the cap — a soft one, as
+ the check runs every ten minutes on lagging analytics. The rule's
+ description is how the guard finds it, so don't rename it.
 
 Photo captions on Off the clock follow one format: `caption` is the place's
 proper name, `place` is `Country · one short detail`. Omit `place` rather than

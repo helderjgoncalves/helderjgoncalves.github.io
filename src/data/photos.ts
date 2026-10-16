@@ -28,7 +28,7 @@ export interface Photo {
   video?: string;
 }
 
-/** Clips live in R2 behind scripts/media-worker.js, not in the repo. */
+/** Clips live in R2, on the bucket's custom domain, not in the repo. */
 const MEDIA_HOST = 'https://media.hgoncalves.uk';
 
 /**
