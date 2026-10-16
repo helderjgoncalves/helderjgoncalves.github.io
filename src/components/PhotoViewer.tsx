@@ -68,7 +68,8 @@ function chooseLayout(vw: number, vh: number, photos: Photo[], swipeToClose: boo
   const wide = vw >= WIDE_PX;
   const roomy = wide && vh >= ROOMY_PX;
   const stackBelow = wide ? 24 + 14 + 48 : 12 + 12 + 48;
-  const closeRow = wide ? 56 : swipeToClose ? 8 : 50;
+  const edge = wide ? 32 : swipeToClose ? 0 : 8;
+  const closeRow = wide ? 56 : swipeToClose ? 0 : 50;
   let stack = 0;
   let side = 0;
   for (const photo of photos) {
@@ -78,7 +79,7 @@ function chooseLayout(vw: number, vh: number, photos: Photo[], swipeToClose: boo
     // Stack: two-line caption below, close above the photo or beside it.
     stack += area(Math.max(
       fit(vw - (wide ? 64 : 0), vh - closeRow - stackBelow),
-      fit(vw - (wide ? 120 : 104), vh - (wide ? 32 : 8) - stackBelow),
+      fit(vw - (wide ? 120 : 104), vh - edge - stackBelow),
     ));
     // Side: close and arrows in the side margins, one-line caption.
     side += area(fit(vw - (roomy ? 160 : 136), vh - (roomy ? 16 + 16 + 10 + 22 : 8 + 8 + 8 + 20)));
