@@ -102,7 +102,7 @@ export function TripPage({ trip }: { trip: Trip }) {
 
       <Footer />
 
-      <PhotoViewer photos={photos} index={viewing} onChange={setViewing} />
+      <PhotoViewer photos={photos} index={viewing} onChange={setViewing} linkable />
     </>
   );
 }

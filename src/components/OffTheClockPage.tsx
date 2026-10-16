@@ -96,7 +96,7 @@ export function OffTheClockPage() {
 
       <Footer />
 
-      <PhotoViewer photos={allPhotos} index={viewing} onChange={setViewing} linkFor={tripLink} />
+      <PhotoViewer photos={allPhotos} index={viewing} onChange={setViewing} linkFor={tripLink} linkable />
     </>
   );
 }

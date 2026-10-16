@@ -13,6 +13,7 @@ import {
   hasAvif,
   largeSrc,
   largeSrcSet,
+  photoId,
   videoSources,
   videoUnavailable,
   videoUnsupported,
@@ -27,6 +28,12 @@ interface PhotoViewerProps {
   onChange: (index: number | null) => void;
   /** An optional link under the caption, e.g. to the trip the photo is from. */
   linkFor?: (photo: Photo) => { href: string; label: string } | undefined;
+  /**
+   * The page's #<photo id> (the tile's own id) opens that photo, and the
+   * address follows the photo on screen, so it can be shared. Only where
+   * the tiles carry those ids, and each photo appears once.
+   */
+  linkable?: boolean;
 }
 
 const SWIPE_PX = 50;
@@ -132,7 +139,7 @@ function canPlay(photo: Photo): boolean {
 // A native <dialog> opened with showModal(): the browser supplies Esc to
 // close, the focus trap, and focus returning to the tile that opened it.
 // No auto-advance — the visitor moves through the photos, never the page.
-export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerProps) {
+export function PhotoViewer({ photos, index, onChange, linkFor, linkable = false }: PhotoViewerProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const captionRef = useRef<HTMLElement>(null);
   // The touch in progress: where and when it began, its axis once it has
@@ -160,6 +167,33 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
   }, [open, photos]);
+
+  // A link to one of the photos opens it, on arrival or when the hash
+  // changes later (a link to another photo on the same page). Only then:
+  // pages rebuild their photo list on every render, so it's read from a ref.
+  const latest = useRef({ photos, onChange });
+  latest.current = { photos, onChange };
+  useEffect(() => {
+    if (!linkable) return;
+    const openFromHash = () => {
+      const at = latest.current.photos.findIndex((p) => `#${photoId(p)}` === location.hash);
+      if (at !== -1) latest.current.onChange(at);
+    };
+    openFromHash();
+    window.addEventListener('hashchange', openFromHash);
+    return () => window.removeEventListener('hashchange', openFromHash);
+  }, [linkable]);
+
+  // The address names the photo on screen, and drops it on close. Replaced,
+  // not pushed, so Back still leaves the page rather than stepping through
+  // the photos seen. Other anchors (#route…) are left alone.
+  useEffect(() => {
+    if (!linkable) return;
+    const showing = photo ? `#${photoId(photo)}` : '';
+    const named = photos.some((p) => `#${photoId(p)}` === location.hash);
+    if (location.hash === showing || (!photo && !named)) return;
+    history.replaceState(history.state, '', showing || location.pathname + location.search);
+  }, [linkable, photo, photos]);
 
   useEffect(() => {
     setFailedVideo(null);

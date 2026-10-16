@@ -185,8 +185,13 @@ has a front-page card; Off the clock's Travel section links to it.
   (like the two open-arms shots) not side by side. A photo may appear only
   once per page (its tile id is the file name).
 - Theme photos on Off the clock, and the front-page glance, open the viewer
-  in place (no navigation), whose caption links to the photo's trip when it
-  has one.
+ in place (no navigation), whose caption links to the photo's trip when it
+ has one.
+- A photo can be linked: `/trips/<slug>/#<photo id>` (or Off the clock's)
+ opens the viewer on it, and while the viewer is open the address names the
+ photo on screen, so copying it shares that photo (`linkable` on
+ `PhotoViewer`). The address is replaced, never pushed, so Back leaves the
+ page. The id is the tile's own, so renaming a photo's file breaks its links.
 - `/trips/` and every trip page close with `TripHelp`, a quiet offer of free
   tips by email (copy and its own address, `travel@`, in `tripsPage.help`). Trip pages
   also say it once under the route, a single line, so a long run of photos
