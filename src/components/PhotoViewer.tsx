@@ -305,7 +305,7 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
 
   function springBack() {
     const dialog = dialogRef.current;
-    if (!dialog?.dataset.swiping) return;
+    if (dialog?.dataset.swiping === undefined) return;
     dragTo(dialog, 0, false);
     setTimeout(() => {
       if (dialog.dataset.dragging === undefined) dragTo(dialog, null);
