@@ -744,12 +744,10 @@ $viewer-swipe: '(hover: none) and (pointer: coarse) and (max-width: #{$bp-md - 1
 
   // Phones close with a swipe up or down (or a tap on the surround), so
   // close leaves the photo the strip above it (see &__close), and a tall
-  // photo meets the top as a wide one meets the sides. The caption needs no
-  // room below it either: the browser's own bar sits under the viewer.
+  // photo meets the top as a wide one meets the sides.
   @media #{$viewer-swipe} {
     --edge: 0rem;
     --close-row: var(--edge);
-    --pad-bottom: 0rem;
   }
 
   &[data-layout='side'] {
