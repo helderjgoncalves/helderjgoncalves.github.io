@@ -253,8 +253,23 @@ and the estimates are unreliable.
 The build throws if any of these copies is missing, and `npm test` fails if a
 page references a `/photos/` file that isn't in `dist/`. The viewer is a native `<dialog>` with
 previous/next, arrow keys, swipe and Esc — deliberately no auto-advance.
-On phones the previous/next buttons sit beside the counter under the photo,
-never on it; from md up they sit in the side margins.
+It is laid out by the screen's shape, photo first, and nothing ever sits on
+the photo (a clip's own controls would be covered), and the controls never
+move from one photo to the next: the layout is chosen once for the gallery
+and the screen (only a resize changes it), the caption is pinned to the
+foot with the photo centred above it, and the arrows sit level with the
+caption's last line, so one that wraps doesn't move them. The component picks
+whichever of two layouts shows the gallery's photos bigger in total
+(`chooseLayout`, set as `data-layout`): *stack* puts the arrows either side
+of a two-line caption below the photo (the title with the counter, then the
+place on its own line, since it's the long one), with close above it or beside it in a side
+margin, and wins when width holds the photo back (phones in portrait, a wide
+clip in a squarish window); *side* puts close and the arrows in the side
+margins and the caption on one line, and wins when height does (phones
+turned sideways, short windows, laptops). Phones in portrait let the photo
+run edge to edge; from md up it keeps a margin. The photo takes whatever height the caption leaves (the
+component measures it into `--caption-h`), so there's no fixed allowance to
+keep in step with the caption.
 
 **Videos** are photos with a `video` (a clip at `media('<name>.mp4')`): the
 photo is the grid tile and poster, and the clip downloads only once it is the

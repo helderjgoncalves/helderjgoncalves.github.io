@@ -682,11 +682,42 @@
   }
 }
 
-// ---- Photo viewer (Off the clock) ----
+// ---- Photo viewer ----
 // Always dark, whatever the theme — a photo reads best on near-black — so the
 // surround and controls use raw palette values, and the buttons borrow the
 // hero-button glass for the same reason the blue heroes do.
+//
+// Photo first, and nothing ever sits on it, so a clip's own controls are
+// never covered. Two layouts; the component picks, for the gallery and the
+// screen, the one that leaves its photos bigger (data-layout). It holds
+// while the visitor moves through the gallery, and the caption is pinned to
+// the foot, so the controls never jump from one photo to the next:
+// - Stack (the default): caption below with the arrows either side of it,
+//   which costs the photo width nothing. Close goes above the photo or
+//   beside it in a side margin, again whichever leaves the photo bigger.
+//   Wins when width is what holds the photo back: phones in portrait, where
+//   the photo can run edge to edge, or a wide clip in a squarish window.
+// - Side: close and the arrows in the side margins and the caption on one
+//   line, which costs the photo height almost nothing. Wins when height is
+//   what holds it back: phones turned sideways, short windows, laptops.
+// From md up there's a margin round the photo, and the stacked caption row
+// is capped so the arrows stay near it.
+// The custom properties drive both the spacing and the photo's size:
+// --edge and --close-row are the top padding with close beside or above,
+// --close-col the side room close needs beside the photo. The component's
+// chooseLayout() uses rough copies of them. The side layout's roomier
+// spacing waits for height as well as width: a phone turned sideways is
+// md wide, but every pixel of its height counts.
+$viewer-roomy: '(min-width: #{$bp-md}) and (min-height: 600px)';
+
 .viewer {
+  --edge: 0.5rem;
+  --close-row: 3.125rem;
+  --close-col: 3.25rem;
+  --pad-x: 0rem;
+  --pad-bottom: 0.75rem;
+  --gap: 0.75rem;
+
   position: fixed;
   inset: 0;
   width: 100%;
@@ -699,64 +730,149 @@
   color: $white;
   background: $ink-900;
 
+  @include md-up {
+    --edge: 2rem;
+    --close-row: 3.5rem;
+    --close-col: 3.75rem;
+    --pad-x: 2rem;
+    --pad-bottom: 1.5rem;
+    --gap: 0.85rem;
+  }
+
+  &[data-layout='side'] {
+    --edge: 0.5rem;
+    --close-row: 0.5rem;
+    --close-col: 4.25rem;
+    --pad-x: 4.25rem;
+    --pad-bottom: 0.5rem;
+    --gap: 0.5rem;
+
+    @media #{$viewer-roomy} {
+      --edge: 1rem;
+      --close-row: 1rem;
+      --close-col: 5rem;
+      --pad-x: 5rem;
+      --pad-bottom: 1rem;
+      --gap: 0.6rem;
+    }
+  }
+
   &[open] { animation: viewer-in $dur-med $ease; }
 
   &::backdrop { background: transparent; }
 
+  // The photo's width with close above it, and with close beside it. These
+  // resolve here, against the stage's --aspect (set inline) and the measured
+  // --caption-h, and the photo inherits them. The top padding steps between
+  // the two layouts: clamp() with a large factor turns "which is wider" into
+  // --close-row or --edge.
   &__stage {
+    --below: calc(var(--pad-bottom) + var(--gap) + var(--caption-h, 4rem));
+    --w-above: min(100vw - 2 * var(--pad-x), (100dvh - var(--close-row) - var(--below)) * var(--aspect, 1));
+    --w-beside: min(100vw - 2 * var(--close-col), (100dvh - var(--edge) - var(--below)) * var(--aspect, 1));
+
     display: grid;
     place-items: center;
     height: 100%;
-    padding: 3.75rem 0.5rem 1.25rem;
-
-    @include md-up { padding: 2rem 5rem; }
+    padding:
+      clamp(var(--edge), (var(--w-above) - var(--w-beside)) * 1000, var(--close-row))
+      var(--pad-x)
+      var(--pad-bottom);
   }
 
+  // The caption is pinned to the foot and the photo centred in the space
+  // above it, so the caption and the arrows beside it stay put from one photo
+  // to the next. Full width, so the caption's wrapping depends on the screen,
+  // never on the photo, whose size depends on the caption's height.
   &__figure {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.85rem;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    place-items: center;
+    gap: var(--gap);
+    width: 100%;
+    height: 100%;
     margin: 0;
-    max-width: 100%;
   }
 
   &__figure picture { display: contents; }
 
+  // display: contents makes the <source> a flex item, which would add a gap.
+  &__figure source { display: none; }
+
   // Sized from the photo's shape (--aspect, set inline) rather than from the
   // file, so the frame is right before anything loads and the grid tile
-  // (inline background) fills it until the full copy arrives. The gutter is
-  // the stage's side padding; the reserve is its vertical padding plus the
-  // caption, with a line spare so a wrapped place doesn't push the counter
-  // off screen. Phones reserve more: their arrows sit in the caption row.
+  // (inline background) fills it until the full copy arrives. It takes the
+  // larger of the stage's two layouts.
   &__img {
-    --viewer-gutter: 1rem;
-    --viewer-reserve: 13rem;
-
     display: block;
-    width: min(100vw - var(--viewer-gutter), (100dvh - var(--viewer-reserve)) * var(--aspect, 1));
+    width: max(var(--w-above), var(--w-beside));
     height: auto;
     aspect-ratio: var(--aspect, auto);
     border-radius: $radius-md;
     background: center / cover no-repeat;
     animation: viewer-in $dur-med $ease;
-
-    @include md-up {
-      --viewer-gutter: 10rem;
-      --viewer-reserve: 10.5rem;
-    }
   }
 
+  // Two lines, the title with the counter and then the place (the long one,
+  // so it gets a line to itself), about as tall as the arrows that take the
+  // columns either side, so neither costs the photo much height. On wide
+  // screens the row is capped, keeping the arrows near the photo.
   &__caption {
     display: grid;
-    gap: 0.15rem;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    grid-template-rows: repeat(2, auto);
+    column-gap: 0.5rem;
+    row-gap: 0.15rem;
+    align-items: center;
+    width: 100%;
+    padding-inline: 0.5rem;
     text-align: center;
     font-size: $fs-sm;
+
+    > :not(.viewer__nav) { grid-column: 2; }
+
+    @include md-up {
+      max-width: 40rem;
+      column-gap: 0.75rem;
+      padding-inline: 1rem;
+    }
+
+    [data-layout='side'] & {
+      display: flex;
+      max-width: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: baseline;
+      column-gap: 0.5rem;
+      row-gap: 0;
+      font-size: $fs-xs;
+
+      @media #{$viewer-roomy} { font-size: $fs-sm; }
+    }
   }
 
   &__title { font-weight: 600; }
 
-  &__place { color: rgba($white, 0.78); }
+  // The title and the counter share the first line. In the side layout
+  // everything is one line, in reading order: title, place, then counter.
+  &__line {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    column-gap: 0.75rem;
+
+    [data-layout='side'] & { display: contents; }
+  }
+
+  &__place {
+    color: rgba($white, 0.78);
+
+    [data-layout='side'] &::before {
+      content: '·';
+      margin-right: 0.5rem;
+    }
+  }
 
   // A clip that couldn't load: its still, with the note over it rather than
   // under the caption, so the frame keeps its size and nothing drops off screen.
@@ -778,21 +894,14 @@
     text-align: center;
   }
 
-  // The counter and, for photos from a trip, a link to it — one line, so the
-  // link costs the photo no height.
+  // The counter and, for photos from a trip, a link to it, at the end of the
+  // title's line, so the link costs the photo no height.
   &__meta {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 0.25rem;
-  }
-
-  &__pager {
     display: inline-flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
+
+    [data-layout='side'] & { order: 1; }
   }
 
   &__count {
@@ -837,24 +946,50 @@
     }
   }
 
+  // Above the photo or beside it in a side margin (see the stage), never on
+  // it. A little smaller than the arrows and tucked into the corner, since
+  // the strip or margin it needs comes out of the photo.
   &__close {
-    top: 0.75rem;
-    right: 0.75rem;
+    top: 0.375rem;
+    right: 0.375rem;
+    width: 40px;
+    height: 40px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    @include md-up {
+      top: 0.5rem;
+      right: 0.5rem;
+    }
   }
 
-  // On phones they sit in the caption row, beside the counter, so they never
-  // cover the photo. From md up they're placed against the dialog (nothing
-  // between is positioned), in the margins. top, not a translate, centres
+  // Either side of the caption, level with its last line, so a caption that
+  // wraps doesn't move them. In the side layout, whose one-line caption is
+  // shorter than they are, they're placed against the dialog (nothing between
+  // is positioned) in the side margins instead. top, not a translate, centres
   // them: hero-button's hover lift is a transform.
   &__nav {
     position: static;
+    grid-row: 1 / -1;
+    align-self: end;
 
-    @include md-up {
+    &--prev { grid-column: 1; }
+    &--next { grid-column: 3; }
+
+    [data-layout='side'] & {
       position: absolute;
       top: calc(50% - 22px);
+    }
 
-      &--prev { left: 1.25rem; }
-      &--next { right: 1.25rem; }
+    [data-layout='side'] &--prev { left: 0.5rem; }
+    [data-layout='side'] &--next { right: 0.5rem; }
+
+    @media #{$viewer-roomy} {
+      [data-layout='side'] &--prev { left: 1.25rem; }
+      [data-layout='side'] &--next { right: 1.25rem; }
     }
   }
 

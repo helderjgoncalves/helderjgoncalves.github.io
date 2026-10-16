@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type CSSProperties,
@@ -36,6 +37,42 @@ const CONTROLS_AFTER_PLAY_MS = 1000;
 /** With Save-Data, the viewer offers at most this size. */
 const SAVE_DATA_CAP = 1280;
 
+type Layout = 'stack' | 'side';
+
+/** $bp-md, where the viewer gains its margins. */
+const WIDE_PX = 820;
+/** $viewer-roomy's height, where the side layout's spacing grows too. */
+const ROOMY_PX = 600;
+
+/**
+ * The layout that shows the gallery's photos bigger, by their total area (see
+ * the viewer in _components.scss). Chosen for the whole gallery, not each
+ * photo, so the controls stay put while the visitor moves through it; only
+ * resizing the window can change it. The figures are rough copies of the CSS
+ * spacing, in px, with a typical caption: near the crossover both layouts
+ * give nearly the same photos, so they needn't match exactly.
+ */
+function chooseLayout(vw: number, vh: number, photos: Photo[]): Layout {
+  const wide = vw >= WIDE_PX;
+  const roomy = wide && vh >= ROOMY_PX;
+  const stackBelow = wide ? 24 + 14 + 48 : 12 + 12 + 48;
+  let stack = 0;
+  let side = 0;
+  for (const photo of photos) {
+    const aspect = photo.width / photo.height;
+    const fit = (width: number, height: number) => Math.min(width, height * aspect);
+    const area = (width: number) => (width * width) / aspect;
+    // Stack: two-line caption below, close above the photo or beside it.
+    stack += area(Math.max(
+      fit(vw - (wide ? 64 : 0), vh - (wide ? 56 : 50) - stackBelow),
+      fit(vw - (wide ? 120 : 104), vh - (wide ? 32 : 8) - stackBelow),
+    ));
+    // Side: close and arrows in the side margins, one-line caption.
+    side += area(fit(vw - (roomy ? 160 : 136), vh - (roomy ? 16 + 16 + 10 + 22 : 8 + 8 + 8 + 20)));
+  }
+  return side > stack ? 'side' : 'stack';
+}
+
 /**
  * Whether the visitor has asked to save data (Chrome on Android, some iOS
  * browsers). No guessing from connection speed: Safari doesn't report it and
@@ -63,6 +100,7 @@ function canPlay(photo: Photo): boolean {
 // No auto-advance — the visitor moves through the photos, never the page.
 export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const captionRef = useRef<HTMLElement>(null);
   const touchStartX = useRef<number | null>(null);
   // The clip that failed to load, shown as its still instead. Moving to
   // another item (or closing) forgets it, so opening it again retries.
@@ -72,7 +110,19 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
   const [playing, setPlaying] = useState(false);
   const [wantsControls, setWantsControls] = useState(false);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const [layout, setLayout] = useState<Layout>('stack');
   const photo = index === null ? null : photos[index];
+
+  const open = index !== null;
+
+  // Before paint, so the photo never shows in the wrong layout first.
+  useLayoutEffect(() => {
+    if (!open) return;
+    const update = () => setLayout(chooseLayout(window.innerWidth, window.innerHeight, photos));
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, [open, photos]);
 
   useEffect(() => {
     setFailedVideo(null);
@@ -97,6 +147,20 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
     return () => {
       root.style.overflow = '';
     };
+  }, [index]);
+
+  // The photo takes the height the caption leaves (--caption-h in the CSS),
+  // so a caption that wraps takes a line from the photo instead of pushing
+  // the counter off screen.
+  useEffect(() => {
+    const caption = captionRef.current;
+    const dialog = dialogRef.current;
+    if (!caption || !dialog) return;
+    const observer = new ResizeObserver(([entry]) => {
+      dialog.style.setProperty('--caption-h', `${entry.borderBoxSize[0].blockSize}px`);
+    });
+    observer.observe(caption);
+    return () => observer.disconnect();
   }, [index]);
 
   useEffect(() => {
@@ -165,6 +229,7 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
       ref={dialogRef}
       className="viewer"
       aria-label="Photo viewer"
+      data-layout={layout}
       tabIndex={-1}
       onClose={() => onChange(null)}
       onKeyDown={onKeyDown}
@@ -176,7 +241,7 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
         <Icon name="close" />
       </button>
 
-      <div className="viewer__stage">
+      <div className="viewer__stage" style={{ '--aspect': photo.width / photo.height } as CSSProperties}>
         <figure className="viewer__figure">
           {photo.video && !videoFailed ? (
             <video
@@ -222,29 +287,29 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
           ) : (
             still
           )}
-          <figcaption className="viewer__caption">
-            <span className="viewer__title">{photo.caption}</span>
-            {photo.place && <span className="viewer__place">{photo.place}</span>}
-            <span className="viewer__meta">
-              {/* On phones the arrows flank the counter, off the photo; from md up they sit in the margins. */}
-              <span className="viewer__pager">
-                <button type="button" className="viewer__button viewer__nav viewer__nav--prev" aria-label="Previous photo" onClick={() => step(-1)}>
-                  <Icon name="chevronLeft" />
-                </button>
+          <figcaption ref={captionRef} className="viewer__caption">
+            {/* The arrows flank the caption, off the photo; in the side layout they sit in the side margins. */}
+            <button type="button" className="viewer__button viewer__nav viewer__nav--prev" aria-label="Previous photo" onClick={() => step(-1)}>
+              <Icon name="chevronLeft" />
+            </button>
+            <span className="viewer__line">
+              <span className="viewer__title">{photo.caption}</span>
+              <span className="viewer__meta">
                 <span className="viewer__count" aria-live="polite">
                   {index + 1} / {photos.length}
                 </span>
-                <button type="button" className="viewer__button viewer__nav viewer__nav--next" aria-label="Next photo" onClick={() => step(1)}>
-                  <Icon name="chevronRight" />
-                </button>
+                {link && (
+                  <a className="viewer__link" href={link.href} draggable={false}>
+                    {link.label}
+                    <Icon name="chevronRight" />
+                  </a>
+                )}
               </span>
-              {link && (
-                <a className="viewer__link" href={link.href} draggable={false}>
-                  {link.label}
-                  <Icon name="chevronRight" />
-                </a>
-              )}
             </span>
+            {photo.place && <span className="viewer__place">{photo.place}</span>}
+            <button type="button" className="viewer__button viewer__nav viewer__nav--next" aria-label="Next photo" onClick={() => step(1)}>
+              <Icon name="chevronRight" />
+            </button>
           </figcaption>
         </figure>
       </div>
