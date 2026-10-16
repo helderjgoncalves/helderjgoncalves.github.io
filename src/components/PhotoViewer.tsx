@@ -135,8 +135,8 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
   const dialogRef = useRef<HTMLDialogElement>(null);
   const captionRef = useRef<HTMLElement>(null);
   // The touch in progress: where and when it began, its axis once it has
-  // moved far enough to tell, and whether it may close the viewer.
-  const touch = useRef<{ x: number; y: number; t: number; axis?: 'x' | 'y'; canClose: boolean } | null>(null);
+  // moved far enough to tell, and whether it began on a clip's showing controls.
+  const touch = useRef<{ x: number; y: number; t: number; axis?: 'x' | 'y'; overControls: boolean } | null>(null);
   // The clip that failed to load, shown as its still instead. Moving to
   // another item (or closing) forgets it, so opening it again retries.
   const [failedVideo, setFailedVideo] = useState<string | null>(null);
@@ -254,8 +254,8 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
   const setDrag = (dy: number | null, fingerDown?: boolean) => dialogRef.current && dragTo(dialogRef.current, dy, fingerDown);
 
   // Sideways moves through the gallery; up or down closes it, the photo
-  // following the finger. Not over a clip's showing controls, whose scrubber
-  // takes drags of its own.
+  // following the finger. Over a clip's showing controls, sideways belongs
+  // to the scrubber, so only a clearly vertical drag closes and none steps.
   function onTouchStart(event: TouchEvent) {
     if (event.touches.length > 1) {
       touch.current = null;
@@ -263,7 +263,7 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
       return;
     }
     const overControls = (event.target as HTMLElement).closest('video[controls]') !== null;
-    touch.current = { x: event.touches[0].clientX, y: event.touches[0].clientY, t: event.timeStamp, canClose: !overControls };
+    touch.current = { x: event.touches[0].clientX, y: event.touches[0].clientY, t: event.timeStamp, overControls };
   }
 
   function onTouchMove(event: TouchEvent) {
@@ -272,9 +272,10 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
     const dx = event.touches[0].clientX - start.x;
     const dy = event.touches[0].clientY - start.y;
     if (!start.axis && Math.max(Math.abs(dx), Math.abs(dy)) > SWIPE_SLOP_PX) {
-      start.axis = Math.abs(dy) > Math.abs(dx) ? 'y' : 'x';
+      const vertical = Math.abs(dy) > Math.abs(dx) * (start.overControls ? 2 : 1);
+      start.axis = vertical ? 'y' : 'x';
     }
-    if (start.axis === 'y' && start.canClose) setDrag(dy);
+    if (start.axis === 'y') setDrag(dy);
   }
 
   function onTouchEnd(event: TouchEvent) {
@@ -283,8 +284,8 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
     if (!start) return;
     const dx = event.changedTouches[0].clientX - start.x;
     const dy = event.changedTouches[0].clientY - start.y;
-    if (start.axis === 'x' && Math.abs(dx) > SWIPE_PX) step(dx < 0 ? 1 : -1);
-    if (start.axis !== 'y' || !start.canClose) return;
+    if (start.axis === 'x' && !start.overControls && Math.abs(dx) > SWIPE_PX) step(dx < 0 ? 1 : -1);
+    if (start.axis !== 'y') return;
 
     const speed = Math.abs(dy) / Math.max(event.timeStamp - start.t, 1);
     if (Math.abs(dy) < SWIPE_CLOSE_PX && !(speed > FLICK_SPEED && Math.abs(dy) > SWIPE_PX)) {
@@ -348,11 +349,11 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
                 hideTimer.current = setTimeout(() => setWantsControls(false), CONTROLS_AFTER_PLAY_MS);
               }}
               onPause={() => clearTimeout(hideTimer.current)}
-              onEnded={() => setPlaying(false)}
               onClick={() => setWantsControls(true)}
               onFocus={() => setWantsControls(true)}
               onPointerMove={(event) => event.pointerType === 'mouse' && setWantsControls(true)}
               playsInline
+              loop
               autoPlay={!lite}
               preload={lite ? 'none' : 'auto'}
               muted

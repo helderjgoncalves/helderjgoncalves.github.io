@@ -254,7 +254,8 @@ The build throws if any of these copies is missing, and `npm test` fails if a
 page references a `/photos/` file that isn't in `dist/`. The viewer is a native `<dialog>` with
 previous/next, arrow keys, swipe and Esc — deliberately no auto-advance.
 A swipe up or down closes it, the photo following the finger as the page
-shows through (not over a clip's showing controls). On phones that replaces
+shows through; over a clip's showing controls only a clearly vertical drag
+counts, and a sideways one is left to the scrubber. On phones that replaces
 the close button, which is hidden from sight only, so Tab and screen readers
 still reach it; elsewhere it stays, in a margin that costs the photo nothing.
 It is laid out by the screen's shape, photo first, and nothing ever sits on
@@ -277,10 +278,11 @@ keep in step with the caption.
 
 **Videos** are photos with a `video` (a clip at `media('<name>.mp4')`): the
 photo is the grid tile and poster, and the clip downloads only once it is the
-item on screen in the viewer — never on scroll — and plays muted, with the
-sound one tap away in the controls. While it plays on its own the controls
-stay off the picture; a tap, a mouse move or keyboard focus brings them back,
-and they show whenever it isn't playing (loading, autoplay blocked, ended).
+item on screen in the viewer — never on scroll — and plays muted and on a
+loop, with the sound one tap away in the controls. While it plays on its own
+the controls stay off the picture; a tap, a mouse move or keyboard focus
+brings them back, and they show whenever it isn't playing (loading, autoplay
+blocked).
 Pressing play hides them after a second, sooner than the browser's own wait. If the clip fails to load (say the
 Worker's daily limit is spent), the viewer shows the still with a quiet note
 (`videoUnavailable`) instead of a dead player; moving away and back retries.
