@@ -173,7 +173,13 @@ has a front-page card; Off the clock's Travel section links to it.
  side carrying it on with a softly blurred mirror of itself (the seam's
  pixels match, so it reads as the picture continuing), so ultra-wide
  monitors don't crop a portrait cover to a thin slice. Pick a cover with its subject in the upper half, since the
- band covers the foot.
+ band covers the foot. On phones the hero is about the cover's own shape and
+ the band takes its lower half, so a subject in the middle (Patagonia's
+ Cuernos) hides behind it there; the cover's `phoneZoom` enlarges the photo
+ from its foot below md, trimming sky and sides to lift the subject clear
+ (1.35 for Patagonia; much more and the top of the subject goes). It applies
+ to short landscape windows too: there the band covers even more, and the
+ zoom trims the subject's top a little but keeps it in view.
   The page is for people planning a trip; the **wonder goals** (the New Seven
   Wonders and the classic Seven Natural Wonders, `offTheClock.goals`) are
   personal, so they stay on Off the clock. Each goal's `after` names the

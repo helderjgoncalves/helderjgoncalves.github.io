@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { avifSrc, hasAvif, largeSrc, largeSrcSet } from '../data/photos';
 import type { Trip } from '../data/trips';
 import { tripEyebrow } from '../data/tripsPage';
@@ -5,7 +6,7 @@ import { TripFacts } from './TripFacts';
 
 /** A trip page's hero: its cover photo full-bleed, the title and summary over its foot. */
 export function TripHero({ trip }: { trip: Trip }) {
-  const { photo, focus } = trip.cover;
+  const { photo, focus, phoneZoom } = trip.cover;
   // Every layer picks the same copy from the same srcset, so the photo downloads once.
   const layer = (className: string, alt: string) => (
     <picture>
@@ -26,7 +27,10 @@ export function TripHero({ trip }: { trip: Trip }) {
     </picture>
   );
   return (
-    <header className="page-hero trip-cover">
+    <header
+      className="page-hero trip-cover"
+      style={phoneZoom ? ({ '--phone-zoom': phoneZoom } as CSSProperties) : undefined}
+    >
       <div className="trip-cover__extend" aria-hidden="true">
         {layer('trip-cover__copy trip-cover__copy--left', '')}
         {layer('trip-cover__copy', '')}

@@ -1377,14 +1377,20 @@ $viewer-swipe: '(hover: none) and (pointer: coarse) and (max-width: #{$bp-md - 1
 // Small viewport units so the height doesn't jump as a phone's address bar
 // slides away. Raw palette: the band behind the text has to keep white
 // legible over any photo, in either theme.
+// The hero's height (the larger of a floor and a share of the screen) and
+// the widest the photo gets, as a multiple of it.
+$trip-cover-floor: 26rem;
+$trip-cover-share: 0.72;
+$trip-cover-widest: 2.1;
+
 .trip-cover {
   display: flex;
   align-items: flex-end;
   // A size container, so the photo can measure the hero's width (cqw) when
   // working out how far short of it it falls.
   container-type: inline-size;
-  --trip-cover-height: clamp(26rem, 72svh, 64rem);
-  --trip-cover-photo: min(100cqw, calc(var(--trip-cover-height) * 2.1));
+  --trip-cover-height: clamp(#{$trip-cover-floor}, #{$trip-cover-share * 100}svh, 64rem);
+  --trip-cover-photo: min(100cqw, calc(var(--trip-cover-height) * #{$trip-cover-widest}));
   // How far the photo falls short of each side: 0 while it fills the hero.
   --trip-cover-gap: calc((100cqw - var(--trip-cover-photo)) / 2);
   min-height: var(--trip-cover-height);
@@ -1399,12 +1405,15 @@ $viewer-swipe: '(hover: none) and (pointer: coarse) and (max-width: #{$bp-md - 1
   // the same picture softened, never to the dark background. The three are
   // blurred as one layer: blurred one by one, each edge goes see-through and
   // the seam shows dark. Undimmed, since any change in tone shows the seam
-  // too. Off screen until the photo stops widening, so not painted below lg,
-  // where it always fills.
+  // too. Painted only once the photo stops widening: the screen wider than
+  // $trip-cover-widest times the hero's height, both its floor (a short
+  // window, at any width) and its share of the screen.
   &__extend {
     display: none;
 
-    @include lg-up { display: block; }
+    @media (min-width: #{$trip-cover-floor * $trip-cover-widest}) and (min-aspect-ratio: #{$trip-cover-share * $trip-cover-widest * 1000} / 1000) {
+      display: block;
+    }
     position: absolute;
     inset: 0;
     filter: blur(14px);
@@ -1450,6 +1459,16 @@ $viewer-swipe: '(hover: none) and (pointer: coarse) and (max-width: #{$bp-md - 1
       #000 calc(100% - var(--edge)),
       transparent
     );
+
+    // The cover's phoneZoom: enlarged from its foot, so sky goes from the
+    // top and the subject rises clear of the band. At every narrow width,
+    // portrait or not: a short landscape window's band (text sized for a
+    // narrow screen) covers even more of the hero, and there the zoom trims
+    // the top of the subject a little but keeps it in view.
+    @include md-down {
+      transform: translateX(-50%) scale(var(--phone-zoom, 1));
+      transform-origin: 50% 100%;
+    }
   }
 
   // Frosted band behind the text, sized by the text rather than the photo,

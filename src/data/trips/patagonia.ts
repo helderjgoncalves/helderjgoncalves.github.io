@@ -84,7 +84,7 @@ export const patagonia: Trip = {
       photos: [photos.lagoGrey, photos.lagoGreyClip, photos.chileanFlag],
     },
   ],
-  cover: { photo: photos.cuernosDelPaine },
+  cover: { photo: photos.cuernosDelPaine, phoneZoom: 1.35 },
   featured: true,
   practical: [],
   meta: {

@@ -76,9 +76,12 @@ export interface Trip {
   /**
    * The trip's card on /trips/ (cropped to 3:2) and its page's full-bleed hero
    * (wide on desktop, tall on phones): one of its own photos. `focus` is the
-   * object-position that keeps the subject in frame in both.
+   * object-position that keeps the subject in frame in both. `phoneZoom`
+   * (say 1.3) enlarges the hero's photo on phones from its foot, trimming
+   * sky and sides, for a subject the band would otherwise cover: a phone's
+   * hero is about the cover's own shape, and the band takes its lower half.
    */
-  cover: { photo: Photo; focus?: string };
+  cover: { photo: Photo; focus?: string; phoneZoom?: number };
   /** Shown as a big card at the top of /trips/; the rest get compact cards. */
   featured?: boolean;
   /** Season, transport, operators, altitude… The section is hidden while empty. */
