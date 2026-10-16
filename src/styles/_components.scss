@@ -1377,10 +1377,11 @@ $viewer-swipe: '(hover: none) and (pointer: coarse) and (max-width: #{$bp-md - 1
 // Small viewport units so the height doesn't jump as a phone's address bar
 // slides away. Raw palette: the band behind the text has to keep white
 // legible over any photo, in either theme.
-// The hero's height (the larger of a floor and a share of the screen) and
-// the widest the photo gets, as a multiple of it.
+// The hero's height (a share of the screen, held between a floor and a
+// ceiling) and the widest the photo gets, as a multiple of it.
 $trip-cover-floor: 26rem;
 $trip-cover-share: 0.72;
+$trip-cover-ceiling: 64rem;
 $trip-cover-widest: 2.1;
 
 .trip-cover {
@@ -1389,7 +1390,7 @@ $trip-cover-widest: 2.1;
   // A size container, so the photo can measure the hero's width (cqw) when
   // working out how far short of it it falls.
   container-type: inline-size;
-  --trip-cover-height: clamp(#{$trip-cover-floor}, #{$trip-cover-share * 100}svh, 64rem);
+  --trip-cover-height: clamp(#{$trip-cover-floor}, #{$trip-cover-share * 100}svh, #{$trip-cover-ceiling});
   --trip-cover-photo: min(100cqw, calc(var(--trip-cover-height) * #{$trip-cover-widest}));
   // How far the photo falls short of each side: 0 while it fills the hero.
   --trip-cover-gap: calc((100cqw - var(--trip-cover-photo)) / 2);
@@ -1406,12 +1407,14 @@ $trip-cover-widest: 2.1;
   // blurred as one layer: blurred one by one, each edge goes see-through and
   // the seam shows dark. Undimmed, since any change in tone shows the seam
   // too. Painted only once the photo stops widening: the screen wider than
-  // $trip-cover-widest times the hero's height, both its floor (a short
-  // window, at any width) and its share of the screen.
+  // $trip-cover-widest times the hero's height. Either wider than that
+  // times both its floor (a short window) and its share of the screen, or
+  // than that times its ceiling (a tall one, whose hero stops growing).
   &__extend {
     display: none;
 
-    @media (min-width: #{$trip-cover-floor * $trip-cover-widest}) and (min-aspect-ratio: #{$trip-cover-share * $trip-cover-widest * 1000} / 1000) {
+    @media (min-width: #{$trip-cover-floor * $trip-cover-widest}) and (min-aspect-ratio: #{$trip-cover-share * $trip-cover-widest * 1000} / 1000),
+      (min-width: #{$trip-cover-ceiling * $trip-cover-widest}) {
       display: block;
     }
     position: absolute;
