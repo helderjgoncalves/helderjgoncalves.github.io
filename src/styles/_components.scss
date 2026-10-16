@@ -709,6 +709,9 @@
 // spacing waits for height as well as width: a phone turned sideways is
 // md wide, but every pixel of its height counts.
 $viewer-roomy: '(min-width: #{$bp-md}) and (min-height: 600px)';
+// A phone (touch, below md): close is swiped, not tapped. The component's
+// SWIPE_CLOSE_QUERY is the same query.
+$viewer-swipe: '(hover: none) and (pointer: coarse) and (max-width: #{$bp-md - 1})';
 
 .viewer {
   --edge: 0.5rem;
@@ -728,7 +731,13 @@ $viewer-roomy: '(min-width: #{$bp-md}) and (min-height: 600px)';
   padding: 0;
   border: 0;
   color: $white;
-  background: $ink-900;
+  background: transparent;
+  // Nothing in the viewer scrolls, and a drag on it must not pan or bounce
+  // the page behind (iOS hands it on despite the root's overflow: hidden).
+  // Swipes still reach the component: they're touch events, not panning.
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
 
   @include md-up {
     --edge: 2rem;
@@ -737,6 +746,12 @@ $viewer-roomy: '(min-width: #{$bp-md}) and (min-height: 600px)';
     --pad-x: 2rem;
     --pad-bottom: 1.5rem;
     --gap: 0.85rem;
+  }
+
+  // Phones close with a swipe up or down (or a tap on the surround), so
+  // close leaves the photo the strip above it; see &__close.
+  @media #{$viewer-swipe} {
+    --close-row: var(--edge);
   }
 
   &[data-layout='side'] {
@@ -761,6 +776,35 @@ $viewer-roomy: '(min-width: #{$bp-md}) and (min-height: 600px)';
 
   &::backdrop { background: transparent; }
 
+  // The surround, as a layer so a swipe to close can fade it and show the
+  // page behind. --drag is the swipe's offset in px and --fade its progress
+  // (0–1), set by the component from the first move until the photo has
+  // sprung back or gone (data-swiping); data-dragging, while the finger is
+  // down, drops the transitions so the photo follows it exactly.
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: $ink-900;
+    opacity: calc(1 - var(--fade, 0));
+    transition: opacity $dur-med $ease;
+  }
+
+  &[data-dragging]::before,
+  &[data-dragging] .viewer__stage { transition: none; }
+
+  &[data-dragging] .viewer__caption,
+  &[data-dragging] .viewer__close {
+    opacity: 0;
+    transition: opacity $dur-fast $ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::before,
+    .viewer__stage { transition: none; }
+  }
+
   // The photo's width with close above it, and with close beside it. These
   // resolve here, against the stage's --aspect (set inline) and the measured
   // --caption-h, and the photo inherits them. The top padding steps between
@@ -778,6 +822,13 @@ $viewer-roomy: '(min-width: #{$bp-md}) and (min-height: 600px)';
       clamp(var(--edge), (var(--w-above) - var(--w-beside)) * 1000, var(--close-row))
       var(--pad-x)
       var(--pad-bottom);
+    transition: transform $dur-med $ease;
+
+    // Only during a swipe: a transform makes the stage the arrows' containing
+    // block, which would pull them in from the side margins.
+    [data-swiping] & {
+      transform: translateY(var(--drag, 0px)) scale(calc(1 - var(--fade, 0) * 0.15));
+    }
   }
 
   // The caption is pinned to the foot and the photo centred in the space
@@ -963,6 +1014,15 @@ $viewer-roomy: '(min-width: #{$bp-md}) and (min-height: 600px)';
     @include md-up {
       top: 0.5rem;
       right: 0.5rem;
+    }
+
+    // Swiped instead on phones, but still the first stop for Tab and screen
+    // readers, so it's hidden from sight only and shows when focused.
+    @media #{$viewer-swipe} {
+      .viewer:not([data-layout='side']) &:not(:focus-visible) {
+        opacity: 0;
+        pointer-events: none;
+      }
     }
   }
 

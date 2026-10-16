@@ -253,6 +253,10 @@ and the estimates are unreliable.
 The build throws if any of these copies is missing, and `npm test` fails if a
 page references a `/photos/` file that isn't in `dist/`. The viewer is a native `<dialog>` with
 previous/next, arrow keys, swipe and Esc — deliberately no auto-advance.
+A swipe up or down closes it, the photo following the finger as the page
+shows through (not over a clip's showing controls). On phones that replaces
+the close button, which is hidden from sight only, so Tab and screen readers
+still reach it; elsewhere it stays, in a margin that costs the photo nothing.
 It is laid out by the screen's shape, photo first, and nothing ever sits on
 the photo (a clip's own controls would be covered), and the controls never
 move from one photo to the next: the layout is chosen once for the gallery

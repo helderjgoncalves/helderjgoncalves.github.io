@@ -30,6 +30,18 @@ interface PhotoViewerProps {
 }
 
 const SWIPE_PX = 50;
+/** Movement before a touch counts as a swipe, and picks its axis. */
+const SWIPE_SLOP_PX = 10;
+/** A vertical swipe this long closes the viewer; a shorter one needs a flick. */
+const SWIPE_CLOSE_PX = 120;
+/** A flick, in px/ms. */
+const FLICK_SPEED = 0.5;
+/** How far the swipe goes before the surround has faded as far as it will. */
+const SWIPE_FADE_PX = 400;
+/** How long the photo glides once a swipe lets go, off screen or back ($dur-med). */
+const SWIPE_GLIDE_MS = 220;
+/** $viewer-swipe: phones, where a swipe stands in for the close button. */
+const SWIPE_CLOSE_QUERY = '(hover: none) and (pointer: coarse) and (max-width: 819px)';
 
 /** How long the controls stay once play is pressed; the browser's own wait is about 3 s. */
 const CONTROLS_AFTER_PLAY_MS = 1000;
@@ -52,10 +64,11 @@ const ROOMY_PX = 600;
  * spacing, in px, with a typical caption: near the crossover both layouts
  * give nearly the same photos, so they needn't match exactly.
  */
-function chooseLayout(vw: number, vh: number, photos: Photo[]): Layout {
+function chooseLayout(vw: number, vh: number, photos: Photo[], swipeToClose: boolean): Layout {
   const wide = vw >= WIDE_PX;
   const roomy = wide && vh >= ROOMY_PX;
   const stackBelow = wide ? 24 + 14 + 48 : 12 + 12 + 48;
+  const closeRow = wide ? 56 : swipeToClose ? 8 : 50;
   let stack = 0;
   let side = 0;
   for (const photo of photos) {
@@ -64,7 +77,7 @@ function chooseLayout(vw: number, vh: number, photos: Photo[]): Layout {
     const area = (width: number) => (width * width) / aspect;
     // Stack: two-line caption below, close above the photo or beside it.
     stack += area(Math.max(
-      fit(vw - (wide ? 64 : 0), vh - (wide ? 56 : 50) - stackBelow),
+      fit(vw - (wide ? 64 : 0), vh - closeRow - stackBelow),
       fit(vw - (wide ? 120 : 104), vh - (wide ? 32 : 8) - stackBelow),
     ));
     // Side: close and arrows in the side margins, one-line caption.
@@ -89,6 +102,26 @@ function placeholderStyle(photo: Photo): CSSProperties {
   return { '--aspect': photo.width / photo.height, backgroundImage: `url("${tile}")` } as CSSProperties;
 }
 
+/**
+ * Moves the photo dy px with a vertical swipe, fading the surround (see
+ * .viewer::before): following the finger while it's down, gliding once it
+ * lets go. null clears the swipe.
+ */
+function dragTo(dialog: HTMLDialogElement, dy: number | null, fingerDown = true) {
+  if (dy === null) {
+    delete dialog.dataset.swiping;
+    delete dialog.dataset.dragging;
+    dialog.style.removeProperty('--drag');
+    dialog.style.removeProperty('--fade');
+    return;
+  }
+  dialog.dataset.swiping = '';
+  if (fingerDown) dialog.dataset.dragging = '';
+  else delete dialog.dataset.dragging;
+  dialog.style.setProperty('--drag', `${dy}px`);
+  dialog.style.setProperty('--fade', `${Math.min(Math.abs(dy) / SWIPE_FADE_PX, 1) * 0.8}`);
+}
+
 // Only called once the viewer is open, so never during prerendering.
 function canPlay(photo: Photo): boolean {
   const probe = document.createElement('video');
@@ -101,7 +134,9 @@ function canPlay(photo: Photo): boolean {
 export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const captionRef = useRef<HTMLElement>(null);
-  const touchStartX = useRef<number | null>(null);
+  // The touch in progress: where and when it began, its axis once it has
+  // moved far enough to tell, and whether it may close the viewer.
+  const touch = useRef<{ x: number; y: number; t: number; axis?: 'x' | 'y'; canClose: boolean } | null>(null);
   // The clip that failed to load, shown as its still instead. Moving to
   // another item (or closing) forgets it, so opening it again retries.
   const [failedVideo, setFailedVideo] = useState<string | null>(null);
@@ -118,7 +153,8 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
   // Before paint, so the photo never shows in the wrong layout first.
   useLayoutEffect(() => {
     if (!open) return;
-    const update = () => setLayout(chooseLayout(window.innerWidth, window.innerHeight, photos));
+    const update = () =>
+      setLayout(chooseLayout(window.innerWidth, window.innerHeight, photos, matchMedia(SWIPE_CLOSE_QUERY).matches));
     update();
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
@@ -141,6 +177,8 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
       dialog.focus();
     }
     if (index === null && dialog.open) dialog.close();
+    // A swipe that closed it leaves the photo off screen; the next opening starts afresh.
+    if (index === null) dragTo(dialog, null);
 
     const root = document.documentElement;
     root.style.overflow = index === null ? '' : 'hidden';
@@ -213,15 +251,65 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
     }
   }
 
+  const setDrag = (dy: number | null, fingerDown?: boolean) => dialogRef.current && dragTo(dialogRef.current, dy, fingerDown);
+
+  // Sideways moves through the gallery; up or down closes it, the photo
+  // following the finger. Not over a clip's showing controls, whose scrubber
+  // takes drags of its own.
   function onTouchStart(event: TouchEvent) {
-    touchStartX.current = event.touches[0].clientX;
+    if (event.touches.length > 1) {
+      touch.current = null;
+      setDrag(null);
+      return;
+    }
+    const overControls = (event.target as HTMLElement).closest('video[controls]') !== null;
+    touch.current = { x: event.touches[0].clientX, y: event.touches[0].clientY, t: event.timeStamp, canClose: !overControls };
+  }
+
+  function onTouchMove(event: TouchEvent) {
+    const start = touch.current;
+    if (!start) return;
+    const dx = event.touches[0].clientX - start.x;
+    const dy = event.touches[0].clientY - start.y;
+    if (!start.axis && Math.max(Math.abs(dx), Math.abs(dy)) > SWIPE_SLOP_PX) {
+      start.axis = Math.abs(dy) > Math.abs(dx) ? 'y' : 'x';
+    }
+    if (start.axis === 'y' && start.canClose) setDrag(dy);
   }
 
   function onTouchEnd(event: TouchEvent) {
-    if (touchStartX.current === null) return;
-    const dx = event.changedTouches[0].clientX - touchStartX.current;
-    touchStartX.current = null;
-    if (Math.abs(dx) > SWIPE_PX) step(dx < 0 ? 1 : -1);
+    const start = touch.current;
+    touch.current = null;
+    if (!start) return;
+    const dx = event.changedTouches[0].clientX - start.x;
+    const dy = event.changedTouches[0].clientY - start.y;
+    if (start.axis === 'x' && Math.abs(dx) > SWIPE_PX) step(dx < 0 ? 1 : -1);
+    if (start.axis !== 'y' || !start.canClose) return;
+
+    const speed = Math.abs(dy) / Math.max(event.timeStamp - start.t, 1);
+    if (Math.abs(dy) < SWIPE_CLOSE_PX && !(speed > FLICK_SPEED && Math.abs(dy) > SWIPE_PX)) {
+      springBack();
+    } else if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      onChange(null);
+    } else {
+      // Carry on off screen the way it was going, then close.
+      setDrag(Math.sign(dy) * window.innerHeight, false);
+      setTimeout(() => onChange(null), SWIPE_GLIDE_MS);
+    }
+  }
+
+  function onTouchCancel() {
+    touch.current = null;
+    springBack();
+  }
+
+  function springBack() {
+    const dialog = dialogRef.current;
+    if (!dialog?.dataset.swiping) return;
+    dragTo(dialog, 0, false);
+    setTimeout(() => {
+      if (dialog.dataset.dragging === undefined) dragTo(dialog, null);
+    }, SWIPE_GLIDE_MS);
   }
 
   return (
@@ -235,7 +323,9 @@ export function PhotoViewer({ photos, index, onChange, linkFor }: PhotoViewerPro
       onKeyDown={onKeyDown}
       onClick={onClick}
       onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
+      onTouchCancel={onTouchCancel}
     >
       <button type="button" className="viewer__button viewer__close" aria-label="Close" onClick={() => onChange(null)}>
         <Icon name="close" />
