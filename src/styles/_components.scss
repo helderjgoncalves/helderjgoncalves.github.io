@@ -732,12 +732,6 @@ $viewer-swipe: '(hover: none) and (pointer: coarse) and (max-width: #{$bp-md - 1
   border: 0;
   color: $white;
   background: transparent;
-  // Nothing in the viewer scrolls, and a drag on it must not pan or bounce
-  // the page behind (iOS hands it on despite the root's overflow: hidden).
-  // Swipes still reach the component: they're touch events, not panning.
-  overflow: hidden;
-  overscroll-behavior: none;
-  touch-action: none;
 
   @include md-up {
     --edge: 2rem;
