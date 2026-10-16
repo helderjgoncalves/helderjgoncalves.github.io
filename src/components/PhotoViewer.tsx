@@ -67,7 +67,7 @@ const ROOMY_PX = 600;
 function chooseLayout(vw: number, vh: number, photos: Photo[], swipeToClose: boolean): Layout {
   const wide = vw >= WIDE_PX;
   const roomy = wide && vh >= ROOMY_PX;
-  const stackBelow = wide ? 24 + 14 + 48 : 12 + 12 + 48;
+  const stackBelow = wide ? 24 + 14 + 48 : (swipeToClose ? 0 : 12) + 12 + 48;
   const edge = wide ? 32 : swipeToClose ? 0 : 8;
   const closeRow = wide ? 56 : swipeToClose ? 0 : 50;
   let stack = 0;
