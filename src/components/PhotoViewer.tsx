@@ -111,6 +111,26 @@ function placeholderStyle(photo: Photo): CSSProperties {
 }
 
 /**
+ * A clip's still, as a background over the tile. WebKit gets it only this
+ * way, not as a poster: a clip with a poster that didn't autoplay (a link
+ * opened without a tap, Low Data or Low Power Mode) plays its clock but keeps
+ * the poster on screen when the visitor presses play (WebKit bug 300990).
+ * Elsewhere the poster stays, since Chrome paints a poster-less clip grey
+ * over its background. Every iOS browser is WebKit, and says so in vendor.
+ */
+function posterFreezes(): boolean {
+  return navigator.vendor.startsWith('Apple');
+}
+
+function clipStyle(photo: Photo): CSSProperties {
+  const tile = hasAvif(photo) ? avifSrc(photo.src) : photo.src;
+  return {
+    ...placeholderStyle(photo),
+    backgroundImage: `url("${avifSrc(largeSrc(photo))}"), url("${tile}")`,
+  };
+}
+
+/**
  * Moves the photo dy px with a vertical swipe, fading the surround (see
  * .viewer::before): following the finger while it's down, gliding once it
  * lets go. null clears the swipe.
@@ -373,8 +393,8 @@ export function PhotoViewer({ photos, index, onChange, linkFor, linkable = false
             <video
               key={photo.src}
               className="viewer__img"
-              poster={avifSrc(largeSrc(photo))}
-              style={placeholderStyle(photo)}
+              poster={posterFreezes() ? undefined : avifSrc(largeSrc(photo))}
+              style={clipStyle(photo)}
               aria-label={photo.alt}
               controls={wantsControls || !playing}
               tabIndex={0}

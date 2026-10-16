@@ -294,6 +294,11 @@ Worker's daily limit is spent), the viewer shows the still with a quiet note
 A browser that can play neither copy (`canPlayType`) gets the still straight
 away, with `videoUnsupported` instead, since retrying won't help.
 The poster's AVIF (`avifSrc`) is HDR, cut from the clip, so it matches it.
+It is the `<video>`'s background, and its `poster` everywhere but WebKit
+(Safari, every iOS browser): there a clip with a poster that didn't autoplay
+(a photo link opened without a tap, Low Data or Low Power Mode) runs its clock
+on play but keeps the poster on screen (WebKit bug 300990). Chrome needs the
+poster, since it paints a poster-less clip grey over its background.
 
 Each clip ships twice, both made from the phone original (never from an
 earlier encode) and both 1080p, 10-bit HLG HDR with the original's colour tags:
