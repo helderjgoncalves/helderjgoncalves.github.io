@@ -18,6 +18,24 @@
         } catch (e) { /* localStorage may be unavailable */ }
       })();
     </script>
+    <!--
+      Sections fade in on scroll (useReveal), so they start hidden — but only
+      while the bundle can still reveal them. If it fails to load (a page
+      cached from before a deploy names a script that no longer exists, a
+      proxy blocks it) or throws, the class goes and the pre-rendered page
+      simply shows.
+    -->
+    <script>
+      (function () {
+        var root = document.documentElement;
+        root.classList.add('js-reveal');
+        addEventListener('error', function (e) {
+          if (e instanceof ErrorEvent || (e.target && e.target.tagName === 'SCRIPT')) {
+            root.classList.remove('js-reveal');
+          }
+        }, true);
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#3a6ea5" />

@@ -1851,25 +1851,24 @@ $viewer-swipe: '(hover: none) and (pointer: coarse) and (max-width: #{$bp-md - 1
 
 // ---- Reveal-on-scroll ----
 //
-// The hidden start state is gated behind `scripting: enabled`, because only
-// useReveal can add `.is-visible`. Applying `opacity: 0` unconditionally made
-// the entire pre-rendered payload invisible whenever scripts don't run — no-JS
-// visitors, a failed bundle, or a crawler that applies CSS without executing
-// JS — which defeated the point of pre-rendering it. Browsers without the
-// media feature just skip the animation and show the content.
+// The hidden start state waits for `.js-reveal` on <html>, because only
+// useReveal can add `.is-visible`. index.html sets the class before paint
+// and drops it if the bundle fails to load or throws, so no-JS visitors, a
+// page cached from before a deploy (naming a script that's gone) or a
+// crawler that applies CSS without running JS all see the pre-rendered page
+// rather than blank sections. `scripting: enabled` alone wasn't enough: it
+// says the browser can run scripts, not that ours did.
 .reveal {
   transition: opacity $dur-slow $ease, transform $dur-slow $ease;
 }
 
-@media (scripting: enabled) {
-  .reveal:not(.is-visible) {
-    opacity: 0;
-    transform: translateY(8px);
-  }
+.js-reveal .reveal:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(8px);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal:not(.is-visible) {
+  .js-reveal .reveal:not(.is-visible) {
     opacity: 1;
     transform: none;
     transition: none;

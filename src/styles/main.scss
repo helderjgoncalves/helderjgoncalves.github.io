@@ -36,7 +36,7 @@
 
   // Sections only gain `.is-visible` once they scroll into view, so everything
   // below the fold would otherwise print as blank space.
-  .reveal:not(.is-visible) {
+  .js-reveal .reveal:not(.is-visible) {
     opacity: 1;
     transform: none;
   }

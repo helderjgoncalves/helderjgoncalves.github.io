@@ -516,6 +516,13 @@ padding, radius, and resting colour. Two rules that follow from that:
   `localStorage.theme` and sets `data-theme` on `<html>` **before first paint**
   to avoid a flash of the wrong theme. Don't move it out of `<head>` or make
   it async.
+- A second head script adds `js-reveal` to `<html>`, which is what lets
+  sections start hidden for `useReveal`'s fade-in, and removes it if the
+  bundle fails to load or throws. Without that, a page cached from before a
+  deploy (GitHub Pages lets browsers keep HTML for 10 minutes, and it names
+  a bundle the deploy deleted) showed nothing below the hero. Don't gate the
+  hidden state on `scripting: enabled` again: that says the browser can run
+  scripts, not that ours did.
 - `ThemeToggle.tsx` is a two-state toggle: a click always flips the theme on
   screen. A first visit follows the system; a choice that differs from the
   system is saved to `localStorage`, and flipping back to the system's theme
