@@ -1478,9 +1478,11 @@ $trip-cover-widest: 2.1;
   // so a summary that wraps to five lines on a phone stays covered. Full
   // width, inside the hero: overhanging the hero's clip left a sharp strip at
   // its edge. It fades in over its top padding on an eased curve, long on big
-  // screens: a short fade over a smooth sky reads as a grey box.
+  // screens: a short fade over a smooth sky reads as a grey box. Short on
+  // phones, where the band already covers half the photo and a long fade
+  // blurs the subject above the text.
   &__band {
-    --fade: 6rem;
+    --fade: 3.5rem;
     position: relative;
     z-index: 1;
     width: 100%;

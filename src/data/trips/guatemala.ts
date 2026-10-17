@@ -36,7 +36,7 @@ export const guatemala: Trip = {
     },
     { name: 'Semuc Champey', country: 'Guatemala', photos: [photos.semucChampey] },
   ],
-  cover: { photo: photos.volcano, focus: '50% 65%' },
+  cover: { photo: photos.volcano, focus: '50% 65%', phoneZoom: 1.5 },
   practical: [],
   meta: {
     title: 'Guatemala, volcanoes to the Caribbean · Trips · Hélder Gonçalves',
