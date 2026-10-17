@@ -1,6 +1,15 @@
 import { useState } from 'react';
 import { largeSrc, type Photo } from '../data/photos';
-import { photoSections, routeSteps, stopId, tripPath, tripPhotos, tripPlace, type Trip } from '../data/trips';
+import {
+  photoSections,
+  routeSteps,
+  stopId,
+  tripCountries,
+  tripPath,
+  tripPhotos,
+  tripPlace,
+  type Trip,
+} from '../data/trips';
 import { tripsPage } from '../data/tripsPage';
 import { Footer } from './Footer';
 import { Icon } from './Icon';
@@ -15,6 +24,9 @@ export function TripPage({ trip }: { trip: Trip }) {
   const photos = tripPhotos(trip);
   const [viewing, setViewing] = useState<number | null>(null);
   const open = (photo: Photo) => setViewing(photos.indexOf(photo));
+  const sectionIds = new Set(photoSections(trip).map(stopId));
+  // One country is already in the hero's eyebrow; on every stop it's noise.
+  const showCountry = tripCountries(trip).length > 1;
   return (
     <>
       <SiteNav current={tripPath(trip)} section="/trips/" />
@@ -37,14 +49,33 @@ export function TripPage({ trip }: { trip: Trip }) {
 
         <Section id="route" title="The route" icon="globe">
           <ol className="trip-route">
-            {routeSteps(trip).map((step) => (
-              <li key={step.name} className="trip-route__stop">
-                <span className="trip-route__name">{step.name}</span>
-                <span className="trip-route__country">
-                  {step.trails.length > 0 ? `${step.country} · ${step.trails.length} trails` : step.country}
-                </span>
-              </li>
-            ))}
+            {routeSteps(trip).map((step, index, steps) => {
+              const body = (
+                <>
+                  <span className="trip-route__name">{step.name}</span>
+                  {(showCountry || step.trails.length > 0) && (
+                    <span className="trip-route__country">
+                      {showCountry && <span className="trip-route__land">{step.country}</span>}
+                      {step.trails.length > 0 && <span className="trip-route__trails">{step.trails.length} trails</span>}
+                    </span>
+                  )}
+                </>
+              );
+              return (
+                <li
+                  key={step.name}
+                  className="trip-route__stop"
+                  data-same-country={index > 0 && steps[index - 1].country === step.country ? '' : undefined}>
+                  {sectionIds.has(stopId(step)) ? (
+                    <a className="trip-route__card trip-route__card--link" href={`#${stopId(step)}`} draggable={false}>
+                      {body}
+                    </a>
+                  ) : (
+                    <div className="trip-route__card">{body}</div>
+                  )}
+                </li>
+              );
+            })}
           </ol>
           <p className="trip-route__ask">
             <span className="trip-route__ask-mark">

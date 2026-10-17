@@ -1,7 +1,6 @@
 import { photos } from '../photos';
 import type { Trip } from './types';
 
-// Sample: photos are placeholders until the real ones arrive.
 export const chile: Trip = {
   slug: 'chile',
   title: 'Santiago and the coast',
@@ -29,10 +28,10 @@ export const chile: Trip = {
   ],
   stops: [
     { name: 'Santiago', country: 'Chile', photos: [] },
-    { name: 'Valparaíso', country: 'Chile', photos: [photos.sampleChile] },
+    { name: 'Valparaíso', country: 'Chile', photos: [photos.valparaiso] },
     { name: 'Viña del Mar', country: 'Chile', photos: [] },
   ],
-  cover: { photo: photos.sampleChile },
+  cover: { photo: photos.valparaiso, focus: '50% 40%' },
   practical: [],
   meta: {
     title: 'Santiago and the coast · Trips · Hélder Gonçalves',

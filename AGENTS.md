@@ -149,11 +149,15 @@ has a front-page card; Off the clock's Travel section links to it.
  the cards on `/trips/` show only the area's name. A stop without photos still shows on the
   numbered route but gets no section. `note` and the trip's `practical` notes
   are hidden while empty — leave them empty rather than invent copy.
-- **Curiosities** (a stop's `note`) are one to three per trip, never on
-  neighbouring stops: something about the place that makes people want to
+- **Curiosities** (a stop's `note`) are one to three per trip (up to five on a
+ long one, a dozen stops or more, spread down the page), never on
+ neighbouring stops: something about the place that makes people want to
   go, never logistics (those stay in the email offer). `PhotoGrid` sets one as a labelled card: on desktop in the
-  cells a short last row leaves open, level with the photo's top edge; as a
-  band under the photos when the row is full and on phones. Facts are
+ two cells a last row of one photo leaves open, level with the photo's top
+ edge (never in a single open cell: a note needs at least two thirds of the
+ width); otherwise as a band at the middle row break when there are two or
+ more rows, so it separates them; as a band under the photos after a single
+ row and on phones. Facts are
   checked and the wording is fresh, like every other line.
 - **Why go** (`highlights`) sits between a trip's hero and its route: about
  four short reasons to go, each a title and a sentence or two. They may cover
@@ -348,7 +352,9 @@ is the only way in, and the zone's rules on it carry the limits:
 - **Cache Rule** on the media host: eligible for cache, edge TTL a month,
  browser TTL a week. A re-encode keeps its name, so purge its URLs after
  replacing one; browsers can't be purged, which is why theirs stays a week.
- Cache hits aren't R2 reads.
+ Cache hits aren't R2 reads. The edge TTL covers a 404 too, so a clip
+ requested before its upload (a local preview with the new entry) keeps
+ answering 404 until its URL is purged: check every new URL after uploading.
 - **WAF custom rule `media hotlink`** blocks requests to the media host with a
  query string, a path not shaped `/<trip>/av1|hevc/<name>.mp4` (lower case,
  no `//`), or a Referer that isn't the site or `localhost`: each odd variant
@@ -472,7 +478,7 @@ Reach for the mixin; if nothing fits, add a family here and document why.
 | Nav control | `nav-control` | `.theme-toggle`, `.nav__menu` | accent tint deepens, border firms, press scales |
 | Hero button | `hero-button` | `.hero__contact`, `.hero__download`, `.homelab-cta`, `.viewer__button`, `.viewer__link` | white glass brightens, lifts 1px |
 | Nav link | — (`.nav__links a`) | `SiteNav` page links (every page; below md they live in the ☰ panel, which closes on Esc, an outside tap or a link) | soft → accent; the current page rests in accent |
-| Card link | `card-link` | `.door` (front-page cards), `.trip-card` (`/trips/`), `.gallery__link` (photo tiles) | card lifts 2px, shadow deepens, inner action line turns accent |
+| Card link | `card-link` | `.door` (front-page cards), `.trip-card` (`/trips/`), `.gallery__link` (photo tiles), `.trip-route__card--link` (a trip's route stops, to their photo section; on phones, where the route is a path rather than cards, only the name turns accent) | card lifts 2px, shadow deepens, inner action line turns accent |
 | Primary button | `primary-button` | `.trip-help__email` ("Email me" closing the trip pages) | fill deepens to accent-dark, lifts 1px, gains a shadow |
 
 `card-link` exists because the front-page doors are whole-surface targets: a

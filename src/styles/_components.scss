@@ -559,10 +559,12 @@
     }
   }
 
-  // A curiosity, sized by its words. Beside a short last row it fills the
-  // open cells and sits level with the photos' top edge, so the spare height
-  // falls below it rather than inside it. After a full row, and on phones,
-  // it is a band under the photos.
+  // A curiosity, sized by its words. Beside a last row of one photo it fills
+  // the two open cells and sits level with the photo's top edge, so the spare
+  // height falls below it rather than inside it; a single open cell is too
+  // narrow, so it never takes one. Otherwise, among two or more rows it is a
+  // band at the middle row break; after a single row, and on phones, a band
+  // under the photos.
   &__note {
     grid-column: 1 / -1;
     display: grid;
@@ -580,12 +582,17 @@
     @include md-up {
       padding: 1.4rem 1.6rem;
 
-      &[data-rest='1'],
-      &[data-rest='2'] { align-self: start; }
+      &[data-beside] {
+        grid-column: span 2;
+        align-self: start;
+      }
 
-      &[data-rest='1'] { grid-column: span 2; }
-      &[data-rest='2'] { grid-column: span 1; }
+      &--split { order: 1; }
     }
+  }
+
+  &__item--after-note {
+    @include md-up { order: 2; }
   }
 
   &__note-mark {
@@ -1061,8 +1068,9 @@ $viewer-swipe: '(hover: none) and (pointer: coarse) and (max-width: #{$bp-md - 1
 }
 
 // ---- Trip pages ----
-// The stops in travel order, numbered. Not links: the photo sections below
-// follow the same order, and stops without photos have nowhere to go yet.
+// The stops in travel order, numbered. A stop with photos links to its
+// section below (a card-link, like the front-page doors); one without has
+// nowhere to go yet and stays a plain card.
 .trip-route {
   list-style: none;
   margin: 1.25rem 0 0;
@@ -1075,8 +1083,12 @@ $viewer-swipe: '(hover: none) and (pointer: coarse) and (max-width: #{$bp-md - 1
   @include md-up { grid-template-columns: repeat(4, 1fr); }
 
   &__stop {
-    @include card;
     counter-increment: stop;
+    display: grid;
+  }
+
+  &__card {
+    @include card;
     display: grid;
     grid-template-columns: auto 1fr;
     column-gap: 0.75rem;
@@ -1099,7 +1111,13 @@ $viewer-swipe: '(hover: none) and (pointer: coarse) and (max-width: #{$bp-md - 1
       font-weight: 700;
       font-variant-numeric: tabular-nums;
     }
+  }
 
+  &__card--link {
+    @include card-link;
+
+    &:hover .trip-route__name,
+    &:focus-visible .trip-route__name { color: $color-accent; }
   }
 
   &__name {
@@ -1110,6 +1128,53 @@ $viewer-swipe: '(hover: none) and (pointer: coarse) and (max-width: #{$bp-md - 1
   &__country {
     font-size: $fs-xs;
     color: $color-text-muted;
+  }
+
+  &__land + &__trails::before { content: ' · '; }
+
+  // Phones: one column of eight cards read as a long list, so it becomes a
+  // path instead: numbered dots on a line, no cards, and the country only
+  // where it changes (the border crossing), not repeated on every stop.
+  @include sm-down {
+    position: relative;
+    gap: 0;
+
+    // The line, from the first dot's centre to the last one's.
+    &::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 1.35rem;
+      bottom: 1.35rem;
+      width: 2px;
+      border-radius: 1px;
+      background: $color-rule;
+    }
+
+    // Not a card here, so nothing to lift: the name's colour is the feedback.
+    &__card {
+      position: relative;
+      padding: 0.5rem 0;
+      background: none;
+      box-shadow: none;
+
+      &::before {
+        background: $color-accent-soft;
+        box-shadow: 0 0 0 4px $color-bg;
+      }
+    }
+
+    &__card--link:hover,
+    &__card--link:focus-visible {
+      transform: none;
+      box-shadow: none;
+    }
+
+    &__stop {
+      &[data-same-country] .trip-route__land { display: none; }
+      &[data-same-country] .trip-route__trails::before { content: none; }
+      &[data-same-country]:not(:has(.trip-route__trails)) .trip-route__country { display: none; }
+    }
   }
 
   // The offer, once, before the photos. Quiet on purpose: the full sign-off

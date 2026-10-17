@@ -124,9 +124,13 @@ export function tripLink(photo: Photo): { href: string; label: string } | undefi
   return trip && href ? { href, label: `${tripPlace(trip)} trip` } : undefined;
 }
 
-/** Section anchor for a stop or area: 'Huayna Potosí' → 'huayna-potosi'. */
+/**
+ * Section anchor for a stop or area: 'Huayna Potosí' → 'stop-huayna-potosi'.
+ * Prefixed because photo anchors are bare file names, and a stop is often
+ * named like one of its photos (Lago Grey, lago-grey).
+ */
 export function stopId(stop: { name: string }): string {
-  return stop.name
+  return 'stop-' + stop.name
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()

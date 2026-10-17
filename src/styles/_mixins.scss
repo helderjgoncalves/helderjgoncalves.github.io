@@ -5,6 +5,7 @@
 @mixin md-up { @media (min-width: $bp-md) { @content; } }
 @mixin lg-up { @media (min-width: $bp-lg) { @content; } }
 
+@mixin sm-down { @media (max-width: ($bp-sm - 1)) { @content; } }
 @mixin md-down { @media (max-width: ($bp-md - 1)) { @content; } }
 
 // Utilities

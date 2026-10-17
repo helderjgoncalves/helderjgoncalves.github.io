@@ -31,12 +31,30 @@ export function PhotoGrid({ photos, variant, eager = false, linkTo, onOpen, note
   const cells = photos.reduce((sum, photo) => sum + (isWide(photo) ? 2 : 1), 0);
   const fillLast = variant === 'full' && cells % 2 === 1;
 
+  // Desktop rows (three columns) that end on a photo before the last one.
+  const rowEnds: number[] = [];
+  photos.reduce((sum, photo, index) => {
+    const next = sum + (isWide(photo) ? 2 : 1);
+    if (next % 3 === 0 && index < photos.length - 1) rowEnds.push(index);
+    return next;
+  }, 0);
+  // A note sits beside the last row only when two cells are open there; one
+  // cell is too narrow for it. Otherwise it is a band, splitting two or more
+  // rows at the middle row break. The DOM keeps it last, so phones still show
+  // it under the photos.
+  const besideLastRow = cells % 3 === 1;
+  const splitAfter =
+    note && variant === 'full' && !besideLastRow && rowEnds.length > 0
+      ? rowEnds[Math.floor((rowEnds.length - 1) / 2)]
+      : undefined;
+
   return (
     <ul className={`gallery gallery--${variant}`}>
       {photos.map((photo, index) => {
         const classes = ['gallery__item'];
         if (isWide(photo)) classes.push('gallery__item--wide');
         if (fillLast && index === photos.length - 1) classes.push('gallery__item--fill');
+        if (splitAfter !== undefined && index > splitAfter) classes.push('gallery__item--after-note');
 
         const img = (
           <img
@@ -96,7 +114,9 @@ export function PhotoGrid({ photos, variant, eager = false, linkTo, onOpen, note
         );
       })}
       {note && variant === 'full' && (
-        <li className="gallery__note" data-rest={cells % 3}>
+        <li
+          className={`gallery__note${splitAfter !== undefined ? ' gallery__note--split' : ''}`}
+          data-beside={besideLastRow || undefined}>
           <span className="gallery__note-mark">
             <Icon name="spark" />
           </span>
