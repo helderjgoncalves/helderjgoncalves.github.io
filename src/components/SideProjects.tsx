@@ -12,7 +12,9 @@ export function SideProjects({ items }: SideProjectsProps) {
       {items.map((project) => (
         <article key={project.title} className="project">
           <h3 className="project__title">{project.title}</h3>
-          <p className="project__subtitle">{project.subtitle}</p>
+          <p className="project__subtitle">
+            {project.subtitle} · {project.period}
+          </p>
           <p className="project__description">{project.description}</p>
           <div className="project__pills">
             <Pills items={project.techPills} />

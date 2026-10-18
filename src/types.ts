@@ -55,6 +55,7 @@ export interface EducationEntry {
 export interface SideProject {
   title: string;
   subtitle: string;
+  period: string;
   description: string;
   techPills: string[];
   /** Primary CTA — typically the case-study page on this site. */

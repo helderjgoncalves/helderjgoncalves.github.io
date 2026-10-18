@@ -6,8 +6,8 @@ export const cv: CvData = {
     title: 'Lead Software Engineer',
     photo: '/portrait.jpg',
     paragraphs: [
-      'Over 10 years building developer tools used daily by thousands of enterprise engineers. Nearly all of it on one product — the OutSystems IDE — across four eras: its migration off Windows-only WPF onto web technologies, the reliability turnaround that followed, its adaptation into ODC Studio for the company’s cloud platform, and now Mentor, the platform’s agentic AI, inside that visual IDE.',
-      'What stayed constant is changing a live product without interrupting the people who depend on it: replacing it underneath them a piece at a time behind feature toggles, and building the telemetry that says what a failure actually costs them.',
+      'Lead Software Engineer with 10+ years building developer tools in React, TypeScript and .NET, used daily by thousands of enterprise developers. I lead architecture and mentoring for 2 teams (12 engineers) and shape technical direction for other engineering groups.',
+      'I lead long-running, product-wide initiatives: a reliability programme that cut the OutSystems IDE’s crash ratio from ~15% to ~2–3%, the company-wide Design System modernization, the IDE’s move onto OutSystems Developer Cloud (ODC) services, and the Generative AI integration of Mentor, OutSystems’ LLM-based agentic AI, generally available in ODC Studio since March 2026.',
     ],
     contacts: [
       { label: 'helder@hgoncalves.uk', href: 'mailto:helder@hgoncalves.uk', icon: 'email' },
@@ -27,17 +27,17 @@ export const cv: CvData = {
     ],
     groups: [
       {
-        heading: 'AI & Technical Direction',
+        heading: 'AI & Technical Leadership',
         bullets: [
           {
-            label: 'Mentor in ODC Studio',
+            label: 'Generative AI Integration',
             description:
-              'Leading the integration of Mentor — the platform’s agentic AI — into ODC Studio: a conversational workflow inside the visual IDE, generally available since March 2026.',
+              'Led the integration of Mentor, OutSystems’ agentic AI built on large language models (LLMs), into ODC Studio, bringing an AI-assisted, conversational development workflow into the visual IDE; generally available since March 2026.',
           },
           {
-            label: 'Architecture Guidance',
+            label: 'Architecture & Mentoring',
             description:
-              'Guide architecture for two teams — twelve engineers — and advise engineering groups beyond them on design.',
+              'Own the architecture of 2 teams (12 engineers) and mentor their engineers; shape technical direction for other engineering groups through architecture guidance, design reviews and code reviews.',
           },
         ],
       },
@@ -45,14 +45,14 @@ export const cv: CvData = {
         heading: 'Reliability & Quality Engineering',
         bullets: [
           {
-            label: 'Stability & Metrics',
+            label: 'Stability & Observability',
             description:
-              'Led a targeted initiative that cut crash ratio by roughly 80%, and built the telemetry that pinpoints high-impact failures — since extended to hangs and freezes.',
+              'Led the stability programme across the IDE: built the telemetry that pinpoints high-impact failures and drove the fixes, cutting crash ratio from ~15% to ~2–3% (an 80%+ reduction); the same approach now covers hang and freeze ratios.',
           },
           {
-            label: 'SRE Practices',
+            label: 'SRE & Progressive Delivery',
             description:
-              'Introduced Site Reliability Engineering practices and dark launches, so new features reach production switched off and roll out gradually.',
+              'Introduced Site Reliability Engineering (SRE) practices and dark launches, so the teams ship to production continuously behind feature flags and roll out gradually.',
           },
         ],
       },
@@ -62,17 +62,17 @@ export const cv: CvData = {
           {
             label: 'Design System Modernization',
             description:
-              'Led the implementation of the 2026 modernization that took a company-wide Design System live — setting up its infrastructure, and sending designs back to UX for rework when they would not hold up in code.',
+              'Led the 2026 company-wide Design System modernization from design to production. Built its infrastructure and set the bar for what could ship, sending designs back to UX when they would not hold up in code.',
           },
           {
-            label: 'Granular Merge',
+            label: 'Merge & Conflict Resolution',
             description:
-              'Made merge much more granular, so edits to different parts of the same screen no longer conflict. A team initiative added text merge for what remains — from fully manual to hands-off most of the time, with a redesigned UI when a human is still needed.',
+              'Made merge granular, so edits to different parts of the same screen no longer conflict, and built automatic text merge, taking the remaining conflicts from fully manual to over 50% resolved without user intervention, with a redesigned merge UI.',
           },
           {
             label: 'Desktop Notifications',
             description:
-              'Brought desktop notifications into the IDE from scratch, so it can reach developers when it is not the focused window.',
+              'Designed and built desktop notifications into the IDE from scratch, giving it a channel to reach developers outside its own window.',
           },
         ],
       },
@@ -82,44 +82,57 @@ export const cv: CvData = {
           {
             label: 'Cloud Platform Client',
             description:
-              'Re-architected the desktop IDE’s client integration with the OutSystems cloud platform for ODC Studio, moving it off a single backend dependency onto distributed services.',
+              'Re-architected how the desktop IDE integrates with OutSystems Developer Cloud (ODC), replacing a single backend dependency with distributed cloud services.',
           },
           {
             label: 'Incremental Platform Migration',
             description:
-              'The WPF-to-web migration shipped component by component behind feature toggles — a React UI in an embedded WebView — so the product kept shipping instead of forking into a rewrite. Multi-year team effort; that unlocked macOS support.',
+              'Delivered the multi-year move off Windows-only WPF with the wider team, component by component behind feature flags. The new React and TypeScript UI runs in an embedded Chromium WebView; the product never forked and gained macOS support.',
           },
         ],
       },
     ],
-    techPills: ['React', 'TypeScript', '.NET', 'AWS', 'Snowflake'],
+    techPills: [
+      'React',
+      'TypeScript',
+      'Node.js',
+      '.NET',
+      'C#',
+      'Generative AI',
+      'LLMs',
+      'Jest',
+      'Feature Flags',
+      'Telemetry',
+      'AWS',
+      'Snowflake',
+    ],
   },
 
   internships: [
     {
       title: 'Software Developer Internship',
       organisation: 'TU Darmstadt',
-      period: 'January – August 2016',
+      period: 'Jan 2016 – Aug 2016',
       paragraphs: [
-        'Selected for an Erasmus+ exchange at TU Darmstadt’s Institute for Scientific Computing, developing optimised software modules for post-quantum cryptography research, including an Arithmetic Multiple Precision library that outperformed the GMP library in key operations.',
+        'Selected for an Erasmus+ exchange at TU Darmstadt’s Institute for Scientific Computing. Developed optimised software modules for post-quantum cryptography research, including an Arithmetic Multiple Precision library that outperformed GMP in key operations.',
         'Parallelised and optimised lattice basis reduction algorithms (LLL and Qiao’s Jacobi method) to accelerate cryptographic computations.',
-        'Work formed the basis of my MSc thesis at Universidade do Minho.',
+        'Formed the basis of the MSc thesis at Universidade do Minho.',
       ],
       techPills: ['C', 'Intel Intrinsics', 'OpenMP', 'Assembly'],
     },
     {
       title: 'Summer Internship in Advanced Computing Research',
       organisation: 'UT Austin',
-      period: 'July – August 2015',
+      period: 'Jul 2015 – Aug 2015',
       paragraphs: [
-        'Built a multithreaded C++ framework for the GUIDE project (Graph Unified Irregular Distributed Environment), enabling parallel and distributed operations over complex graph structures.',
+        'Built a multithreaded C++ framework at UT Austin for the GUIDE project (Graph Unified Irregular Distributed Environment), enabling parallel and distributed operations over complex graph structures.',
       ],
       techPills: ['C++', 'Multithreading'],
     },
   ],
 
   education: {
-    degree: 'BSc. and MSc. in Informatics Engineering',
+    degree: 'MSc and BSc in Informatics Engineering',
     institution: 'Universidade do Minho',
     period: '2011 – 2016',
     coursework:
@@ -132,10 +145,28 @@ export const cv: CvData = {
 
   sideProjects: [
     {
-      title: 'Self-Hosted Home Lab',
-      subtitle: 'Personal infrastructure (ongoing)',
+      title: 'Personal Website and Travel Guide (hgoncalves.uk)',
+      subtitle: 'Product, design and infrastructure, built solo',
+      period: '2026 – Present',
       description:
-        'NAS-based private cloud serving the whole family — photos, files and media (Immich, OpenCloud, Plex), running in Docker. No inbound ports: traffic arrives through Cloudflare Tunnel and a Traefik reverse proxy, with zero-trust access at the edge (OAuth, mTLS, service tokens), DNS over HTTPS, and layered monitoring with alerting. The whole stack is declared in Git, so it redeploys onto fresh hardware.',
+        'Designed and built the site end to end: UX, visual design, front end and infrastructure. React and TypeScript, pre-rendered to static HTML for SEO and shipped through a GitHub Actions pipeline that tests every build before it deploys. Photos ship as responsive AVIF, and HDR video as AV1 and HEVC, with encoder settings picked by VMAF score. The video is served from Cloudflare R2 behind cache rules and WAF rules that block hotlinking. A scheduled Cloudflare Worker trips a kill switch before storage reads leave the free tier.',
+      techPills: [
+        'React',
+        'TypeScript',
+        'Vite',
+        'GitHub Actions',
+        'Cloudflare R2',
+        'Cloudflare Workers',
+        'WAF',
+        'AV1 / HEVC',
+      ],
+    },
+    {
+      title: 'Self-Hosted Home Lab',
+      subtitle: 'Personal infrastructure',
+      period: '2023 – Present',
+      description:
+        'NAS-based private cloud serving the whole family — photos, files and media (Immich, OpenCloud, Plex), running in Docker. No inbound ports: traffic arrives through Cloudflare Tunnel and a Traefik reverse proxy, with zero-trust access at the edge (OAuth, mTLS, service tokens). It also runs DNS over HTTPS and layered monitoring with alerting. The whole stack is declared in Git, so it redeploys onto fresh hardware.',
       techPills: [
         'Docker',
         'Cloudflare Zero Trust',

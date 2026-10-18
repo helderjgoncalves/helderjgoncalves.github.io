@@ -13,7 +13,8 @@
     "preview": "vite preview",
     "test": "node --test scripts/dist.test.mjs",
     "lint": "tsc -b --noEmit",
-    "cards": "node scripts/og-cards/render.mjs"
+    "cards": "node scripts/og-cards/render.mjs",
+    "cv": "node scripts/cv/build.mjs"
   },
   "dependencies": {
     "react": "^19.2.5",

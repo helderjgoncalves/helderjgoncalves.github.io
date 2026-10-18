@@ -43,7 +43,7 @@ export const frontDoor = {
     {
       eyebrow: 'Work',
       title: 'Curriculum vitae',
-      line: 'Ten years on developer tools: roles, results, education and awards.',
+      line: 'Over ten years on developer tools: roles, results, education and awards.',
       href: '/cv/',
       cta: 'Read the CV',
     },

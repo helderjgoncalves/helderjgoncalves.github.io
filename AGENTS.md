@@ -37,6 +37,7 @@ npm run preview  # serve ./dist at http://localhost:4173 (matches production)
 npm run lint     # tsc -b --noEmit (no ESLint configured)
 npm test         # node --test scripts/dist.test.mjs — checks ./dist (after build)
 npm run cards    # re-render public/og-*.jpg from scripts/og-cards/ (manual)
+npm run cv       # rebuild the CV PDFs from cv.ts (manual; see "Downloadable CV")
 ```
 
 `npm test` asserts the *build output*, not the source: per-route agreement
@@ -102,6 +103,7 @@ public/                   # static assets copied verbatim (favicon, portrait, og
 scripts/prerender.mjs     # post-build SSR injection + head metadata + sitemap
 scripts/dist.test.mjs     # post-build assertions on dist/ (`npm test`)
 scripts/og-cards/         # HTML sources for the social cards + `npm run cards`
+scripts/cv/build.mjs      # the CV PDFs from cv.ts (`npm run cv`)
 scripts/media-guard.js    # Cloudflare cron Worker capping the clips' R2 reads (dashboard, not built)
 .github/workflows/deploy.yml  # GitHub Pages deploy on push to main
 index.html                # source entry (loaded by `vite dev`); pre-rendered at build
@@ -387,9 +389,30 @@ the front page leaves it to its CV card) — a pill under the title from md up,
 one more round icon in the contacts row on phones — that links to
 `/helder-goncalves-cv.pdf`, served verbatim from `public/`. **`cv.ts` is the
 canonical source**; the PDF is a printable mirror of it. When the content of
-`cv.ts` changes in any user-visible way, regenerate or replace the PDF so
-both stay in sync. Keep the filename stable (`helder-goncalves-cv.pdf`) —
+`cv.ts` changes in any user-visible way, run `npm run cv` and commit the new
+PDF so both stay in sync. Keep the filename stable (`helder-goncalves-cv.pdf`) —
 versioned names like `CV-2026-v2.pdf` would break the saved download URL.
+
+`npm run cv` (`scripts/cv/build.mjs`) prints the PDFs with an
+already-installed Chrome (override with `CHROME=/path/to/binary`), like
+`npm run cards`, and deliberately sits outside `npm run build`. They are
+built for applicant tracking systems: one column, real text, standard
+headings, employers and schools as text rather than logos, exactly two A4
+pages (the script throws otherwise), and a two-line running header atop page
+2 so parsers that join pages keep the next role's title. Chrome writes
+variable web fonts as Type3, which parsers can't read, so the PDFs use
+Helvetica; don't add a web font.
+
+- **`web`** is the public download, `public/helder-goncalves-cv.pdf`: the
+ site's own experience bullets, a summary blending the Staff and Lead pitch,
+ and **no phone number**. The repo and the site are public, so the phone
+ never goes in `cv.ts`, the script or any committed file; the script throws
+ if it reaches this one.
+- **`staff`** and **`lead`** are tailored for applications (their own
+ summary, skills and bullet wording in the script) and carry the phone,
+ read from `scripts/cv/phone.local`. Both that file and their output,
+ `scripts/cv/out/`, are git-ignored; without the file they are skipped with
+ a warning. They go to recruiters directly, never into the repo.
 
 ### Social cards (`public/og-*`)
 

@@ -159,7 +159,7 @@ function profileJsonLd() {
       familyName: 'Gonçalves',
       jobTitle: 'Lead Software Engineer',
       description:
-        'Lead Software Engineer at OutSystems with 10+ years on developer tools in React, TypeScript and .NET — now integrating Mentor, the platform’s agentic AI, into ODC Studio.',
+        'Lead Software Engineer at OutSystems: 10+ years on developer tools in React, TypeScript and .NET, IDE crash ratio cut by 80%+, and Generative AI in ODC Studio.',
       url,
       image: `${SITE}/portrait.jpg`,
       email: 'mailto:helder@hgoncalves.uk',
@@ -393,7 +393,7 @@ const pages = [
     out: path.join('cv', 'index.html'),
     title: 'Hélder Gonçalves — Lead Software Engineer | Developer Tools',
     description:
-      'Lead Software Engineer at OutSystems with 10+ years on developer tools in React, TypeScript and .NET — now integrating Mentor, the platform’s agentic AI, into ODC Studio.',
+      'Lead Software Engineer at OutSystems: 10+ years on developer tools in React, TypeScript and .NET, IDE crash ratio cut by 80%+, and Generative AI in ODC Studio.',
     canonical: `${SITE}/cv/`,
     ogType: 'profile',
     image: `${SITE}/og-cv.jpg`,

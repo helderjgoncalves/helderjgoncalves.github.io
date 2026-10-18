@@ -35,3 +35,6 @@ vite.config.ts.timestamp-*
 
 # Private CV working notes — never commit
 cv-from-pdf.md
+
+# Tailored CV PDFs (they carry the phone number) — never commit
+scripts/cv/out/

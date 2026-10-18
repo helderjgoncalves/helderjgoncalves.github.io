@@ -8,7 +8,7 @@ interface InternshipsProps {
 
 export function Internships({ items }: InternshipsProps) {
   return (
-    <Section id="internships" title="Earlier Experience" icon="lab">
+    <Section id="internships" title="Internships" icon="lab">
       <div className="timeline">
         {items.map((item) => (
           <div key={item.title} className="timeline__item">
