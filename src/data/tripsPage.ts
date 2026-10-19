@@ -33,7 +33,7 @@ export interface TripsPageData {
     description: string;
     canonical: string;
     /**
-     * The social card (`public/og-trips.jpg`, made by `npm run cards`): this
+     * The social card (`public/og/trips.jpg`, made by `npm run cards`): this
      * photo full-bleed, cropped to 1200x630 at `focus`, under the title and
      * `line`. Not a trip's cover, so no two cards match.
      */

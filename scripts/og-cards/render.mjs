@@ -1,4 +1,4 @@
-// Renders the social-card templates in this folder to public/og-* at
+// Renders the social-card templates in this folder to public/og/ at
 // 1200x630 (the size LinkedIn, Slack, and X expect for a large image card).
 //
 // Deliberately shells out to an already-installed Chrome rather than adding
@@ -20,6 +20,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '../..');
 const publicDir = path.join(projectRoot, 'public');
+const cardsDir = path.join(publicDir, 'og');
 
 const CANDIDATES = [
   process.env.CHROME,
@@ -61,12 +62,12 @@ const photoQuery = ({ photo, focus }) => ({ photo: photoUrl(photo), ...(focus ? 
 
 /** @type {{ template: string, out: string, query?: Record<string, string> }[]} */
 const cards = [
-  { template: 'home.html', out: 'og-home.jpg', query: { tag: 'CV · Home lab\nOff the clock · Trips' } },
-  { template: 'home.html', out: 'og-cv.jpg', query: { eyebrow: 'hgoncalves.uk/cv · Curriculum vitae' } },
-  { template: 'homelab.html', out: 'og-homelab.jpg' },
+  { template: 'home.html', out: 'home.jpg', query: { tag: 'CV · Home lab\nOff the clock · Trips' } },
+  { template: 'home.html', out: 'cv.jpg', query: { eyebrow: 'hgoncalves.uk/cv · Curriculum vitae' } },
+  { template: 'homelab.html', out: 'homelab.jpg' },
   {
     template: 'photo.html',
-    out: 'og-off-the-clock.jpg',
+    out: 'off-the-clock.jpg',
     query: {
       eyebrow: 'Life',
       title: offTheClock.title,
@@ -76,7 +77,7 @@ const cards = [
   },
   {
     template: 'photo.html',
-    out: 'og-trips.jpg',
+    out: 'trips.jpg',
     query: {
       eyebrow: 'Travel',
       title: tripsPage.title,
@@ -89,7 +90,7 @@ const cards = [
     const countries = tripCountries(trip).join(' · ');
     return {
       template: 'photo.html',
-      out: `og-trip-${trip.slug}.jpg`,
+      out: `trip-${trip.slug}.jpg`,
       query: { eyebrow: countries === trip.title ? '' : countries, title: trip.title, ...photoQuery(trip.cover) },
     };
   }),
@@ -98,7 +99,7 @@ const cards = [
 for (const card of cards) {
   const url = pathToFileURL(path.join(__dirname, card.template));
   if (card.query) url.search = new URLSearchParams(card.query).toString();
-  const dest = path.join(publicDir, card.out);
+  const dest = path.join(cardsDir, card.out);
   // Chrome only writes PNG; every card is re-encoded as JPEG below, since
   // WhatsApp may drop a link image much over 300 KB.
   const shot = path.join(work, card.out.replace(/\.jpg$/, '.png'));

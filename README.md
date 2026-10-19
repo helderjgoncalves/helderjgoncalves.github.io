@@ -129,9 +129,7 @@ helderjgoncalves.github.io/
 ├── .github/workflows/deploy.yml
 ├── public/
 │   ├── favicon.svg
-│   ├── og-home.png        # 1200x630 social cards (see scripts/og-cards)
-│   ├── og-homelab.png
-│   ├── og-off-the-clock.jpg  # a photo crop, not a rendered card
+│   ├── og/                # 1200x630 social cards (see scripts/og-cards)
 │   ├── photos/            # photos/<trip>/<size>/<name>, metadata stripped (800, 1280, 2048, 2880)
 │   └── portrait.jpg
 ├── scripts/

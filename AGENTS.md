@@ -36,7 +36,7 @@ npm run build    # tsc -b → vite build → vite SSR build → prerender → di
 npm run preview  # serve ./dist at http://localhost:4173 (matches production)
 npm run lint     # tsc -b --noEmit (no ESLint configured)
 npm test         # node --test scripts/dist.test.mjs — checks ./dist (after build)
-npm run cards    # re-render public/og-*.jpg from scripts/og-cards/ (manual)
+npm run cards    # re-render public/og/*.jpg from scripts/og-cards/ (manual)
 npm run cv       # rebuild the CV PDFs from cv.ts (manual; see "Downloadable CV")
 ```
 
@@ -99,7 +99,7 @@ src/
   hooks/useReveal.ts      # IntersectionObserver scroll-reveal
   styles/                 # SASS partials (see below)
   vite-env.d.ts
-public/                   # static assets copied verbatim (favicon, portrait, og cards, robots, 404)
+public/                   # static assets copied verbatim (favicon, portrait, og/, robots, 404)
 scripts/prerender.mjs     # post-build SSR injection + head metadata + sitemap
 scripts/dist.test.mjs     # post-build assertions on dist/ (`npm test`)
 scripts/og-cards/         # HTML sources for the social cards + `npm run cards`
@@ -422,7 +422,7 @@ keep tracking under 1pt.
  `scripts/cv/out/`, are git-ignored; without the file they are skipped with
  a warning. They go to recruiters directly, never into the repo.
 
-### Social cards (`public/og-*`)
+### Social cards (`public/og/`)
 
 Every page has its own 1200×630 card, committed. The photo cards mirror
 `TripHero`: the photo full-bleed, cropped at its `focus`, the words on the
@@ -433,12 +433,12 @@ photo — which gives them the photo cards' depth without inventing a picture:
 
 | Card | Template | Page |
 | --- | --- | --- |
-| `og-home.jpg` | `home.html?tag=…` (the four pages) | `/` |
-| `og-cv.jpg` | `home.html?eyebrow=…` | `/cv/` |
-| `og-homelab.jpg` | `homelab.html` | `/homelab/` |
-| `og-off-the-clock.jpg` | `photo.html` | `/off-the-clock/` (`offTheClock.meta.card`) |
-| `og-trips.jpg` | `photo.html` | `/trips/` (`tripsPage.meta.card`) |
-| `og-trip-<slug>.jpg` | `photo.html` | each trip, with its `cover` |
+| `home.jpg` | `home.html?tag=…` (the four pages) | `/` |
+| `cv.jpg` | `home.html?eyebrow=…` | `/cv/` |
+| `homelab.jpg` | `homelab.html` | `/homelab/` |
+| `off-the-clock.jpg` | `photo.html` | `/off-the-clock/` (`offTheClock.meta.card`) |
+| `trips.jpg` | `photo.html` | `/trips/` (`tripsPage.meta.card`) |
+| `trip-<slug>.jpg` | `photo.html` | each trip, with its `cover` |
 
 The sources are plain HTML in `scripts/og-cards/`, rendered by `npm run
 cards`, which screenshots them with an already-installed Chrome (override

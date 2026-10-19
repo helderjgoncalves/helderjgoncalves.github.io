@@ -22,6 +22,8 @@ const templatePath = path.join(distDir, 'index.html');
 const ROOT_PLACEHOLDER = '<div id="root"></div>';
 const SITE = 'https://hgoncalves.uk';
 const PERSON_ID = `${SITE}/#person`;
+/** Committed social cards in public/og/ (`npm run cards`). */
+const cardUrl = (name) => `${SITE}/og/${name}.jpg`;
 
 const {
   render,
@@ -216,7 +218,7 @@ function offTheClockJsonLd(dateModified) {
         name: page.meta.title,
         description: page.meta.description,
         url,
-        image: `${SITE}/og-off-the-clock.jpg`,
+        image: cardUrl('off-the-clock'),
         dateModified,
         inLanguage: 'en-GB',
         author: { '@id': PERSON_ID },
@@ -259,7 +261,7 @@ function tripsJsonLd(dateModified) {
         name: page.meta.title,
         description: page.meta.description,
         url,
-        image: `${SITE}/og-trips.jpg`,
+        image: cardUrl('trips'),
         dateModified,
         inLanguage: 'en-GB',
         author: { '@id': PERSON_ID },
@@ -377,7 +379,7 @@ const pages = [
     description: frontDoor.meta.description,
     canonical: `${SITE}/`,
     ogType: 'website',
-    image: `${SITE}/og-home.jpg`,
+    image: cardUrl('home'),
     imageAlt: 'Hélder Gonçalves — Lead Software Engineer at OutSystems',
     sources: [
       'src/data/frontDoor.ts',
@@ -396,7 +398,7 @@ const pages = [
       'Lead Software Engineer at OutSystems: 10+ years on developer tools in React, TypeScript and .NET, IDE crash ratio cut by 80%, and Generative AI in ODC Studio.',
     canonical: `${SITE}/cv/`,
     ogType: 'profile',
-    image: `${SITE}/og-cv.jpg`,
+    image: cardUrl('cv'),
     imageAlt: 'Curriculum vitae of Hélder Gonçalves, Lead Software Engineer at OutSystems',
     sources: ['src/data/cv.ts', 'src/components', 'src/App.tsx'],
     jsonLd: 'profile',
@@ -425,7 +427,7 @@ const pages = [
     description: offTheClock.meta.description,
     canonical: offTheClock.meta.canonical,
     ogType: 'website',
-    image: `${SITE}/og-off-the-clock.jpg`,
+    image: cardUrl('off-the-clock'),
     imageAlt: `${offTheClock.title}. ${offTheClock.meta.card.photo.alt}`,
     sources: [
       'src/data/offTheClock.ts',
@@ -444,7 +446,7 @@ const pages = [
     description: tripsPage.meta.description,
     canonical: tripsPage.meta.canonical,
     ogType: 'website',
-    image: `${SITE}/og-trips.jpg`,
+    image: cardUrl('trips'),
     imageAlt: `${tripsPage.title}. ${tripsPage.meta.card.photo.alt}`,
     sources: [
       'src/data/tripsPage.ts',
@@ -464,7 +466,7 @@ const pages = [
     description: trip.meta.description,
     canonical: `${SITE}${tripPath(trip)}`,
     ogType: 'article',
-    image: `${SITE}/og-trip-${trip.slug}.jpg`,
+    image: cardUrl(`trip-${trip.slug}`),
     imageAlt: `${trip.title}. ${trip.cover.photo.alt}`,
     sources: [
       `src/data/trips/${trip.slug}.ts`,

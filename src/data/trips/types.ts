@@ -86,7 +86,7 @@ export interface Trip {
   featured?: boolean;
   /** Season, transport, operators, altitude… The section is hidden while empty. */
   practical: TripTip[];
-  /** The social card is `public/og-trip-<slug>.jpg`, the cover beside the title (`npm run cards`). */
+  /** The social card is `public/og/trip-<slug>.jpg`, the cover beside the title (`npm run cards`). */
   meta: {
     title: string;
     description: string;

@@ -48,7 +48,7 @@ export interface OffTheClockPageData {
     description: string;
     canonical: string;
     /**
-     * The social card (`public/og-off-the-clock.jpg`, made by `npm run cards`):
+     * The social card (`public/og/off-the-clock.jpg`, made by `npm run cards`):
      * this photo full-bleed, cropped to 1200x630 at `focus`, under the title
      * and the thesis. Not a trip's cover.
      */
