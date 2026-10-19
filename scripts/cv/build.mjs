@@ -56,7 +56,7 @@ const variants = {
     page2: 'earlier',
     tagline: 'Software Architecture · Technical Leadership · Reliability · Generative AI',
     summary:
-      'Lead Software Engineer with 10+ years building developer tools in React, TypeScript and .NET, used daily by thousands of enterprise developers. Lead architecture and mentoring for 2 teams (12 engineers) and shape technical direction for other engineering groups. Led product-wide initiatives: a reliability programme that cut the IDE’s crash ratio from ~15% to ~3%, the company-wide Design System modernization, the IDE’s move onto OutSystems Developer Cloud (ODC) services, and the Generative AI integration of Mentor into ODC Studio (generally available March 2026).',
+      'Lead Software Engineer with 10+ years building developer tools in React, TypeScript and .NET, used daily by thousands of enterprise developers. Grew with one product from Junior to Lead, taking on wider scope at each step. Leads through architecture and mentoring: measure before fixing, evolve large systems incrementally behind feature flags rather than rewrite them, and hold design to a bar that survives real code. Drives product-wide work in reliability, cloud architecture, design systems and Generative AI.',
     // The site's own bullets, so the download mirrors the /cv/ page.
     bullets: cv.work.groups.flatMap((g) => g.bullets.map((b) => b.description)),
     labels: cv.work.groups.flatMap((g) => g.bullets.map((b) => b.label)),
@@ -67,17 +67,17 @@ const variants = {
     page2: 'earlier',
     tagline: 'Software Architecture · Developer Platforms · Reliability · Generative AI',
     summary:
-      'Lead Software Engineer with 10+ years shaping the architecture of developer tools used daily by thousands of enterprise developers. Core stack: React, TypeScript and .NET. Own the architecture of 2 teams (12 engineers) and guide design for other engineering groups. Led product-wide initiatives: a reliability programme that cut crash ratio from ~15% to ~3%, a company-wide Design System, and the IDE’s move onto distributed cloud services. Led the Generative AI integration of Mentor, OutSystems’ LLM-based agentic AI, into ODC Studio (generally available March 2026).',
+      'Lead Software Engineer with 10+ years shaping the architecture of developer tools used daily by thousands of enterprise developers. Core stack: React, TypeScript and .NET. Sets technical direction beyond his own teams through architecture guidance and design reviews. Favours evidence and incremental change: telemetry before fixes, and migrations shipped component by component behind feature flags, never a forked product. Drives multi-year, product-wide work in reliability, cloud architecture, design systems and Generative AI.',
     labels: ['Architecture Ownership', 'Stability Programme', 'Cloud Platform Client', 'Generative AI', 'Platform Migration', 'Design System', 'SRE & Progressive Delivery', 'Granular Merge'],
     bullets: [
-      'Own the architecture of 2 teams (12 engineers) and shape technical direction for other engineering groups through architecture guidance, design reviews and code reviews.',
-      'Led the stability programme across the IDE, building the telemetry that pinpoints high-impact failures; crash ratio fell from ~15% to ~3% (80% reduction), and the same approach now covers hang and freeze ratios.',
-      'Re-architected how the desktop IDE integrates with OutSystems Developer Cloud (ODC), replacing a single backend dependency with distributed cloud services.',
-      'Led the integration of Mentor, OutSystems’ agentic AI built on large language models (LLMs), into ODC Studio, bringing an AI-assisted, conversational development workflow into the visual IDE; generally available since March 2026.',
-      'Delivered the multi-year move off Windows-only WPF with the wider team, component by component behind feature flags. The new React and TypeScript UI runs in an embedded Chromium WebView; the product never forked and gained macOS support.',
-      'Led the 2026 company-wide Design System modernization from design to production. Built its infrastructure and set the bar for what could ship, sending designs back to UX when they would not hold up in code.',
-      'Introduced Site Reliability Engineering (SRE) practices and dark launches to the product, so features reach production behind feature flags and roll out gradually.',
-      'Redesigned merge to work at a finer grain, so edits to different parts of the same screen no longer conflict; automatic text merge now resolves over 50% of the remaining conflicts without user intervention.',
+      'Own the architecture of 2 teams (12 engineers); shape technical direction for other engineering groups through architecture guidance, design and code reviews.',
+      'Built the telemetry that pinpoints the IDE’s high-impact failures and led the fixes: crash ratio from ~15% to ~3% (80% lower). The approach now covers hangs and freezes.',
+      'Re-architected the desktop IDE’s integration with OutSystems Developer Cloud (ODC), from a single backend dependency to distributed cloud services.',
+      'Led the integration of Mentor, OutSystems’ LLM-based agentic AI, into ODC Studio: conversational, AI-assisted development in the visual IDE, live since March 2026.',
+      'With the wider team, made the multi-year move off Windows-only WPF to React and TypeScript in an embedded Chromium WebView, component by component behind feature flags, never forking; it gained macOS.',
+      'Led the 2026 company-wide Design System modernization from design to production: built its infrastructure and set the bar for what could ship, sending designs back to UX when they would not hold up in code.',
+      'Introduced Site Reliability Engineering (SRE) practices and dark launches, so features reach production behind feature flags and roll out gradually.',
+      'Made merge granular, so edits to different parts of the same screen no longer conflict; automatic text merge now resolves over 50% of the rest without user intervention.',
     ],
   },
   lead: {
@@ -86,18 +86,18 @@ const variants = {
     page2: 'earlier',
     tagline: 'Technical Leadership · React · TypeScript · .NET · Generative AI',
     summary:
-      'Lead Software Engineer with 10+ years building developer tools used daily by thousands of enterprise developers. Core stack: React, TypeScript and .NET. Lead architecture and mentoring for 2 teams (12 engineers), shipping continuously behind feature flags. Led the stability programme that cut the OutSystems IDE’s crash ratio from ~15% to ~3%. Led the integration of Mentor, OutSystems’ LLM-based agentic AI, into ODC Studio (generally available March 2026). Grew from Junior to Lead at OutSystems; Top Performer Award 2023.',
+      'Lead Software Engineer with 10+ years building developer tools used daily by thousands of enterprise developers. Core stack: React, TypeScript and .NET. Leads by growing people: mentoring, design and code reviews, and close partnership with Product and UX. Gives teams the means to ship continuously and safely: SRE practices, telemetry and gradual rollouts behind feature flags. Grew from Junior to Lead at OutSystems on the same product; Top Performer Award 2023.',
     labels: ['Team Leadership', 'Generative AI', 'Stability Programme', 'SRE & Progressive Delivery', 'Design System', 'Merge & Conflict Resolution', 'Desktop Notifications', 'Platform Migration', 'Cloud Platform Client'],
     bullets: [
       'Lead architecture and mentoring for 2 teams (12 engineers): review designs and code, grow engineers, and advise other engineering groups on design.',
-      'Led the integration of Mentor, OutSystems’ agentic AI built on large language models (LLMs), into ODC Studio, shipping an AI-assisted, conversational workflow in the visual IDE; generally available since March 2026.',
-      'Led the stability programme that cut the IDE’s crash ratio from ~15% to ~3% (80% reduction). Built the telemetry that pinpoints high-impact failures and drove the fixes; later extended it to hang and freeze ratios.',
+      'Led the integration of Mentor, OutSystems’ LLM-based agentic AI, into ODC Studio: conversational, AI-assisted development in the visual IDE, live since March 2026.',
+      'Built the telemetry that pinpoints the IDE’s high-impact failures and led the fixes: crash ratio from ~15% to ~3% (80% lower). Later extended to hangs and freezes.',
       'Introduced Site Reliability Engineering (SRE) practices and dark launches, so the teams ship to production continuously behind feature flags and roll out gradually.',
-      'Led the implementation of the 2026 company-wide Design System: built its infrastructure and worked with UX to rework designs that would not hold up in code.',
-      'Built automatic text merge: conflicts went from fully manual to over 50% resolved without user intervention. Made merge granular, so edits to different parts of a screen no longer conflict, and redesigned the merge UI.',
+      'Led the 2026 company-wide Design System modernization: built its infrastructure and set the bar for what could ship, working with UX to rework designs that would not hold up in code.',
+      'Made merge granular, so edits to different parts of the same screen no longer conflict, and built automatic text merge, which now resolves over 50% of the rest without user intervention.',
       'Designed and built desktop notifications into the IDE from scratch, giving it a channel to reach developers outside its own window.',
-      'Migrated the IDE from Windows-only WPF to a React and TypeScript UI in an embedded Chromium WebView. Shipped component by component behind feature flags: a multi-year team effort that unlocked macOS.',
-      'Re-architected the desktop IDE’s client integration with OutSystems Developer Cloud (ODC), moving it from a single backend dependency to distributed cloud services.',
+      'With the wider team, made the multi-year move off Windows-only WPF to React and TypeScript in an embedded Chromium WebView, component by component behind feature flags, never forking; it gained macOS.',
+      'Re-architected the desktop IDE’s integration with OutSystems Developer Cloud (ODC), from a single backend dependency to distributed cloud services.',
     ],
   },
 };
@@ -221,6 +221,7 @@ function render(key) {
 
   ul { margin: 2pt 0 0; padding-left: 9pt; }
   li { margin: 0 0 2pt; padding-left: 1pt; }
+  .job li { margin-bottom: 5pt; }
   li:last-child { margin-bottom: 0; }
   li::marker { color: #9cc0e8; font-size: 8pt; }
   li b { color: #1c2330; font-weight: 600; }

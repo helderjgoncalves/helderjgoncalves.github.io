@@ -32,12 +32,12 @@ export const cv: CvData = {
           {
             label: 'Generative AI Integration',
             description:
-              'Led the integration of Mentor, OutSystems’ agentic AI built on large language models (LLMs), into ODC Studio, bringing an AI-assisted, conversational development workflow into the visual IDE; generally available since March 2026.',
+              'Led the integration of Mentor, OutSystems’ LLM-based agentic AI, into ODC Studio: conversational, AI-assisted development in the visual IDE, live since March 2026.',
           },
           {
             label: 'Architecture & Mentoring',
             description:
-              'Own the architecture of 2 teams (12 engineers) and mentor their engineers; shape technical direction for other engineering groups through architecture guidance, design reviews and code reviews.',
+              'Own the architecture of 2 teams (12 engineers) and mentor their engineers; guide other engineering groups through architecture, design and code reviews.',
           },
         ],
       },
@@ -47,7 +47,7 @@ export const cv: CvData = {
           {
             label: 'Stability & Observability',
             description:
-              'Led the stability programme across the IDE: built the telemetry that pinpoints high-impact failures and drove the fixes, cutting crash ratio from ~15% to ~3% (an 80% reduction); the same approach now covers hang and freeze ratios.',
+              'Built the telemetry that pinpoints the IDE’s high-impact failures and led the fixes: crash ratio from ~15% to ~3% (80% lower). The approach now covers hangs and freezes.',
           },
           {
             label: 'SRE & Progressive Delivery',
@@ -62,12 +62,12 @@ export const cv: CvData = {
           {
             label: 'Design System Modernization',
             description:
-              'Led the 2026 company-wide Design System modernization from design to production. Built its infrastructure and set the bar for what could ship, sending designs back to UX when they would not hold up in code.',
+              'Led the 2026 company-wide Design System modernization from design to production: built its infrastructure and set the bar for what could ship, sending designs back to UX when they would not hold up in code.',
           },
           {
             label: 'Merge & Conflict Resolution',
             description:
-              'Made merge granular, so edits to different parts of the same screen no longer conflict, and built automatic text merge, taking the remaining conflicts from fully manual to over 50% resolved without user intervention, with a redesigned merge UI.',
+              'Made merge granular, so edits to different parts of the same screen no longer conflict; automatic text merge now resolves over 50% of the rest, in a redesigned merge UI.',
           },
           {
             label: 'Desktop Notifications',
@@ -82,12 +82,12 @@ export const cv: CvData = {
           {
             label: 'Cloud Platform Client',
             description:
-              'Re-architected how the desktop IDE integrates with OutSystems Developer Cloud (ODC), replacing a single backend dependency with distributed cloud services.',
+              'Re-architected the desktop IDE’s integration with OutSystems Developer Cloud (ODC), from a single backend dependency to distributed cloud services.',
           },
           {
             label: 'Incremental Platform Migration',
             description:
-              'Delivered the multi-year move off Windows-only WPF with the wider team, component by component behind feature flags. The new React and TypeScript UI runs in an embedded Chromium WebView; the product never forked and gained macOS support.',
+              'With the wider team, made the multi-year move off Windows-only WPF to React and TypeScript in an embedded Chromium WebView, component by component behind feature flags, never forking; it gained macOS.',
           },
         ],
       },
