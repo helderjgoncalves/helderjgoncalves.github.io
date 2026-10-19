@@ -7,7 +7,7 @@ export const cv: CvData = {
     photo: '/portrait.jpg',
     paragraphs: [
       'Lead Software Engineer with 10+ years building developer tools in React, TypeScript and .NET, used daily by thousands of enterprise developers. I lead architecture and mentoring for 2 teams (12 engineers) and shape technical direction for other engineering groups.',
-      'I lead long-running, product-wide initiatives: a reliability programme that cut the OutSystems IDE’s crash ratio from ~15% to ~2–3%, the company-wide Design System modernization, the IDE’s move onto OutSystems Developer Cloud (ODC) services, and the Generative AI integration of Mentor, OutSystems’ LLM-based agentic AI, generally available in ODC Studio since March 2026.',
+      'I lead long-running, product-wide initiatives: a reliability programme that cut the OutSystems IDE’s crash ratio from ~15% to ~3%, the company-wide Design System modernization, the IDE’s move onto OutSystems Developer Cloud (ODC) services, and the Generative AI integration of Mentor, OutSystems’ LLM-based agentic AI, generally available in ODC Studio since March 2026.',
     ],
     contacts: [
       { label: 'helder@hgoncalves.uk', href: 'mailto:helder@hgoncalves.uk', icon: 'email' },
@@ -47,7 +47,7 @@ export const cv: CvData = {
           {
             label: 'Stability & Observability',
             description:
-              'Led the stability programme across the IDE: built the telemetry that pinpoints high-impact failures and drove the fixes, cutting crash ratio from ~15% to ~2–3% (an 80%+ reduction); the same approach now covers hang and freeze ratios.',
+              'Led the stability programme across the IDE: built the telemetry that pinpoints high-impact failures and drove the fixes, cutting crash ratio from ~15% to ~3% (an 80% reduction); the same approach now covers hang and freeze ratios.',
           },
           {
             label: 'SRE & Progressive Delivery',
