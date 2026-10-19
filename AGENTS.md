@@ -401,12 +401,15 @@ headings, employers and schools as text rather than logos, exactly two A4
 pages (the script throws otherwise), and a two-line running header atop page
 2 so parsers that join pages keep the next role's title. Chrome writes
 variable web fonts as Type3, which parsers can't read, so the PDFs use
-Helvetica; don't add a web font. The design (full-bleed blue header with the
-portrait, the site's icons on headings and contacts, a highlights strip, a
-timeline rail, labelled bullets, pills) is decoration around real text, so
-it costs parsers nothing — with one trap: Chrome writes positioned elements
-(`position: relative/absolute`) to the PDF after everything else, which
-moved every job title to the end of the text. Keep decoration in flow.
+Helvetica; don't add a web font. The design (a thin blue bar, the round
+portrait, contact icons, hairline section headings, a left column carrying
+dates and labels, a highlights strip, labelled bullets) is decoration around
+real text, so it costs parsers nothing — with two traps. Chrome writes
+positioned elements (`position: relative/absolute`) to the PDF after
+everything else, which moved every job title to the end of the text: keep
+decoration in flow. And letter-spacing over about 1pt makes extractors read
+capitals as separate letters ("S U M M A R Y"), so no heading is recognised:
+keep tracking under 1pt.
 
 - **`web`** is the public download, `public/helder-goncalves-cv.pdf`: the
  site's own experience bullets, a summary blending the Staff and Lead pitch,

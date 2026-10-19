@@ -25,7 +25,7 @@ const skills = {
   web: [
     ['Architecture', 'Software architecture, system design, distributed systems integration, REST APIs, embedded Chromium WebView (CEF / CefGlue), design systems, incremental migration'],
     ['Reliability', 'Site Reliability Engineering (SRE), telemetry and observability, crash, hang and freeze metrics, feature flags, dark launches, progressive delivery'],
-    ['Languages & frameworks', 'TypeScript, JavaScript, React, Node.js, C#, .NET, Avalonia, HTML, CSS, SCSS, C, C++'],
+    ['Programming', 'TypeScript, JavaScript, React, Node.js, C#, .NET, Avalonia, HTML, CSS, SCSS, C, C++'],
     ['Testing', 'Jest, React Testing Library, unit and component testing'],
     ['Leadership', 'Technical leadership, cross-team direction, mentoring, design and code reviews, Product and UX partnership'],
     ['AI', 'Generative AI, LLM integration, agentic AI, AI-assisted developer tools'],
@@ -35,16 +35,16 @@ const skills = {
     ['Architecture', 'Software architecture, system design, distributed systems integration, REST APIs, desktop and web applications, embedded Chromium WebView (CEF / CefGlue), design systems, incremental migration'],
     ['Reliability', 'Site Reliability Engineering (SRE), telemetry and observability, crash, hang and freeze metrics, feature flags, dark launches, progressive delivery, automated testing (Jest, React Testing Library)'],
     ['AI', 'Generative AI, LLM integration, agentic AI, AI-assisted developer tools'],
-    ['Languages & frameworks', 'TypeScript, JavaScript, React, Node.js, C#, .NET, Avalonia, HTML, CSS, SCSS, C, C++'],
+    ['Programming', 'TypeScript, JavaScript, React, Node.js, C#, .NET, Avalonia, HTML, CSS, SCSS, C, C++'],
     ['Leadership', 'Technical leadership, cross-team technical direction, mentoring, design and code reviews'],
     ['Cloud & delivery', 'AWS, Snowflake, Cloudflare (R2, Workers, WAF, Zero Trust), CI/CD with GitHub Actions, Docker, Git'],
   ],
   lead: [
-    ['Languages & frameworks', 'TypeScript, JavaScript, React, Node.js, C#, .NET, Avalonia, HTML, CSS, SCSS, C, C++'],
+    ['Programming', 'TypeScript, JavaScript, React, Node.js, C#, .NET, Avalonia, HTML, CSS, SCSS, C, C++'],
     ['Testing', 'Jest, React Testing Library, unit and component testing'],
     ['Leadership', 'Technical leadership, team leadership, mentoring, design and code reviews, cross-team collaboration with Product and UX'],
     ['AI', 'Generative AI, LLM integration, agentic AI, AI-assisted developer tools'],
-    ['Engineering practices', 'Software architecture, REST APIs, embedded Chromium WebView (CEF / CefGlue), design systems, Site Reliability Engineering (SRE), telemetry and observability, feature flags, dark launches, incremental migration'],
+    ['Practices', 'Software architecture, REST APIs, embedded Chromium WebView (CEF / CefGlue), design systems, Site Reliability Engineering (SRE), telemetry and observability, feature flags, dark launches, incremental migration'],
     ['Cloud & delivery', 'AWS, Snowflake, Cloudflare (R2, Workers, WAF, Zero Trust), CI/CD with GitHub Actions, Docker, Git'],
   ],
 };
@@ -105,44 +105,40 @@ const variants = {
 const highlights = [
   ['10+ years', 'building developer tools'],
   ['~15% → ~3%', 'IDE crash ratio'],
-  ['50%+', 'merge conflicts auto-resolved'],
+  ['50%+', 'conflicts auto-resolved'],
   ['2 teams', '12 engineers led'],
 ];
 
-// The site's icon set (src/components/Icon.tsx), as plain SVG.
+// The site's contact icons (src/components/Icon.tsx), as plain SVG.
 const iconPaths = {
   email: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
   phone: '<path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
   linkedin: '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v8M8 7v.01M12 18v-5a2 2 0 0 1 4 0v5M12 13v5"/>',
   github: '<path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/>',
   website: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
-  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>',
-  code: '<path d="M8 7l-5 5 5 5"/><path d="M16 7l5 5-5 5"/><path d="M14 4l-4 16"/>',
-  briefcase: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 12h18"/>',
-  lab: '<path d="M9 3h6M10 3v6L4 19a2 2 0 0 0 1.7 3h12.6A2 2 0 0 0 20 19l-6-10V3"/>',
-  graduationCap: '<path d="M2 9l10-4 10 4-10 4z"/><path d="M6 11v4a6 6 0 0 0 12 0v-4M22 9v5"/>',
-  badge: '<circle cx="12" cy="9" r="6"/><path d="M9 13l-1.5 8L12 18l4.5 3L15 13"/>',
-  star: '<path d="M12 3l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9z"/>',
-  spark: '<path d="M12 3.2l1.15 5.15L18.3 9.5l-5.15 1.15L12 15.8l-1.15-5.15L5.7 9.5l5.15-1.15z"/><path d="M17.6 14.8l.55 2.15 2.15.55-2.15.55-.55 2.15-.55-2.15-2.15-.55 2.15-.55z"/>',
-  languages: '<path d="M4 5h7M7.5 5v2c0 4-3.5 7-3.5 7"/><path d="M5 11c1 2 4 4 7 4M13 21l5-12 5 12M14.5 17h7"/>',
 };
 const icon = (name) =>
   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${iconPaths[name]}</svg>`;
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const fullTitle = (t) => t.replace(/\bSWE\b/, 'Software Engineer');
-const role = (what, org, when) =>
-  `<div class="role"><span class="what">${esc(what)}</span><span class="when">${esc(when)}</span></div>` +
-  (org ? `<div class="org">${esc(org)}</div>` : '');
-const projectWithLink = (p) => {
-  const url = `https://${website}${p.caseStudyHref}`;
-  const shown = url.replace(/^https:\/\//, '').replace(/\/$/, '');
-  return `<div class="role"><span class="what">${esc(p.title)} (<a href="${url}">${esc(shown)}</a>)</span><span class="when">${esc(p.period)}</span></div>`;
-};
 const yearOnly = (p) => [...new Set(p.match(/\d{4}/g))].join(' – ');
-const h2 = (name, title) => `<h2><span class="ico">${icon(name)}</span>${esc(title)}</h2>`;
-const pills = (items) => `<p class="pills">${items.map((t) => `<span class="pill">${esc(t)}</span>`).join(' ')}</p>`;
 const portrait = pathToFileURL(path.join(here, '../../public/portrait.jpg')).href;
+
+// Every block sits on one grid: a narrow meta column (dates, labels) and the
+// content column. Title and company stay on separate lines: parsers need both.
+const entry = (meta, body, cls = '') => `<div class="entry ${cls}"><div class="meta">${meta}</div><div class="body">${body}</div></div>`;
+const head = (what, org) => `<div class="what">${what}</div>${org ? `<div class="org">${esc(org)}</div>` : ''}`;
+const stack = (items) => `<p class="stack"><span>Stack</span> ${items.map(esc).join(' · ')}</p>`;
+const projectTitle = (p) => {
+  const named = p.title.match(/^(.*) \(([a-z0-9.-]+\.[a-z]+)\)$/);
+  const title = named ? named[1] : p.title;
+  const url = p.caseStudyHref ? `https://${website}${p.caseStudyHref}` : named && `https://${named[2]}/`;
+  if (!url) return esc(title);
+  const shown = url.replace(/^https:\/\//, '').replace(/\/$/, '');
+  // Parsers drop a space at either edge of the link's run ("Lab(…"), so " (" stays in the title's.
+  return `${esc(title)} (<a href="${url}">${esc(shown)}</a>)`;
+};
 
 function render(key) {
   const v = variants[key];
@@ -163,7 +159,7 @@ function render(key) {
   // so the next heading sits a measurable gap below a line on its own page.
   const page2 = (at) =>
     v.page2 === at
-      ? `<div class="page2"><p class="running"><b>${esc(cv.profile.name)}</b> · Page 2</p><p class="running">${esc(email)}</p></div>`
+      ? `<div class="page2"><p class="running"><b>${esc(cv.profile.name)}</b></p><p class="running">${esc(cv.profile.title)} · Page 2</p></div>`
       : '';
 
   return `<!doctype html>
@@ -171,150 +167,156 @@ function render(key) {
 <title>${esc(cv.profile.name)} — ${esc(cv.profile.title)} CV</title>
 <meta name="author" content="${esc(cv.profile.name)}">
 <style>
-  @page { size: A4; margin: 0 0 11mm; }
+  @page { size: A4; margin: 0 0 10mm; }
   * { box-sizing: border-box; }
   html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   body {
-    margin: 0; padding: 0 14mm; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 9.2pt; line-height: 1.4;
-    color: #2f3947; font-variant-ligatures: none; font-feature-settings: 'liga' 0, 'calt' 0;
+    margin: 0; padding: 0 13mm; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 8.9pt; line-height: 1.42; color: #2f3947;
+    font-variant-ligatures: none; font-feature-settings: 'liga' 0, 'calt' 0;
   }
   a { color: inherit; text-decoration: none; }
   b, strong { font-weight: 600; color: #1c2330; }
-  p { margin: 0 0 4pt; }
+  p { margin: 0; }
   svg { display: block; width: 100%; height: 100%; }
 
-  header {
-    margin: 0 -14mm; padding: 8mm 14mm 6.5mm; display: flex; align-items: center; gap: 6mm; color: #fff;
-    background: linear-gradient(115deg, #234a73 0%, #3a6ea5 58%, #5a93cc 100%);
-  }
-  header img { width: 25mm; height: 25mm; border-radius: 6pt; object-fit: cover; flex: none; border: 1.5pt solid rgba(255,255,255,0.55); }
-  h1 { font-size: 25pt; font-weight: 700; letter-spacing: -0.3pt; line-height: 1.05; margin: 0; color: #fff; }
-  .title { font-size: 12pt; font-weight: 500; margin: 3pt 0 1pt; color: #fff; }
-  .tagline { margin: 0 0 6pt; color: #cfe0f3; font-size: 8.8pt; }
-  .contact { margin: 0 0 1.5pt; font-size: 8.4pt; color: #fff; }
-  .contact .c { display: inline-flex; align-items: center; gap: 2.5pt; margin-right: 10pt; white-space: nowrap; }
-  .contact .c span.i { width: 9pt; height: 9pt; color: #bcd5ee; flex: none; }
+  /* Grid: 27mm meta column, 6mm gutter, content. */
+  .entry { display: grid; grid-template-columns: 25mm 1fr; column-gap: 5mm; }
+  .meta { font-size: 7.9pt; color: #8e98ab; font-variant-numeric: tabular-nums; padding-top: 1.2pt; letter-spacing: 0.1pt; }
 
-  .running { text-align: right; font-size: 7.5pt; color: #8e98ab; margin: 0; }
-  .running b { color: #3a6ea5; }
-  .page2 { break-before: page; padding-top: 11mm; margin-bottom: 8pt; }
+  .bar { margin: 0 -13mm; height: 2.4mm; background: linear-gradient(90deg, #2c557f, #3a6ea5 55%, #6fa3da); }
+  header { padding: 7.5mm 0 0; }
+  header .entry { align-items: center; }
+  header img { width: 25mm; height: 25mm; border-radius: 50%; object-fit: cover; display: block; }
+  h1 { font-size: 27pt; font-weight: 700; letter-spacing: -0.6pt; line-height: 1; margin: 0; color: #1c2330; }
+  .title { font-size: 12pt; font-weight: 500; color: #3a6ea5; margin: 4pt 0 2pt; letter-spacing: -0.1pt; }
+  .tagline { font-size: 8.4pt; color: #54627a; margin: 0 0 7pt; }
+  .contact { font-size: 8pt; color: #2f3947; line-height: 1.7; }
+  .contact .c { display: inline-flex; align-items: center; gap: 3pt; margin-right: 9pt; white-space: nowrap; }
+  .contact .i { width: 8.5pt; height: 8.5pt; color: #3a6ea5; flex: none; }
 
   h2 {
-    display: flex; align-items: center; gap: 6pt; margin: 9pt 0 4.5pt; break-after: avoid;
-    font-size: 10pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7pt; color: #2c557f;
+    display: flex; align-items: center; gap: 7pt; margin: 11pt 0 5pt; break-after: avoid;
+    /* Over ~1pt of tracking, extractors read capitals as separate words ("S U M M A R Y"). */
+    font-size: 8.2pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7pt; color: #3a6ea5;
   }
-  h2::after { content: ''; flex: 1; height: 1pt; background: #d6dbe4; }
-  h2 .ico { width: 15pt; height: 15pt; border-radius: 50%; background: #3a6ea5; color: #fff; padding: 3.2pt; flex: none; }
+  h2::after { content: ''; flex: 1; height: 0.6pt; background: #d6dbe4; }
 
-  .highlights { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5pt; margin: 7pt 0 0; }
-  .hl { background: #eef4fb; border-left: 2.5pt solid #3a6ea5; border-radius: 3pt; padding: 4pt 7pt; }
-  .hl b { display: block; font-size: 12pt; font-weight: 700; color: #2c557f; line-height: 1.2; }
-  .hl span { font-size: 7.8pt; color: #54627a; }
+  .summary { font-size: 9.2pt; line-height: 1.47; color: #1c2330; }
+  .highlights { display: flex; margin: 8pt 0 0; }
+  .hl { flex: 1; padding: 1pt 0 1pt 8pt; border-left: 0.8pt solid #d6dbe4; }
+  .hl:first-child { border-left: none; padding-left: 0; }
+  .hl b { display: block; font-size: 15pt; font-weight: 300; color: #2c557f; letter-spacing: -0.4pt; line-height: 1.15; }
+  .hl span { font-size: 7.4pt; color: #54627a; }
 
-  .skills p { margin: 0 0 2.5pt; }
-  .skills b { color: #2c557f; }
+  .skills .entry { margin: 0 0 3pt; }
+  .skills .meta { color: #2c557f; font-weight: 600; font-size: 7.9pt; }
 
-  ul { margin: 2pt 0 4pt; padding-left: 11pt; }
-  li { margin: 0 0 1.8pt; padding-left: 2pt; }
-  li::marker { color: #4a85c2; }
-  li b { color: #1c2330; }
+  .what { font-size: 10.2pt; font-weight: 600; color: #1c2330; letter-spacing: -0.1pt; }
+  .org { font-size: 8.8pt; font-weight: 500; color: #3a6ea5; margin: 0.5pt 0 2pt; }
+  .job + .job { margin-top: 8pt; }
+  .ladder .entry { margin-top: 7pt; }
+  .ladder .entry:first-child { margin-top: 0; }
+  .ladder .what { font-size: 9.4pt; }
 
-  .tl { margin-left: 4pt; padding-left: 13pt; border-left: 1.4pt solid #cfdcec; }
-  /* Positioned elements are painted, and so written to the PDF, after everything
-     else, which moves their text out of reading order; the dots stay in flow. */
-  .tl .role::before {
-    content: ''; flex: none; align-self: center; width: 8pt; height: 8pt; margin: 0 8.9pt 0 -16.9pt;
-    border-radius: 50%; background: #fff; border: 2.2pt solid #3a6ea5; box-sizing: border-box;
-  }
-  .ladder .role::before { width: 5pt; height: 5pt; margin: 0 10.4pt 0 -15.4pt; border: none; background: #8fb2d8; }
-  .role { display: flex; align-items: baseline; margin-top: 7pt; break-after: avoid; }
-  .role .what { margin-right: auto; }  .tl > .role:first-child { margin-top: 0; }
-  .role .what { font-weight: 600; color: #1c2330; font-size: 10.2pt; }
-  .role .when { white-space: nowrap; padding-left: 10pt; color: #54627a; font-size: 8.6pt; font-weight: 500; font-variant-numeric: tabular-nums; }
-  .org { color: #3a6ea5; font-weight: 600; margin: 0 0 1pt; font-size: 8.9pt; }
-  .sub { margin: 2pt 0 2pt; color: #54627a; }
+  ul { margin: 2pt 0 0; padding-left: 9pt; }
+  li { margin: 0 0 2pt; padding-left: 1pt; }
+  li:last-child { margin-bottom: 0; }
+  li::marker { color: #9cc0e8; font-size: 8pt; }
+  li b { color: #1c2330; font-weight: 600; }
+  .sub { color: #54627a; margin-top: 2pt; }
+  .desc { margin-top: 1.5pt; }
+  .stack { margin-top: 2.5pt; font-size: 7.8pt; color: #54627a; }
+  .stack span { font-size: 6.8pt; font-weight: 700; letter-spacing: 0.5pt; text-transform: uppercase; color: #3a6ea5; margin-right: 3pt; }
+  .what a { font-weight: 500; color: #3a6ea5; font-size: 8.8pt; }
 
-  .pills { margin: 1pt 0 3pt; line-height: 1.8; }
-  .pill { background: #e6eff9; color: #2c557f; border-radius: 8pt; padding: 1.2pt 6pt; font-size: 7.6pt; font-weight: 600; white-space: nowrap; }
-
+  .running { text-align: right; font-size: 7.4pt; color: #8e98ab; }
+  .running b { color: #1c2330; }
+  .page2 { break-before: page; padding-top: 12mm; margin-bottom: 9pt; }
   .keep { break-inside: avoid; }
 </style></head>
 <body>
+<div class="bar"></div>
 <header>
-${v.photo ? `<img src="${portrait}" alt="">` : ''}
-<div>
-<h1>${esc(cv.profile.name)}</h1>
+${entry(
+  v.photo ? `<img src="${portrait}" alt="">` : '',
+  `<h1>${esc(cv.profile.name)}</h1>
 <p class="title">${esc(cv.profile.title)}</p>
 <p class="tagline">${esc(v.tagline)}</p>
-${contacts.map((row) => `<p class="contact">${row.map(contact).join(' ')}</p>`).join('\n')}
-</div>
+${contacts.map((row) => `<p class="contact">${row.map(contact).join(' ')}</p>`).join('\n')}`,
+)}
 </header>
 
-${h2('user', 'Summary')}
-<p>${esc(v.summary)}</p>
-<div class="highlights">${highlights.map(([n, l]) => `<div class="hl"><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join(' ')}</div>
+<h2>Summary</h2>
+${entry('', `<p class="summary">${esc(v.summary)}</p>
+<div class="highlights">${highlights.map(([n, l]) => `<div class="hl"><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join(' ')}</div>`)}
 
-${h2('code', 'Skills')}
+<h2>Skills</h2>
 <div class="skills">
-${skills[key].map(([k, s]) => `<p><b>${esc(k)}:</b> ${esc(s)}</p>`).join('\n')}
+${skills[key].map(([k, s]) => entry(`${esc(k)}:`, esc(s))).join('\n')}
 </div>
 
-${h2('briefcase', 'Experience')}
-<div class="tl">
-${role(fullTitle(current.title), cv.work.company, current.period)}
+<h2>Experience</h2>
+${entry(
+  esc(current.period),
+  `${head(esc(fullTitle(current.title)), cv.work.company)}
 <ul>
 ${v.bullets.map((b, i) => `<li><b>${esc(v.labels[i])}:</b> ${esc(b)}</li>`).join('\n')}
-</ul>
-</div>
+</ul>`,
+  'job',
+)}
 ${page2('earlier')}
-<div class="keep tl ladder">
-${earlier.map((r) => role(fullTitle(r.title), cv.work.company, r.period)).join('\n')}</div>
-${page2('internships')}
+<div class="keep ladder">
+${earlier.map((r) => entry(esc(r.period), head(esc(fullTitle(r.title)), cv.work.company))).join('\n')}
+</div>
+
 <div class="keep">
-${h2('lab', 'Internships')}
-<div class="tl">
+<h2>Internships</h2>
 ${cv.internships
-  .map(
-    (i) => `${role(i.title, i.organisation, yearOnly(i.period))}
+  .map((i) =>
+    entry(
+      esc(yearOnly(i.period)),
+      `${head(esc(i.title), i.organisation)}
 <ul>${i.paragraphs.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>`,
+      'job',
+    ),
   )
   .join('\n')}
 </div>
+
+<div class="keep">
+<h2>Education</h2>
+${entry(
+  esc(ed.period),
+  `${head(`${esc(ed.institution)} (University of Minho)`, 'Master’s (MSc) and Bachelor’s (BSc) in Informatics Engineering')}
+<p class="sub">Thesis: ${esc(ed.thesis.title)}. Coursework: ${esc(ed.coursework)}</p>`,
+)}
 </div>
 
 <div class="keep">
-${h2('graduationCap', 'Education')}
-<div class="tl">
-${role(`${ed.institution} (University of Minho)`, '', ed.period)}
-<div class="org">Master’s (MSc) and Bachelor’s (BSc) in Informatics Engineering</div>
-<p class="sub">Thesis: ${esc(ed.thesis.title)}. Coursework: ${esc(ed.coursework)}</p>
-</div>
-</div>
-
-<div class="keep">
-${h2('spark', 'Projects')}
+<h2>Projects</h2>
 ${cv.sideProjects
-  .map(
-    (p) => `${p.caseStudyHref ? projectWithLink(p) : role(p.title, '', p.period)}
-<p>${esc(p.description)}</p>
-${pills(p.techPills)}`,
+  .map((p) =>
+    entry(
+      esc(p.period),
+      `<div class="what">${projectTitle(p)}</div>
+<p class="desc">${esc(p.description)}</p>
+${stack(p.techPills)}`,
+      'job',
+    ),
   )
   .join('\n')}
 </div>
 
 <div class="keep">
-${h2('badge', 'Certifications')}
-<ul>${cv.certifications.map((c) => `<li>${esc(c.name)} (${esc(c.code)}), ${esc(c.issuer)}</li>`).join('')}</ul>
+<h2>Certifications &amp; Awards</h2>
+${cv.certifications.map((c) => entry(esc(c.code), `${esc(c.name)}, ${esc(c.issuer)}`)).join('\n')}
+${cv.awards.map((a) => entry(String(a.year), `<b>${esc(a.title)}</b>, ${esc(a.context)}: ${esc(a.description)}`)).join('\n')}
 </div>
 
 <div class="keep">
-${h2('star', 'Awards')}
-<ul>${cv.awards.map((a) => `<li><b>${esc(a.title)}</b>, ${esc(a.context)}, ${a.year}: ${esc(a.description)}</li>`).join('')}</ul>
-</div>
-
-<div class="keep">
-${h2('languages', 'Languages')}
-<p>${esc(cv.languages.join(', '))}</p>
+<h2>Languages</h2>
+${entry('', esc(cv.languages.join(', ')))}
 </div>
 </body></html>`;
 }
