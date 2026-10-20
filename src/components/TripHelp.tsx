@@ -20,11 +20,16 @@ type Checked = 'message' | 'email';
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const MIN_MESSAGE = 10;
+const MAX_LINKS = 5;
 
-/** The Worker's own test, so a message it would turn away is caught here, by its field. */
+/** The Worker's own tests, so a message it would turn away is caught here, by its field. */
 function looksReal(message: string) {
   const text = message.trim();
   return text.length >= MIN_MESSAGE && (text.match(/\p{L}{2,}/gu) ?? []).length >= 2;
+}
+
+function tooManyLinks(message: string) {
+  return (message.match(/https?:\/\/|www\./gi) ?? []).length > MAX_LINKS;
 }
 
 interface Turnstile {
@@ -169,7 +174,9 @@ export function TripHelpForm({ trip = '', wide = false, closing = false, draft, 
     const { 'cf-turnstile-response': token = '', ...data } = Object.fromEntries(new FormData(event.currentTarget));
     const address = String(data.email ?? '').trim();
     const found: Partial<Record<Checked, string>> = {};
-    if (!looksReal(String(data.message ?? ''))) found.message = form.checks.message;
+    const message = String(data.message ?? '');
+    if (tooManyLinks(message)) found.message = form.checks.links;
+    else if (!looksReal(message)) found.message = form.checks.message;
     if (!address) found.email = form.checks.email;
     else if (!EMAIL.test(address)) found.email = form.checks.emailFormat;
     setProblems(found);

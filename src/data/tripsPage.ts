@@ -52,7 +52,7 @@ export interface TripsPageData {
       about: string;
       sent: { title: string; text: string };
       /** On the label line of a field that needs fixing, so the form never shifts. */
-      checks: { email: string; emailFormat: string; message: string };
+      checks: { email: string; emailFormat: string; message: string; links: string };
       /** Keyed by the Worker's error codes; `failed` covers the rest. */
       errors: { invalid: string; bot: string; rate: string; failed: string };
     };
@@ -111,6 +111,7 @@ export const tripsPage: TripsPageData = {
         email: 'Needed, so I can reply',
         emailFormat: "Doesn't look quite right",
         message: 'A few words more, please',
+        links: 'Fewer links, please',
       },
       errors: {
         invalid: 'Something in the form needs another look.',

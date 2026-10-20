@@ -30,7 +30,7 @@ const HOSTNAMES = new Set(['hgoncalves.uk', 'localhost']);
 const MIN_FILL_MS = 3000;
 const LIMITS = { name: 100, email: 200, trip: 100, message: 4000 };
 const MIN_MESSAGE = 10;
-const MAX_LINKS = 2;
+const MAX_LINKS = 5;
 const EMAIL_RE = /^[^\s@<>()",;]+@[^\s@<>()",;]+\.[a-z]{2,}$/i;
 
 export default {
