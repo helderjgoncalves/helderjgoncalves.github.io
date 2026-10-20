@@ -1801,6 +1801,11 @@ $trip-cover-widest: 2.1;
       // 0), or the two columns grow each other.
       > .trip-help__row { display: contents; }
 
+      // A message box dragged taller hands all its extra height to the last
+      // row on the right (fr), where the name sits at the top, rather than
+      // sharing it out and stretching the email field.
+      grid-template-rows: auto auto 1fr;
+
       > .trip-help__field:has(textarea),
       > .trip-help__row > .trip-help__field:first-child {
         grid-template-rows: subgrid;
@@ -1811,9 +1816,15 @@ $trip-cover-widest: 2.1;
         grid-column: 1;
         grid-row: 1 / span 3;
 
+        // Sized by the grid, so dragging it could only break the alignment:
+        // it grows with what's written instead (where field-sizing is
+        // supported; elsewhere it scrolls), up to a point.
         textarea {
           grid-row: 2 / span 2;
           min-height: 0;
+          max-height: 24rem;
+          resize: none;
+          field-sizing: content;
         }
       }
 
@@ -1830,6 +1841,8 @@ $trip-cover-widest: 2.1;
 
       // With no trip of its own (/trips/), "Where to?" heads the right half.
       &.trip-help__form--asks {
+        grid-template-rows: auto auto auto auto 1fr;
+
         > .trip-help__field:not(:has(textarea)) {
           grid-column: 2;
           grid-row: 1 / span 2;
