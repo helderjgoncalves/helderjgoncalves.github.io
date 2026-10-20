@@ -81,7 +81,6 @@ export function TripHelpForm({ trip = '', wide = false, closing = false, draft, 
   const { email, form } = tripsPage.help;
   const [status, setStatus] = useState<Status>('idle');
   const [problems, setProblems] = useState<Partial<Record<Checked, string>>>({});
-  const openedAt = useRef(0);
   const widget = useRef<string | undefined>(undefined);
   const check = useRef<HTMLDivElement>(null);
   const slot = useRef<HTMLDivElement>(null);
@@ -89,7 +88,7 @@ export function TripHelpForm({ trip = '', wide = false, closing = false, draft, 
   const ids = useId();
 
   useEffect(() => {
-    openedAt.current = Date.now();
+    startedAt ||= Date.now();
     // The form grows from nothing, so near the page's foot there is no room yet
     // to scroll it into view: hold its final height until it has grown.
     const box = slot.current;
@@ -169,7 +168,7 @@ export function TripHelpForm({ trip = '', wide = false, closing = false, draft, 
         body: JSON.stringify({
           ...data,
           token,
-          elapsed: Date.now() - openedAt.current,
+          elapsed: Date.now() - startedAt,
           page: location.pathname,
         }),
       });
@@ -180,7 +179,10 @@ export function TripHelpForm({ trip = '', wide = false, closing = false, draft, 
       next = 'failed';
     }
     if (next !== 'sent' && widget.current) window.turnstile?.reset(widget.current);
-    if (next === 'sent') draft.clear();
+    if (next === 'sent') {
+      draft.clear();
+      startedAt = 0;
+    }
     setStatus(next);
   };
 
@@ -317,6 +319,9 @@ export function TripHelpForm({ trip = '', wide = false, closing = false, draft, 
  * (opening one folds the other away) and one draft between them.
  */
 const draft: Draft = new Map();
+/** When this draft was begun: the Worker's minimum fill time counts from here,
+ * not from the latest opening, or a kept draft sent at once reads as a bot. */
+let startedAt = 0;
 let active: string | null = null;
 const listeners = new Set<() => void>();
 

@@ -62,7 +62,10 @@ export default {
     const trip = oneLine(field('trip'));
     const message = field('message');
 
-    if (field('website') || !(Number(form.elapsed) >= MIN_FILL_MS)) return reply(200, { ok: true });
+    if (field('website') || !(Number(form.elapsed) >= MIN_FILL_MS)) {
+      console.log('dropped quietly:', field('website') ? 'hidden field filled' : `sent ${Number(form.elapsed)} ms after opening`);
+      return reply(200, { ok: true });
+    }
 
     const ip = request.headers.get('CF-Connecting-IP') ?? '';
     if (env.RATE_LIMITER) {
@@ -89,7 +92,8 @@ export default {
 
     try {
       await env.EMAIL.send(new EmailMessage(FROM, env.TO, mime(env, letter)));
-    } catch {
+    } catch (error) {
+      console.error('send failed:', error);
       return reply(502, { error: 'failed' });
     }
     return reply(200, { ok: true });
