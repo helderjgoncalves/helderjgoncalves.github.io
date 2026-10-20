@@ -283,10 +283,13 @@ describe('robots.txt', () => {
 // Non-standard properties with no unprefixed counterpart to look for.
 // -webkit-user-drag has no unprefixed form any engine implements. Safari needs
 // it to stop dragging an <a href>; draggable="false" is enough for images.
+// -webkit-text-fill-color is the only way past the black text browsers give
+// an autofilled field (`text-field`).
 const PREFIX_ONLY = new Set([
   '-webkit-font-smoothing',
   '-moz-osx-font-smoothing',
   '-webkit-user-drag',
+  '-webkit-text-fill-color',
 ]);
 
 /** True if `prop` appears as a declaration rather than as part of a longer name. */

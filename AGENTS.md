@@ -535,8 +535,9 @@ Conventions:
   does not alias, so the nav blur worked in Safari and not in Chrome. Write the
   standard property alone; `npm test` fails if a prefixed declaration reaches
   `dist/` without its standard counterpart. `-webkit-font-smoothing`,
-  `-moz-osx-font-smoothing`, and `-webkit-user-drag` are the exception — they
-  have no standard form. The last one is what stops Safari dragging a link;
+  `-moz-osx-font-smoothing`, `-webkit-user-drag` and `-webkit-text-fill-color`
+  are the exception — they have no standard form. The last keeps an autofilled
+  field's text in the theme (browsers force it black on pale yellow). The last one is what stops Safari dragging a link;
   `draggable="false"` is enough for an image, and Safari ignores it on `<a>`.
 - Colours that change with theme should reference the CSS custom properties
   (e.g. `var(--color-text)`) or the SASS aliases at the bottom of
