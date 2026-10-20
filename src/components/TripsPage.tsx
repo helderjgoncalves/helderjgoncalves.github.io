@@ -61,7 +61,7 @@ export function TripsPage() {
       <SiteNav current="/trips/" />
 
       <header className="page-hero">
-        <HeroGlow soft />
+        <HeroGlow />
         <div className="container page-hero__inner">
           <h1 className="page-hero__title">{title}</h1>
           <p className="page-hero__thesis">{thesis}</p>

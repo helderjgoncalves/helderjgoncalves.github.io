@@ -5,11 +5,8 @@ import { Icon } from './Icon';
 type Tone = 'sunrise' | 'cool';
 
 /** Slow-drifting lights behind a hero's text. */
-export function HeroGlow({ tone = 'sunrise', soft = false }: { tone?: Tone; soft?: boolean }) {
-  const classes = ['hero-glow'];
-  if (tone === 'cool') classes.push('hero-glow--cool');
-  if (soft) classes.push('hero-glow--soft');
-  return <div className={classes.join(' ')} aria-hidden="true" />;
+export function HeroGlow({ tone = 'sunrise' }: { tone?: Tone }) {
+  return <div className={tone === 'cool' ? 'hero-glow hero-glow--cool' : 'hero-glow'} aria-hidden="true" />;
 }
 
 /** `text` with its first `word` set in the tone's colours. Never a person's name. */

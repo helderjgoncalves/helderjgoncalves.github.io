@@ -126,8 +126,12 @@ short `page-hero` with a sunrise breaking over the brand blue. The blue
 heroes share three accents (`HeroAccents.tsx`): `HeroGlow` (lights drifting
 slowly behind the text, held still under reduced motion), `Highlighted` (one
 word of the title in the glow's colours) and `HeroJumps` (glass buttons to
-the page's sections). Warm (`$sunrise-*`) on the personal pages: home, and
-`/trips/` with a softer glow. Cool (`$aurora-*`) on the work ones: home lab
+the page's sections). The glow is equally strong on every hero (a softer
+one on `/trips/` was tried and read as a mistake), and each theme sets how
+it mixes in (`--hero-lights-*`): the dark navy lets it glow as is, while
+the light theme's bright blue would turn it into a grey smudge, so light
+gives it more colour and blends it hard-light. Warm (`$sunrise-*`) on the
+personal pages: home and `/trips/`. Cool (`$aurora-*`) on the work ones: home lab
 (glow and its title's "Home Lab") and CV (glow only; never a highlight on
 the name). Jumps are the home page's alone: on the home lab they read as
 more CTAs of the same weight, and neither work page is long enough to need

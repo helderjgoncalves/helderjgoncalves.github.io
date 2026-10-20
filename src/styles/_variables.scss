@@ -79,6 +79,11 @@ $aurora-violet: #9b8cff;
   --hero-from:          #{$blue-700};
   --hero-to:            #{$blue-600};
   --hero-glow:          #{rgba($blue-500, 0.18)};
+  // The hero's drifting lights (.hero-glow). Mixed in plainly at the dark
+  // theme's strength, warm light on the bright blue greys into a smudge, so
+  // light gives them more colour and lets them tint the blue (hard-light).
+  --hero-lights-blend:    hard-light;
+  --hero-lights-strength: 1.55;
 }
 
 @mixin _theme-dark {
@@ -115,6 +120,8 @@ $aurora-violet: #9b8cff;
   --hero-from:          #182236;
   --hero-to:            #233a59;
   --hero-glow:          #{rgba($blue-500, 0.10)};
+  --hero-lights-blend:    normal;
+  --hero-lights-strength: 1;
 }
 
 :root[data-theme='dark'] { @include _theme-dark; }

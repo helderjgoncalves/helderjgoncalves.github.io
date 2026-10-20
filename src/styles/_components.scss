@@ -337,16 +337,22 @@
 // lights behind the text, a highlighted word in the title, and glass buttons
 // to the page's sections. Warm (sunrise) on the personal pages, cool (aurora)
 // on the work ones. Raw palette: like the blue, they stay the same in both
-// themes. The hero they sit in isolates, so the glow stays behind its text.
+// themes, though each theme sets how strongly they show. The hero they sit in
+// isolates, so the glow stays behind its text.
+@function _light($colour, $alpha) {
+  @return color-mix(in srgb, #{$colour} calc(#{$alpha * 100%} * var(--hero-lights-strength)), transparent);
+}
+
 .hero-glow {
   position: absolute;
   inset: -40% -10% -20% 30%;
   z-index: -1;
   background:
-    radial-gradient(38% 46% at 70% 40%, rgba($sunrise-orange, 0.55), transparent 70%),
-    radial-gradient(30% 40% at 90% 70%, rgba($sunrise-pink, 0.45), transparent 70%),
-    radial-gradient(26% 30% at 55% 75%, rgba($sunrise-gold, 0.3), transparent 70%);
+    radial-gradient(38% 46% at 70% 40%, _light($sunrise-orange, 0.55), transparent 70%),
+    radial-gradient(30% 40% at 90% 70%, _light($sunrise-pink, 0.45), transparent 70%),
+    radial-gradient(26% 30% at 55% 75%, _light($sunrise-gold, 0.3), transparent 70%);
   filter: blur(40px);
+  mix-blend-mode: var(--hero-lights-blend);
   animation: hero-glow-drift 18s ease-in-out infinite alternate;
   pointer-events: none;
 
@@ -356,12 +362,10 @@
 
   &--cool {
     background:
-      radial-gradient(38% 46% at 70% 40%, rgba($aurora-teal, 0.4), transparent 70%),
-      radial-gradient(30% 40% at 90% 70%, rgba($aurora-violet, 0.4), transparent 70%),
-      radial-gradient(26% 30% at 55% 75%, rgba($aurora-sky, 0.3), transparent 70%);
+      radial-gradient(38% 46% at 70% 40%, _light($aurora-teal, 0.4), transparent 70%),
+      radial-gradient(30% 40% at 90% 70%, _light($aurora-violet, 0.4), transparent 70%),
+      radial-gradient(26% 30% at 55% 75%, _light($aurora-sky, 0.3), transparent 70%);
   }
-
-  &--soft { opacity: 0.55; }
 }
 
 @keyframes hero-glow-drift {
