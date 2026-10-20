@@ -240,8 +240,8 @@ has a home-page card; the Travel section links to it too.
   doesn't hide the offer. Its "just ask" and the closing "Email me" are
   mailto: links until the page's script runs; then each opens the same short
   form right where it is (`TripHelpForm`; jumping to the foot of a long trip
-  page lost the reader's place). Under the route it takes the page's width,
-  in two halves from md up (the message beside email and name, the second
+  page lost the reader's place). Both take the page's width (the closing
+  offer's words and rule keep their narrow column above it), in two halves from md up (the message beside email and name, the second
   half starting under the route's third card), since a narrow column there
   sat stranded beside empty space. While open, the route's line heads it,
   with a Close pill at its end (a round × on phones, where the line wraps and

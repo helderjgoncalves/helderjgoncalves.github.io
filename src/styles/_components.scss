@@ -1684,12 +1684,24 @@ $trip-cover-widest: 2.1;
   padding-top: 1.5rem;
   padding-bottom: 0;
 
+  // The words and the rule above them keep a reading width; an open form
+  // takes the page's, in the same two halves as the one under a trip's route.
   &__card {
-    max-width: 34rem;
-    margin: 0 auto;
-    padding-top: 2.5rem;
-    border-top: 1px solid $color-rule;
     text-align: center;
+
+    &::before {
+      content: '';
+      display: block;
+      max-width: 34rem;
+      margin: 0 auto 2.5rem;
+      border-top: 1px solid $color-rule;
+    }
+
+    > :not(.trip-help__slot) {
+      max-width: 34rem;
+      margin-right: auto;
+      margin-left: auto;
+    }
   }
 
   &__title {
@@ -1811,6 +1823,25 @@ $trip-cover-widest: 2.1;
         grid-column: 2;
         grid-row: 3;
         grid-template-rows: none;
+      }
+
+      // With no trip of its own (/trips/), "Where to?" heads the right half.
+      &.trip-help__form--asks {
+        > .trip-help__field:not(:has(textarea)) {
+          grid-column: 2;
+          grid-row: 1 / span 2;
+          grid-template-rows: subgrid;
+          row-gap: 0.35rem;
+        }
+
+        > .trip-help__field:has(textarea) {
+          grid-row: 1 / span 5;
+
+          textarea { grid-row: 2 / span 4; }
+        }
+
+        > .trip-help__row > .trip-help__field:first-child { grid-row: 3 / span 2; }
+        > .trip-help__row > .trip-help__field:last-child { grid-row: 5; }
       }
     }
   }

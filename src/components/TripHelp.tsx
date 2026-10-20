@@ -242,7 +242,7 @@ export function TripHelpForm({ trip = '', wide = false, closing = false, draft, 
               <p className="trip-help__sent-text">{form.sent.text}</p>
             </div>
           ) : (
-              <form className={wide ? 'trip-help__form trip-help__form--wide' : 'trip-help__form'} onSubmit={submit} onInput={keep} noValidate>
+              <form className={['trip-help__form', wide && 'trip-help__form--wide', wide && !trip && 'trip-help__form--asks'].filter(Boolean).join(' ')} onSubmit={submit} onInput={keep} noValidate>
                 {trip && wide ? (
                   <input type="hidden" name="trip" value={trip} />
                 ) : trip ? (
@@ -420,7 +420,7 @@ export function TripHelp({ title = tripsPage.help.title, back = false, trip = ''
         <p className="trip-help__text">{text}</p>
 
         {fold.open ? (
-          <TripHelpForm trip={trip} draft={fold.draft} closing={fold.closing} onClose={fold.close} onClosed={fold.closed} />
+          <TripHelpForm trip={trip} wide draft={fold.draft} closing={fold.closing} onClose={fold.close} onClosed={fold.closed} />
         ) : (
           <a ref={fold.opener} className="trip-help__email" href={`mailto:${email}`} onClick={fold.show} draggable={false}>
             <Icon name="email" />
