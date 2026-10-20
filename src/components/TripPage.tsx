@@ -104,7 +104,6 @@ export function TripPage({ trip }: { trip: Trip }) {
                 )}
                 <PhotoGrid
                   photos={stop.photos}
-                  variant="full"
                   eager={index === 0}
                   linkTo={largeSrc}
                   onOpen={open}

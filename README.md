@@ -36,9 +36,9 @@ npm run cards        # re-render the social cards into public/ (needs Chrome)
 All CV content lives in **[`src/data/cv.ts`](src/data/cv.ts)** as a single typed
 object. To update a bullet, change a tag, or add a new award, you only edit that
 file — the components are presentation-only. The other pages each have their own
-data file: [`frontDoor.ts`](src/data/frontDoor.ts) (front page),
-[`homelab.ts`](src/data/homelab.ts), [`offTheClock.ts`](src/data/offTheClock.ts)
-and [`tripsPage.ts`](src/data/tripsPage.ts) (the `/trips/` index).
+data file: [`home.ts`](src/data/home.ts) (the home page: hobbies, photos and
+wonder goals), [`homelab.ts`](src/data/homelab.ts) and
+[`tripsPage.ts`](src/data/tripsPage.ts) (the `/trips/` index).
 Photos are described once in [`photos.ts`](src/data/photos.ts); each trip page
 is a file in [`src/data/trips/`](src/data/trips/), listed in its `index.ts`.
 
@@ -137,7 +137,7 @@ helderjgoncalves.github.io/
 │   └── prerender.mjs      # SSR injection, head metadata, sitemap.xml
 ├── src/
 │   ├── components/        # CV sections + page components, PhotoGrid, SiteNav, Hero, Icon…
-│   ├── data/              # cv.ts, frontDoor.ts, homelab.ts, offTheClock.ts, photos.ts, trips/
+│   ├── data/              # cv.ts, home.ts, homelab.ts, photos.ts, trips/
 │   ├── hooks/useReveal.ts # scroll-reveal hook
 │   ├── styles/            # SASS partials
 │   ├── App.tsx

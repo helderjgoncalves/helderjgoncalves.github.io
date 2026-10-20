@@ -171,6 +171,7 @@
 // ---- Hero (header card) ----
 .hero {
   position: relative;
+  isolation: isolate;
   padding: 2.25rem 0 3rem;
   background:
     radial-gradient(1200px 400px at 80% -20%, var(--hero-glow), transparent 60%),

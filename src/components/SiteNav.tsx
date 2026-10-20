@@ -3,14 +3,13 @@ import { Icon } from './Icon';
 import { ThemeToggle } from './ThemeToggle';
 
 const LINKS = [
-  { href: '/off-the-clock/', label: 'Off the clock' },
   { href: '/trips/', label: 'Trips' },
   { href: '/homelab/', label: 'Home lab' },
   { href: '/cv/', label: 'Curriculum vitae' },
 ];
 
 interface SiteNavProps {
-  /** Path of the page being rendered, e.g. '/homelab/'. '/' for the front page. */
+  /** Path of the page being rendered, e.g. '/homelab/'. '/' for the home page. */
   current: string;
   /** The top-level page a sub-page belongs to, e.g. '/trips/' for a trip. */
   section?: string;

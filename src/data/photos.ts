@@ -53,7 +53,7 @@ export const videoUnavailable = 'The video isn’t available right now.';
 export const videoUnsupported = 'This browser can’t play this video.';
 
 /**
- * Every photo on the site, described once. Off the clock and the trip pages
+ * Every photo on the site, described once. The home page and the trip pages
  * pick from here, so a photo that appears on both can't drift apart.
  */
 export const photos = {

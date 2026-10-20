@@ -7,8 +7,8 @@ export interface TripsPageData {
   thesis: string;
   /** A short paragraph under the thesis. */
   intro: string;
-  /** While trips still use sample photos: a hero badge, and a note on those trips. */
-  wip: { badge: string; samples: string };
+  /** While trips still use sample photos: a line under the intro, and a note on those trips. */
+  wip: { note: string; samples: string };
   /** Labels for a trip's facts on its page, each scored out of 5. */
   facts: { difficulty: string; comfort: string };
   /** The label over a stop's curiosity (its `note`), set among the photos. */
@@ -52,7 +52,7 @@ export const tripsPage: TripsPageData = {
   thesis: 'Where the landscape sets the pace — and, now and then, the heart rate.',
   intro:
     'Waking up above the clouds, trails that run for hours, the light shifting over a salt flat at sunset. Then the rush: a summit before dawn, a night beside an erupting volcano, a bike ride down the Death Road. The kind of trip you come home from rested and buzzing at the same time.',
-  wip: { badge: 'Work in progress', samples: 'Photos soon' },
+  wip: { note: 'A few trips are still waiting for their photos.', samples: 'Photos soon' },
   facts: { difficulty: 'Difficulty', comfort: 'Comfort' },
   curiosity: 'Curiosity',
   help: {

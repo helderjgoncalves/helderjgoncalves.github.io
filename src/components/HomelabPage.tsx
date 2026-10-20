@@ -3,6 +3,7 @@ import { homelab } from '../data/homelab';
 import { HomelabArchitecture } from './HomelabArchitecture';
 import { Icon, type IconName } from './Icon';
 import { Footer } from './Footer';
+import { HeroGlow, Highlighted } from './HeroAccents';
 import { SiteNav } from './SiteNav';
 import { useReveal } from '../hooks/useReveal';
 
@@ -32,15 +33,18 @@ function RevealSection({
 }
 
 export function HomelabPage() {
-  const { title, thesis, intro, decisions, stack, ctas } = homelab;
+  const { title, highlight, thesis, intro, decisions, stack, ctas } = homelab;
 
   return (
     <>
       <SiteNav current="/homelab/" />
 
       <header className="page-hero">
+        <HeroGlow tone="cool" />
         <div className="container page-hero__inner">
-          <h1 className="page-hero__title">{title}</h1>
+          <h1 className="page-hero__title">
+            <Highlighted text={title} word={highlight} tone="cool" />
+          </h1>
           <p className="page-hero__thesis">{thesis}</p>
           <p className="page-hero__intro">{intro}</p>
           <div className="page-hero__actions">

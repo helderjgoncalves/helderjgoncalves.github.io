@@ -89,7 +89,7 @@
   &:active { transform: scale(0.97); }
 }
 
-// A whole card that is one link — the front page's doors. The surface is the
+// A whole card that is one link — the home page's doors. The surface is the
 // target, so the affordance is the card itself lifting; the action line inside
 // picks up the action-link hover colour via the caller. Motion is dropped for
 // reduced-motion users, the shadow change alone still signals hover.

@@ -209,33 +209,15 @@
   }
 }
 
-// ---- Front page (shares the CV's hero; this is what sits under it) ----
-.front {
-  padding-top: 1.75rem;
-
-  @include md-up { padding-top: 2.5rem; }
-
-  &__intro {
-    font-size: $fs-md;
-    line-height: 1.6;
-    color: $color-text-soft;
-
-    @include md-up { font-size: $fs-lg; }
-  }
-}
-
+// ---- Home page: the cards to the rest of the site ----
 .doors {
   display: grid;
   gap: 1rem;
-  margin-top: 1.75rem;
 
   @include md-up {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.25rem;
-    margin-top: 2rem;
   }
-
-  @include lg-up { grid-template-columns: repeat(4, 1fr); }
 }
 
 .door {
@@ -279,9 +261,10 @@
   &:focus-visible &__cta { border-color: $color-accent; }
 }
 
-// ---- Sub-page hero (home lab, off the clock) ----
+// ---- Sub-page hero (home lab, trips; under the trip pages' cover too) ----
 .page-hero {
   position: relative;
+  isolation: isolate;
   padding: 2.5rem 0 3rem;
   background:
     radial-gradient(900px 320px at 15% -10%, var(--hero-glow), transparent 55%),
@@ -311,30 +294,6 @@
     margin: 0 0 0.85rem;
   }
 
-  &__heading {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem 1rem;
-  }
-
-  // Raw white like the eyebrow: the hero stays brand-blue in both themes.
-  // The top margin moves the pill's middle down to the title's lowercase
-  // letters, which is where the eye puts the middle of the word.
-  &__badge {
-    margin-top: 0.35rem;
-    padding: 0.15rem 0.6rem;
-    line-height: 1.5;
-    border: 1px solid rgba($white, 0.3);
-    border-radius: $radius-pill;
-    background: rgba($white, 0.12);
-    font-size: $fs-xs;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: rgba($white, 0.9);
-  }
-
   &__title {
     font-size: clamp(1.85rem, 6vw, $fs-3xl);
     line-height: 1.1;
@@ -358,12 +317,102 @@
     color: rgba($white, 0.82);
   }
 
+  // Raw white like the eyebrow: the hero stays brand-blue in both themes.
+  &__note {
+    margin-top: 0.85rem;
+    font-size: $fs-sm;
+    font-style: italic;
+    color: rgba($white, 0.72);
+  }
+
   &__actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.65rem;
     margin-top: 1.75rem;
   }
+}
+
+// Accents shared by the blue heroes (HeroAccents.tsx): a glow of slow-drifting
+// lights behind the text, a highlighted word in the title, and glass buttons
+// to the page's sections. Warm (sunrise) on the personal pages, cool (aurora)
+// on the work ones. Raw palette: like the blue, they stay the same in both
+// themes. The hero they sit in isolates, so the glow stays behind its text.
+.hero-glow {
+  position: absolute;
+  inset: -40% -10% -20% 30%;
+  z-index: -1;
+  background:
+    radial-gradient(38% 46% at 70% 40%, rgba($sunrise-orange, 0.55), transparent 70%),
+    radial-gradient(30% 40% at 90% 70%, rgba($sunrise-pink, 0.45), transparent 70%),
+    radial-gradient(26% 30% at 55% 75%, rgba($sunrise-gold, 0.3), transparent 70%);
+  filter: blur(40px);
+  animation: hero-glow-drift 18s ease-in-out infinite alternate;
+  pointer-events: none;
+
+  @include md-down { inset: -20% -40% -10% -10%; }
+
+  @media (prefers-reduced-motion: reduce) { animation: none; }
+
+  &--cool {
+    background:
+      radial-gradient(38% 46% at 70% 40%, rgba($aurora-teal, 0.4), transparent 70%),
+      radial-gradient(30% 40% at 90% 70%, rgba($aurora-violet, 0.4), transparent 70%),
+      radial-gradient(26% 30% at 55% 75%, rgba($aurora-sky, 0.3), transparent 70%);
+  }
+
+  &--soft { opacity: 0.55; }
+}
+
+@keyframes hero-glow-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-6%, 4%, 0) scale(1.08); }
+}
+
+.hero-highlight {
+  background: linear-gradient(90deg, $sunrise-gold, $sunrise-orange 45%, $sunrise-pink);
+  background-clip: text;
+  color: transparent;
+
+  &--cool { background-image: linear-gradient(90deg, $aurora-sky, $aurora-teal 50%, $aurora-violet); }
+}
+
+.hero-jumps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 2rem;
+
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 1rem;
+    border-radius: $radius-pill;
+    font-size: $fs-sm;
+    font-weight: 600;
+    color: $white;
+    text-decoration: none;
+    @include hero-button;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+// The home page's hero: a bigger title, the sunrise at full strength.
+.home-hero {
+  @include md-up { padding: 4.5rem 0 4.25rem; }
+
+  &__title {
+    font-size: clamp(2.2rem, 8vw, $fs-4xl);
+    max-width: 18ch;
+  }
+
+  .page-hero__thesis { max-width: 38rem; }
 }
 
 .homelab-cta {
@@ -399,7 +448,7 @@
   }
 }
 
-// ---- Off the clock ----
+// ---- Home page: the wonder goals ----
 .wonders {
   list-style: none;
   margin: 1.25rem 0 0;
@@ -489,7 +538,10 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 0.6rem;
 
-  @include md-up { gap: 0.9rem; }
+  @include md-up {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.9rem;
+  }
 
   &__intro {
     margin-bottom: 1rem;
@@ -497,17 +549,9 @@
     line-height: 1.6;
   }
 
-  &--glance {
-    @include md-up { grid-template-columns: repeat(4, 1fr); }
-  }
-
-  &--full {
-    @include md-up { grid-template-columns: repeat(3, 1fr); }
-  }
-
   // A link to a photo (/trips/<slug>/#<photo>) lands with its stop's title in
   // view: about one section header of room above the first row.
-  &--full > li {
+  > li {
     scroll-margin-top: 4rem;
 
     @include md-up { scroll-margin-top: 4.5rem; }
@@ -1069,7 +1113,7 @@ $viewer-swipe: '(hover: none) and (pointer: coarse) and (max-width: #{$bp-md - 1
 
 // ---- Trip pages ----
 // The stops in travel order, numbered. A stop with photos links to its
-// section below (a card-link, like the front-page doors); one without has
+// section below (a card-link, like the home-page doors); one without has
 // nowhere to go yet and stays a plain card.
 .trip-route {
   list-style: none;
@@ -1776,7 +1820,7 @@ $trip-cover-widest: 2.1;
     color: $color-text-soft;
   }
 
-  // Same treatment as the front-page card actions: both are the
+  // Same treatment as the home-page card actions: both are the
   // closing action of a card, so they read as the same affordance.
   &__evidence {
     @include action-link;

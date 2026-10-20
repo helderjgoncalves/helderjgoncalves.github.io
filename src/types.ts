@@ -1,5 +1,14 @@
 // Shared type definitions for the CV data model.
 
+import type { IconName } from './components/Icon';
+
+/** A hero button that jumps to one of the page's sections. */
+export interface HeroJump {
+  href: string;
+  label: string;
+  icon: IconName;
+}
+
 export interface ContactLink {
   label: string;
   href: string;

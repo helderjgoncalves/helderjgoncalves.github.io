@@ -1,5 +1,6 @@
 import type { ProfileData } from '../types';
 import { CvDownload } from './CvDownload';
+import { HeroGlow } from './HeroAccents';
 import { Icon } from './Icon';
 
 interface HeroProps {
@@ -21,6 +22,7 @@ function getInitials(name: string) {
 export function Hero({ profile, showDownload = false }: HeroProps) {
   return (
     <header id="top" className="hero">
+      <HeroGlow tone="cool" />
       <div className="container hero__inner">
         <div className="hero__photo" aria-hidden={profile.photo ? undefined : true}>
           {profile.photo ? (

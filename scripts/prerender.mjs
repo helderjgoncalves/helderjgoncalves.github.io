@@ -28,10 +28,10 @@ const cardUrl = (name) => `${SITE}/og/${name}.jpg`;
 const {
   render,
   homelab,
-  offTheClock,
+  home,
   allPhotos,
   tripsPage,
-  frontDoor,
+  cv,
   trips,
   sampleTrips,
   tripPath,
@@ -140,7 +140,7 @@ function homelabJsonLd(dateModified) {
 }
 
 /**
- * ProfilePage for /cv/. The Person @id is shared with the front door and the
+ * ProfilePage for /cv/. The Person @id is shared with the home page and the
  * case study; the page URL is the CV, which is the profile.
  */
 function profileJsonLd() {
@@ -197,49 +197,6 @@ function profileJsonLd() {
         { '@type': 'Language', name: 'English' },
       ],
     },
-  };
-}
-
-/**
- * Structured data for the off-the-clock page: a photo gallery by the same
- * Person the other pages describe. Copy comes from src/data/offTheClock.ts.
- *
- * @param {string} dateModified
- */
-function offTheClockJsonLd(dateModified) {
-  const page = offTheClock;
-  const url = page.meta.canonical;
-  return {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'ImageGallery',
-        '@id': `${url}#gallery`,
-        name: page.meta.title,
-        description: page.meta.description,
-        url,
-        image: cardUrl('off-the-clock'),
-        dateModified,
-        inLanguage: 'en-GB',
-        author: { '@id': PERSON_ID },
-        associatedMedia: allPhotos.map((photo) => ({
-          '@type': 'ImageObject',
-          contentUrl: `${SITE}${photo.src}`,
-          caption: photo.place ? `${photo.caption} — ${photo.place}` : photo.caption,
-          description: photo.alt,
-          width: photo.width,
-          height: photo.height,
-        })),
-      },
-      {
-        '@type': 'BreadcrumbList',
-        '@id': `${url}#breadcrumb`,
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE}/` },
-          { '@type': 'ListItem', position: 2, name: page.title, item: url },
-        ],
-      },
-    ],
   };
 }
 
@@ -340,29 +297,44 @@ function tripJsonLd(dateModified, page) {
   };
 }
 
-/** Front door. Names the person and the pages behind it; lists no services. */
-function homeJsonLd() {
+/**
+ * The home page: a photo gallery about, and by, the Person the other pages
+ * describe; lists no services. Copy comes from src/data/home.ts.
+ *
+ * @param {string} dateModified
+ */
+function homeJsonLd(dateModified) {
   const url = `${SITE}/`;
   return {
     '@context': 'https://schema.org',
-    '@type': 'WebPage',
+    '@type': 'ImageGallery',
     '@id': `${url}#webpage`,
     url,
-    name: frontDoor.meta.title,
-    description: frontDoor.meta.description,
+    name: home.meta.title,
+    description: home.meta.description,
+    image: cardUrl('home'),
+    dateModified,
     inLanguage: 'en-GB',
-    mainEntity: {
+    about: {
       '@type': 'Person',
       '@id': PERSON_ID,
-      name: 'Hélder Gonçalves',
+      name: cv.profile.name,
       url: `${SITE}/cv/`,
-      jobTitle: 'Lead Software Engineer',
     },
+    author: { '@id': PERSON_ID },
+    associatedMedia: allPhotos.map((photo) => ({
+      '@type': 'ImageObject',
+      contentUrl: `${SITE}${photo.src}`,
+      caption: photo.place ? `${photo.caption} — ${photo.place}` : photo.caption,
+      description: photo.alt,
+      width: photo.width,
+      height: photo.height,
+    })),
   };
 }
 
 // Routing (output path, structured data, social card) belongs to the build; the
-// copy belongs to the data layer. Front-door and homelab strings come from
+// copy belongs to the data layer. Home and homelab strings come from
 // their data files. The CV description still lives here, beside its ProfilePage.
 /**
  * @type {{
@@ -375,16 +347,18 @@ const pages = [
   {
     path: '/',
     out: 'index.html',
-    title: frontDoor.meta.title,
-    description: frontDoor.meta.description,
+    title: home.meta.title,
+    description: home.meta.description,
     canonical: `${SITE}/`,
     ogType: 'website',
     image: cardUrl('home'),
-    imageAlt: 'Hélder Gonçalves — Lead Software Engineer at OutSystems',
+    imageAlt: `${home.title}. ${home.meta.card.photo.alt}`,
     sources: [
-      'src/data/frontDoor.ts',
+      'src/data/home.ts',
+      'src/data/photos.ts',
       'src/data/trips',
-      'src/components/FrontDoor.tsx',
+      'src/components/HomePage.tsx',
+      'src/components/PhotoGrid.tsx',
       'public/photos',
       'index.html',
     ],
@@ -419,25 +393,6 @@ const pages = [
       'src/components/HomelabArchitecture.tsx',
     ],
     jsonLd: 'homelab',
-  },
-  {
-    path: '/off-the-clock',
-    out: path.join('off-the-clock', 'index.html'),
-    title: offTheClock.meta.title,
-    description: offTheClock.meta.description,
-    canonical: offTheClock.meta.canonical,
-    ogType: 'website',
-    image: cardUrl('off-the-clock'),
-    imageAlt: `${offTheClock.title}. ${offTheClock.meta.card.photo.alt}`,
-    sources: [
-      'src/data/offTheClock.ts',
-      'src/data/photos.ts',
-      'src/data/trips',
-      'src/components/OffTheClockPage.tsx',
-      'src/components/PhotoGrid.tsx',
-      'public/photos',
-    ],
-    jsonLd: 'offTheClock',
   },
   {
     path: '/trips',
@@ -620,7 +575,6 @@ function applyMeta(html, meta, dateModified) {
       home: homeJsonLd,
       profile: profileJsonLd,
       homelab: homelabJsonLd,
-      offTheClock: offTheClockJsonLd,
       trips: tripsJsonLd,
       trip: tripJsonLd,
     };

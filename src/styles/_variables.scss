@@ -19,6 +19,16 @@ $ink-050:  #eef1f5;
 $white:    #ffffff;
 $canvas:   #f7f9fc;
 
+// The home hero's sunrise, over the brand blue in both themes.
+$sunrise-gold: #ffd27a;
+$sunrise-orange: #ff9a4d;
+$sunrise-pink: #ff6f91;
+
+// Its cool counterpart, on the work pages (CV, home lab).
+$aurora-sky: #7cc4ff;
+$aurora-teal: #4fd1c5;
+$aurora-violet: #9b8cff;
+
 // ---- Theme tokens (CSS custom properties so they switch at runtime) ----
 //
 // Default = light. Dark is selected either via an explicit

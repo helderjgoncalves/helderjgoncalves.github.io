@@ -19,6 +19,8 @@ export interface HomelabCta {
 
 export interface HomelabPageData {
   title: string;
+  /** A word of the title set in the hero's cool colours. */
+  highlight: string;
   thesis: string;
   intro: string;
   decisions: HomelabDecision[];
@@ -37,6 +39,7 @@ export interface HomelabPageData {
 
 export const homelab: HomelabPageData = {
   title: 'Self-Hosted Home Lab',
+  highlight: 'Home Lab',
   thesis: 'NAS private cloud — no inbound ports, zero-trust at the edge, declarative and versioned in Git.',
   intro:
     'A family-facing private cloud on a NAS: photos, files, media, and monitoring — all self-hosted, HTTPS everywhere, and declared as code, so every stack redeploys onto fresh hardware straight from this repo.',

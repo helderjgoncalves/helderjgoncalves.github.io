@@ -1,16 +1,17 @@
 import { Fragment, useState } from 'react';
-import { allPhotos, offTheClock } from '../data/offTheClock';
+import { allPhotos, home } from '../data/home';
 import { largeSrc, type Photo } from '../data/photos';
 import { tripLink } from '../data/trips';
 import { Footer } from './Footer';
+import { HeroGlow, HeroJumps, Highlighted } from './HeroAccents';
 import { Icon } from './Icon';
 import { PhotoGrid } from './PhotoGrid';
 import { PhotoViewer } from './PhotoViewer';
 import { Section } from './Section';
 import { SiteNav } from './SiteNav';
 
-export function OffTheClockPage() {
-  const { title, thesis, intro, goals, themes } = offTheClock;
+export function HomePage() {
+  const { title, highlight, thesis, jumps, goals, themes, doors } = home;
 
   // allPhotos follows the themes in page order, so the viewer's next/previous
   // walks the page top to bottom.
@@ -59,13 +60,16 @@ export function OffTheClockPage() {
 
   return (
     <>
-      <SiteNav current="/off-the-clock/" />
+      <SiteNav current="/" />
 
-      <header className="page-hero">
+      <header className="page-hero home-hero">
+        <HeroGlow />
         <div className="container page-hero__inner">
-          <h1 className="page-hero__title">{title}</h1>
+          <h1 className="page-hero__title home-hero__title">
+            <Highlighted text={title} word={highlight} />
+          </h1>
           <p className="page-hero__thesis">{thesis}</p>
-          <p className="page-hero__intro">{intro}</p>
+          <HeroJumps jumps={jumps} />
         </div>
       </header>
 
@@ -76,7 +80,6 @@ export function OffTheClockPage() {
               {theme.intro && <p className="gallery__intro">{theme.intro}</p>}
               <PhotoGrid
                 photos={theme.photos}
-                variant="full"
                 eager={index === 0}
                 linkTo={largeSrc}
                 onOpen={open}
@@ -92,6 +95,19 @@ export function OffTheClockPage() {
             {goals.filter((goal) => goal.after === theme.id).map(goalSection)}
           </Fragment>
         ))}
+
+        <Section id="elsewhere" title="Elsewhere" icon="spark">
+          <div className="doors">
+            {doors.map((door) => (
+              <a key={door.href} className="door" href={door.href} draggable={false}>
+                <span className="door__eyebrow">{door.eyebrow}</span>
+                <h3 className="door__title">{door.title}</h3>
+                <span className="door__line">{door.line}</span>
+                <span className="door__cta">{door.cta}</span>
+              </a>
+            ))}
+          </div>
+        </Section>
       </main>
 
       <Footer />

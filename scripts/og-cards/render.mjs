@@ -6,7 +6,7 @@
 // meant to stay React + ReactDOM only. Not part of `npm run build` — the cards
 // are committed assets, and the build fails if a page's card is missing.
 //
-// The photo cards (Off the clock, /trips/, one per trip) read their copy and
+// The photo cards (home, /trips/, one per trip) read their copy and
 // photo from the data files, through a throwaway SSR bundle of entry-server,
 // so a new trip needs nothing here: run this and its card appears.
 //
@@ -50,7 +50,7 @@ execFileSync(
   ['build', '--ssr', 'src/entry-server.tsx', '--outDir', work, '--logLevel', 'error'],
   { cwd: projectRoot, stdio: 'inherit' },
 );
-const { offTheClock, tripsPage, trips, tripCountries, largeSrc } = await import(
+const { home, tripsPage, trips, tripCountries, largeSrc } = await import(
   pathToFileURL(path.join(work, 'entry-server.js')).href
 );
 
@@ -62,19 +62,13 @@ const photoQuery = ({ photo, focus }) => ({ photo: photoUrl(photo), ...(focus ? 
 
 /** @type {{ template: string, out: string, query?: Record<string, string> }[]} */
 const cards = [
-  { template: 'home.html', out: 'home.jpg', query: { tag: 'CV · Home lab\nOff the clock · Trips' } },
-  { template: 'home.html', out: 'cv.jpg', query: { eyebrow: 'hgoncalves.uk/cv · Curriculum vitae' } },
-  { template: 'homelab.html', out: 'homelab.jpg' },
   {
     template: 'photo.html',
-    out: 'off-the-clock.jpg',
-    query: {
-      eyebrow: 'Life',
-      title: offTheClock.title,
-      line: offTheClock.thesis,
-      ...photoQuery(offTheClock.meta.card),
-    },
+    out: 'home.jpg',
+    query: { eyebrow: 'hgoncalves.uk', title: home.title, ...photoQuery(home.meta.card) },
   },
+  { template: 'home.html', out: 'cv.jpg', query: { eyebrow: 'hgoncalves.uk/cv · Curriculum vitae' } },
+  { template: 'homelab.html', out: 'homelab.jpg' },
   {
     template: 'photo.html',
     out: 'trips.jpg',

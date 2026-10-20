@@ -1,6 +1,7 @@
 import { regions, routeNames, sampleTrips, tripPath, trips, type Trip } from '../data/trips';
 import { tripEyebrow, tripsPage } from '../data/tripsPage';
 import { Footer } from './Footer';
+import { HeroGlow } from './HeroAccents';
 import { Section } from './Section';
 import { SiteNav } from './SiteNav';
 import { TripHelp } from './TripHelp';
@@ -60,13 +61,12 @@ export function TripsPage() {
       <SiteNav current="/trips/" />
 
       <header className="page-hero">
+        <HeroGlow soft />
         <div className="container page-hero__inner">
-          <div className="page-hero__heading">
-            <h1 className="page-hero__title">{title}</h1>
-            {sampleTrips.length > 0 && <span className="page-hero__badge">{tripsPage.wip.badge}</span>}
-          </div>
+          <h1 className="page-hero__title">{title}</h1>
           <p className="page-hero__thesis">{thesis}</p>
           <p className="page-hero__intro">{intro}</p>
+          {sampleTrips.length > 0 && <p className="page-hero__note">{tripsPage.wip.note}</p>}
         </div>
       </header>
 
