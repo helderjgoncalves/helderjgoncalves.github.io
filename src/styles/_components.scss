@@ -1787,6 +1787,11 @@ $trip-cover-widest: 2.1;
   // Under the route: the message on the left, as tall as email and name
   // stacked beside it; everything else across both columns. Split in half, so
   // the second column starts under the route's third card.
+  // A one-line field (padding, a 1.5 line, the border) and a label line: the
+  // wide message box's minimum is the sum of the fields beside it.
+  $field-height: calc(1.3rem + 1.5 * #{$fs-base} + 2px);
+  $label-height: calc(1.55 * #{$fs-sm}); // the body's line-height
+
   &__form--wide {
     @include md-up {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1816,13 +1821,14 @@ $trip-cover-widest: 2.1;
         grid-column: 1;
         grid-row: 1 / span 3;
 
-        // Never shorter than its column (100% of its grid area), so it always
-        // ends level with the name; dragged or written taller, the extra goes
-        // to the fr row under the name. It grows with what's written where
-        // field-sizing is supported, up to a point.
+        // Never dragged shorter than the fields beside it (a fixed sum: a 100%
+        // minimum grew with every drag, so the box leapt ahead of the mouse),
+        // so it ends level with the name; dragged or written taller, the extra
+        // goes to the fr row under the name. It grows with what's written
+        // where field-sizing is supported, up to a point.
         textarea {
           grid-row: 2 / span 2;
-          min-height: 100%;
+          min-height: calc(2 * #{$field-height} + #{$label-height} + 1.35rem);
           max-height: 24rem;
           resize: vertical;
           field-sizing: content;
@@ -1854,7 +1860,10 @@ $trip-cover-widest: 2.1;
         > .trip-help__field:has(textarea) {
           grid-row: 1 / span 5;
 
-          textarea { grid-row: 2 / span 4; }
+          textarea {
+            grid-row: 2 / span 4;
+            min-height: calc(3 * #{$field-height} + 2 * #{$label-height} + 2 * 1.35rem);
+          }
         }
 
         > .trip-help__row > .trip-help__field:first-child { grid-row: 3 / span 2; }
