@@ -243,9 +243,10 @@ has a home-page card; the Travel section links to it too.
   page lost the reader's place). Both take the page's width (the closing
   offer's words and rule keep their narrow column above it), in two halves from md up (the message beside email and name, the second
   half starting under the route's third card), since a narrow column there
-  sat stranded beside empty space. There the message box has no resize handle (dragging it
-  only broke the alignment): it ends level with the name field and grows with
-  what's written, up to 24rem. While open, the route's line heads it,
+  sat stranded beside empty space. There the message box never drags shorter than its column,
+  so it ends level with the name field; dragged or written taller (it grows
+  with its text, up to 24rem), the extra goes under the name, never into the
+  fields beside it. While open, the route's line heads it,
   with a Close pill at its end (a round × on phones, where the line wraps and
   the worded pill squeezed it; Esc closes either form; a × in the card's
   corner was tried and floated over the first row). The two places are one
