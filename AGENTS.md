@@ -259,7 +259,8 @@ has a home-page card; the Travel section links to it too.
   which turns junk away (a hidden field, a minimum fill time, a rate limit,
   a look at the message, then Turnstile in interaction-only mode, loaded
   only once the form opens) and emails the rest through Email Routing,
-  replying to the visitor. The build warns while `form.siteKey` is a
+  replying to the visitor (an HTML letter in the site's palette, no images,
+  following the mail app's light or dark theme, with a plain-text copy). The build warns while `form.siteKey` is a
   Turnstile test key. Keep it a friend's offer: nothing more in the form, no
   pricing, nothing in the top bar.
 - Never copy or closely paraphrase other sites' travel copy (tour operators,
