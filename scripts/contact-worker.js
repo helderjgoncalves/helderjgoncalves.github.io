@@ -24,8 +24,10 @@ import { EmailMessage } from 'cloudflare:email';
 
 const FROM = 'form@hgoncalves.uk';
 const SITE = 'https://hgoncalves.uk';
-const ORIGINS = new Set(['https://hgoncalves.uk', 'http://localhost:5173', 'http://localhost:4173']);
-const HOSTNAMES = new Set(['hgoncalves.uk', 'localhost']);
+// Only the live site: Turnstile's key issues no tokens on localhost, so a
+// local preview can't send anyway and needn't be let in.
+const ORIGIN = SITE;
+const HOSTNAME = new URL(SITE).hostname;
 
 const MIN_FILL_MS = 3000;
 const LIMITS = { name: 100, email: 200, trip: 100, message: 4000 };
@@ -36,7 +38,7 @@ const EMAIL_RE = /^[^\s@<>()",;]+@[^\s@<>()",;]+\.[a-z]{2,}$/i;
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') ?? '';
-    const cors = ORIGINS.has(origin)
+    const cors = origin === ORIGIN
       ? {
           'Access-Control-Allow-Origin': origin,
           'Access-Control-Allow-Methods': 'POST',
@@ -48,7 +50,7 @@ export default {
       new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', ...cors } });
 
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
-    if (request.method !== 'POST' || !ORIGINS.has(origin)) return reply(405, { error: 'method' });
+    if (request.method !== 'POST' || origin !== ORIGIN) return reply(405, { error: 'method' });
 
     let form;
     try {
@@ -123,7 +125,7 @@ async function human(token, ip, secret) {
   if (ip) body.append('remoteip', ip);
   const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body });
   const result = await response.json();
-  return result.success === true && HOSTNAMES.has(result.hostname);
+  return result.success === true && result.hostname === HOSTNAME;
 }
 
 // The inbox shows who wrote and about where ("Ana via hgoncalves.uk",
