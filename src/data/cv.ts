@@ -149,24 +149,25 @@ export const cv: CvData = {
       subtitle: 'Product, design and infrastructure, built solo',
       period: '2026 – Present',
       description:
-        'Designed and built the site end to end: UX, visual design, front end and infrastructure. React and TypeScript, pre-rendered to static HTML for SEO and shipped through a GitHub Actions pipeline that tests every build before it deploys. Photos ship as responsive AVIF, and HDR video as AV1 and HEVC, with encoder settings picked by VMAF score. The video is served from Cloudflare R2 behind cache rules and WAF rules that block hotlinking. A scheduled Cloudflare Worker trips a kill switch before storage reads leave the free tier.',
+        'React and TypeScript site, pre-rendered for SEO and deployed through a CI pipeline that tests every build. Serverless backend on Cloudflare Workers: a spam-protected contact form, and a cost guard that cuts off media storage before it leaves the free tier. HDR video tuned by VMAF to half the original bitrate.',
       techPills: [
         'React',
         'TypeScript',
         'Vite',
+        'SSR',
         'GitHub Actions',
-        'Cloudflare R2',
         'Cloudflare Workers',
-        'WAF',
+        'Cloudflare R2',
         'AV1 / HEVC',
       ],
+      href: 'https://github.com/helderjgoncalves/helderjgoncalves.github.io',
     },
     {
       title: 'Self-Hosted Home Lab',
       subtitle: 'Personal infrastructure',
       period: '2023 – Present',
       description:
-        'NAS-based private cloud serving the whole family — photos, files and media (Immich, OpenCloud, Plex), running in Docker. No inbound ports: traffic arrives through Cloudflare Tunnel and a Traefik reverse proxy, with zero-trust access at the edge (OAuth, mTLS, service tokens). It also runs DNS over HTTPS and layered monitoring with alerting. The whole stack is declared in Git, so it redeploys onto fresh hardware.',
+        'Private cloud for the family’s photos, files and media, in Docker on a NAS. No inbound ports: Cloudflare Tunnel and Traefik, with zero-trust access at the edge (OAuth, mTLS). Monitored with alerting, and declared in Git, so it redeploys onto fresh hardware.',
       techPills: [
         'Docker',
         'Cloudflare Zero Trust',
@@ -177,6 +178,7 @@ export const cv: CvData = {
         'Configuration-as-Code',
       ],
       caseStudyHref: '/homelab/',
+      href: 'https://github.com/helderjgoncalves/Homelab-Infrastructure',
     },
   ],
 
