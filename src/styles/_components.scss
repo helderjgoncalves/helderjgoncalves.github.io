@@ -1702,6 +1702,9 @@ $trip-cover-widest: 2.1;
       margin-right: auto;
       margin-left: auto;
     }
+
+    // Under a title and its paragraph, rather than under the route's one line.
+    > .trip-help__slot { margin-top: 2rem; }
   }
 
   &__title {
