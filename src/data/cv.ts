@@ -149,16 +149,15 @@ export const cv: CvData = {
       subtitle: 'Product, design and infrastructure, built solo',
       period: '2026 – Present',
       description:
-        'React and TypeScript site, pre-rendered for SEO and deployed through a CI pipeline that tests every build. Serverless backend on Cloudflare Workers: a spam-protected contact form, and a cost guard that cuts off media storage before it leaves the free tier. HDR video tuned by VMAF to half the original bitrate.',
+        'React and TypeScript, pre-rendered to static HTML for SEO, with post-build tests in CI that block a broken deploy. Serverless backend on Cloudflare Workers: a contact form with layered spam protection, and media on R2 behind WAF rules and a cost guard that cuts it off before it leaves the free tier.',
       techPills: [
         'React',
         'TypeScript',
         'Vite',
-        'SSR',
         'GitHub Actions',
         'Cloudflare Workers',
         'Cloudflare R2',
-        'AV1 / HEVC',
+        'WAF',
       ],
       href: 'https://github.com/helderjgoncalves/helderjgoncalves.github.io',
     },
