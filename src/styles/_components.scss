@@ -1918,9 +1918,28 @@ $trip-cover-widest: 2.1;
 
   // Turnstile only draws itself here when it needs the visitor. Until then it
   // holds just a hidden input, so it cancels its own gap in the grid.
+  // Turnstile, folded away (its grid gap cancelled) until it asks for a click.
   &__check {
-    justify-self: center;
+    display: grid;
+    grid-template-rows: 0fr;
+    justify-items: center;
+    align-self: start;
     margin-bottom: -1rem;
+    opacity: 0;
+    transition: grid-template-rows 360ms $ease, margin-bottom 360ms $ease, opacity 240ms $ease;
+
+    > div {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    @media (prefers-reduced-motion: reduce) { transition: none; }
+  }
+
+  &__check--shown {
+    grid-template-rows: 1fr;
+    margin-bottom: 0;
+    opacity: 1;
   }
 
   // Once it's sent, the same card says so.

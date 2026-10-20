@@ -41,6 +41,13 @@ declare global {
 
 let turnstileScript: Promise<Turnstile> | undefined;
 
+/** The theme on screen: the one picked with the toggle, or else the system's. */
+function siteTheme() {
+  const picked = document.documentElement.dataset.theme;
+  if (picked === 'light' || picked === 'dark') return picked;
+  return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
 function loadTurnstile(): Promise<Turnstile> {
   turnstileScript ??= new Promise((resolve, reject) => {
     const script = document.createElement('script');
@@ -83,6 +90,7 @@ export function TripHelpForm({ trip = '', wide = false, closing = false, draft, 
   const [problems, setProblems] = useState<Partial<Record<Checked, string>>>({});
   const widget = useRef<string | undefined>(undefined);
   const check = useRef<HTMLDivElement>(null);
+  const [challenged, setChallenged] = useState(false);
   const slot = useRef<HTMLDivElement>(null);
   const done = useRef<HTMLDivElement>(null);
   const ids = useId();
@@ -103,19 +111,30 @@ export function TripHelpForm({ trip = '', wide = false, closing = false, draft, 
         ?.focus({ preventScroll: true });
     }
     let cancelled = false;
+    let fold: number | undefined;
     loadTurnstile()
       .then((turnstile) => {
         if (cancelled || !check.current) return;
         widget.current = turnstile.render(check.current, {
           sitekey: form.siteKey,
           appearance: 'interaction-only',
-          theme: 'auto',
+          theme: siteTheme(),
+          // Most visitors never see it. When Cloudflare does want a click, it
+          // slides in, and folds away a moment after saying "Success!".
+          'before-interactive-callback': () => {
+            window.clearTimeout(fold);
+            setChallenged(true);
+          },
+          'after-interactive-callback': () => {
+            fold = window.setTimeout(() => setChallenged(false), 1200);
+          },
         });
       })
       .catch(() => {});
     return () => {
       cancelled = true;
       window.clearTimeout(release);
+      window.clearTimeout(fold);
       if (box) box.style.minHeight = '';
       if (widget.current) window.turnstile?.remove(widget.current);
       widget.current = undefined;
@@ -290,7 +309,9 @@ export function TripHelpForm({ trip = '', wide = false, closing = false, draft, 
                   <label htmlFor={`${ids}-website`}>Website</label>
                   <input id={`${ids}-website`} name="website" tabIndex={-1} autoComplete="off" />
                 </div>
-                <div ref={check} className="trip-help__check" />
+                <div className={challenged ? 'trip-help__check trip-help__check--shown' : 'trip-help__check'}>
+                  <div ref={check} />
+                </div>
                 {status in form.errors && (
                   <p className="trip-help__notice" role="alert">
                     <Icon name="alert" />
