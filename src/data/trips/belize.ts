@@ -14,6 +14,6 @@ export const belize: Trip = {
   cover: { photo: photos.sampleBelize },
   practical: [],
   meta: {
-    title: 'Belize · Trips · Hélder Gonçalves',
+    title: 'Belize · Hélder Gonçalves',
     description: 'Belize, stop by stop: the sea at Caye Caulker and the jungle around San Ignacio.',  },
 };

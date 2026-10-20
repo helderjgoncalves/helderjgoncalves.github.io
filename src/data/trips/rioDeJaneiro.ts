@@ -14,6 +14,6 @@ export const rioDeJaneiro: Trip = {
   cover: { photo: photos.sampleRio },
   practical: [],
   meta: {
-    title: 'Rio de Janeiro · Trips · Hélder Gonçalves',
+    title: 'Rio de Janeiro · Hélder Gonçalves',
     description: 'Rio de Janeiro, stop by stop: Christ the Redeemer and Sugarloaf Mountain.',  },
 };

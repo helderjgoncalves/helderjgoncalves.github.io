@@ -63,7 +63,7 @@ export const bolivia: Trip = {
   featured: true,
   practical: [],
   meta: {
-    title: 'Bolivia, the altiplano and the cities · Trips · Hélder Gonçalves',
+    title: 'Bolivia, the altiplano and the cities · Hélder Gonçalves',
     description:
       'Bolivia, stop by stop: the Death Road, a night climb of Huayna Potosí, the Salar de Uyuni, and the flamingo lagoons and geysers of the far south-west.',  },
 };

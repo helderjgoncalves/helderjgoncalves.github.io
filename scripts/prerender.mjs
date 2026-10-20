@@ -340,7 +340,7 @@ function homeJsonLd(dateModified) {
  * @type {{
  *   path: string, out: string, title: string, description: string,
  *   canonical: string, ogType: string, image: string, imageAlt: string,
- *   sources: string[], jsonLd?: unknown, trip?: any,
+ *   sources: string[], jsonLd?: unknown, trip?: any, noindex?: boolean,
  * }[]}
  */
 const pages = [
@@ -431,6 +431,8 @@ const pages = [
     ],
     jsonLd: 'trip',
     trip,
+    // Placeholder photos make a thin page: kept out of search until the real ones arrive.
+    noindex: sampleTrips.includes(trip),
   })),
 ];
 
@@ -473,15 +475,33 @@ function replaceTag(html, pattern, replacement, label) {
   return html.replace(pattern, () => replacement);
 }
 
+/** @param {string} text */
+const escapeHtml = (text) =>
+  text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
 /**
  * @param {string} html
- * @param {(typeof pages)[number]} meta
+ * @param {(typeof pages)[number]} page
  * @param {string} dateModified
  */
-function applyMeta(html, meta, dateModified) {
+function applyMeta(html, page, dateModified) {
+  const meta = {
+    ...page,
+    title: escapeHtml(page.title),
+    description: escapeHtml(page.description),
+    imageAlt: escapeHtml(page.imageAlt),
+  };
   let next = html;
 
   next = replaceTag(next, /<title>[^<]*<\/title>/, `<title>${meta.title}</title>`, 'title');
+  if (page.noindex) {
+    next = replaceTag(
+      next,
+      /<meta name="robots" content="[^"]*" \/>/,
+      '<meta name="robots" content="noindex, follow" />',
+      'robots',
+    );
+  }
   next = replaceTag(
     next,
     /<link rel="canonical" href="[^"]*" \/>/,
@@ -578,7 +598,7 @@ function applyMeta(html, meta, dateModified) {
       trips: tripsJsonLd,
       trip: tripJsonLd,
     };
-    const data = JSON.stringify(builders[meta.jsonLd](dateModified, meta), null, 2);
+    const data = JSON.stringify(builders[meta.jsonLd](dateModified, page), null, 2);
     const script = `\n    <script type="application/ld+json">\n${data}\n    </script>`;
     next = next.replace(block, () => script);
   }
@@ -597,7 +617,7 @@ for (const page of pages) {
   await fs.mkdir(path.dirname(outPath), { recursive: true });
   await fs.writeFile(outPath, html);
 
-  sitemapEntries.push({ loc: page.canonical, lastmod: dateModified.slice(0, 10) });
+  if (!page.noindex) sitemapEntries.push({ loc: page.canonical, lastmod: dateModified.slice(0, 10) });
 
   const sizeKb = (Buffer.byteLength(appHtml, 'utf-8') / 1024).toFixed(1);
   console.log(`✓ Pre-rendered ${page.out} (${sizeKb} KB of inlined markup)`);

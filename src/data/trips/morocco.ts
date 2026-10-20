@@ -14,6 +14,6 @@ export const morocco: Trip = {
   cover: { photo: photos.sampleMorocco },
   practical: [],
   meta: {
-    title: 'Morocco · Trips · Hélder Gonçalves',
+    title: 'Morocco · Hélder Gonçalves',
     description: 'Morocco, stop by stop: the streets of Marrakech and the dunes of the Sahara.',  },
 };

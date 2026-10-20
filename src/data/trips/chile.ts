@@ -34,6 +34,6 @@ export const chile: Trip = {
   cover: { photo: photos.valparaiso, focus: '50% 40%' },
   practical: [],
   meta: {
-    title: 'Santiago and the coast · Trips · Hélder Gonçalves',
+    title: 'Santiago and the coast · Hélder Gonçalves',
     description: 'Santiago and the Chilean coast: the city under the Andes, the painted hills of Valparaíso and the beaches of Viña del Mar.',  },
 };

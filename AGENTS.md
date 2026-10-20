@@ -43,7 +43,7 @@ npm run cv       # rebuild the CV PDFs from cv.ts (manual; see "Downloadable CV"
 `npm test` asserts the *build output*, not the source: per-route agreement
 between canonical, `og:url` and the path the file is served from; non-empty
 pre-rendered markup; one parseable JSON-LD block per page; distinct markup per
-route; `sitemap.xml` listing exactly the built canonicals; `robots.txt`
+route; `sitemap.xml` listing exactly the canonicals of the indexable pages; `robots.txt`
 advertising it; and that no vendor-prefixed CSS declaration ships without its
 standard counterpart (see "Styling rules" — this one is about what the *minifier*
 emits, which no source-level check can see).
@@ -277,8 +277,10 @@ has a home-page card; the Travel section links to it too.
   ends its intro with a quiet line saying a few trips still await their
   photos (not a badge by the title, which made the whole page read as
   unfinished), and those trips add "Photos soon" to their eyebrow
-  (`tripsPage.wip`, `tripEyebrow`); both disappear on their own once
-  the last sample is replaced.
+ (`tripsPage.wip`, `tripEyebrow`); both disappear on their own once
+ the last sample is replaced. Until then such a trip's page is also
+ `noindex, follow` and left out of the sitemap, since placeholder photos
+ make it a thin page in search.
 
 Each photo ships at several sizes, all made from the phone original, as AVIF
 (`avifSrc`, taken through `<picture>`), plus a JPEG at 800 and 2048 px only.

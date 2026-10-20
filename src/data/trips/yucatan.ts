@@ -15,6 +15,6 @@ export const yucatan: Trip = {
   cover: { photo: photos.sampleYucatan },
   practical: [],
   meta: {
-    title: 'Yucatán · Trips · Hélder Gonçalves',
+    title: 'Yucatán · Hélder Gonçalves',
     description: 'The Yucatán Peninsula in Mexico, stop by stop: Chichén Itzá, Valladolid and Tulum.',  },
 };

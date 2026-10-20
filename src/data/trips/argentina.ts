@@ -38,6 +38,6 @@ export const argentina: Trip = {
   cover: { photo: photos.torreMonumental, focus: '50% 30%' },
   practical: [],
   meta: {
-    title: 'Buenos Aires and Iguazú · Trips · Hélder Gonçalves',
+    title: 'Buenos Aires and Iguazú · Hélder Gonçalves',
     description: 'Buenos Aires and the Iguazú Falls: tango, San Telmo on a Sunday and hundreds of waterfalls in the jungle.',  },
 };

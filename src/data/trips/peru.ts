@@ -42,7 +42,7 @@ export const peru: Trip = {
   cover: { photo: photos.machuPicchu, focus: '50% 45%' },
   practical: [],
   meta: {
-    title: 'Peru, the Andes, the desert and the lake · Trips · Hélder Gonçalves',
+    title: 'Peru, the Andes, the desert and the lake · Hélder Gonçalves',
     description:
       'Peru, stop by stop: Ollantaytambo, Machu Picchu, Cusco, Rainbow Mountain and Amantaní Island on Lake Titicaca.',  },
 };

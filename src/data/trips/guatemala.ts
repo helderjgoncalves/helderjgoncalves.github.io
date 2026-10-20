@@ -39,7 +39,7 @@ export const guatemala: Trip = {
   cover: { photo: photos.volcano, focus: '50% 65%', phoneZoom: 1.5 },
   practical: [],
   meta: {
-    title: 'Guatemala, volcanoes to the Caribbean · Trips · Hélder Gonçalves',
+    title: 'Guatemala, volcanoes to the Caribbean · Hélder Gonçalves',
     description:
       'A night on Acatenango in Guatemala, watching Volcán de Fuego erupt at night and send up an ash cloud at dawn.',  },
 };

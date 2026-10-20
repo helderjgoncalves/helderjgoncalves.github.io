@@ -141,7 +141,7 @@ export const patagonia: Trip = {
   featured: true,
   practical: [],
   meta: {
-    title: 'Patagonia, from the glacier to the towers · Trips · Hélder Gonçalves',
+    title: 'Patagonia, from the glacier to the towers · Hélder Gonçalves',
     description:
       'Patagonia in Argentina and Chile: the Perito Moreno Glacier, El Chaltén and the granite towers of Torres del Paine, stop by stop.',  },
 };

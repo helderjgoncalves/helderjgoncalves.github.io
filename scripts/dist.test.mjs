@@ -230,10 +230,14 @@ describe('pre-rendered routes', () => {
 });
 
 describe('sitemap.xml', () => {
-  test('lists exactly the canonicals of the built routes', async () => {
+  // A noindex page in the sitemap asks crawlers to index what the page forbids.
+  const indexable = () =>
+    pages.filter((p) => !/<meta name="robots" content="[^"]*\bnoindex\b/.test(p.html));
+
+  test('lists exactly the canonicals of the indexable routes', async () => {
     const xml = await readDist('sitemap.xml');
     const locs = [...xml.matchAll(/<loc>([^<]*)<\/loc>/g)].map((m) => m[1]);
-    const canonicals = pages.map((p) => tag(p, TAGS.canonical, 'canonical'));
+    const canonicals = indexable().map((p) => tag(p, TAGS.canonical, 'canonical'));
 
     assert.deepEqual([...locs].sort(), [...canonicals].sort());
   });
@@ -241,7 +245,7 @@ describe('sitemap.xml', () => {
   test('lastmod is a plausible date', async () => {
     const xml = await readDist('sitemap.xml');
     const dates = [...xml.matchAll(/<lastmod>([^<]*)<\/lastmod>/g)].map((m) => m[1]);
-    assert.equal(dates.length, pages.length, 'every URL needs a lastmod');
+    assert.equal(dates.length, indexable().length, 'every URL needs a lastmod');
 
     // A day of slack: commit timestamps carry an offset, the build clock is UTC.
     const tomorrow = Date.now() + 24 * 60 * 60 * 1000;
