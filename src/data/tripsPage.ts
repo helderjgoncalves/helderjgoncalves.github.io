@@ -27,6 +27,35 @@ export interface TripsPageData {
      */
     prompt: string;
     promptLink: string;
+    /**
+     * The form `cta` opens in place (a mailto: does nothing on a computer
+     * without a mail app). It posts to `scripts/contact-worker.js`.
+     */
+    form: {
+      endpoint: string;
+      /** The Turnstile widget's site key (public; its secret lives in the Worker). */
+      siteKey: string;
+      email: string;
+      name: string;
+      optional: string;
+      trip: string;
+      tripPlaceholder: string;
+      message: string;
+      messagePlaceholder: string;
+      send: string;
+      /** Closes the form under the route, at the end of the line that heads it. */
+      close: string;
+      sending: string;
+      /** Beside Send, before the address as a mailto: link. */
+      direct: string;
+      /** Before the trip's place, atop the form on a trip page. */
+      about: string;
+      sent: { title: string; text: string };
+      /** On the label line of a field that needs fixing, so the form never shifts. */
+      checks: { email: string; emailFormat: string; message: string };
+      /** Keyed by the Worker's error codes; `failed` covers the rest. */
+      errors: { invalid: string; bot: string; rate: string; failed: string };
+    };
   };
   meta: {
     title: string;
@@ -62,6 +91,34 @@ export const tripsPage: TripsPageData = {
     cta: 'Email me',
     prompt: "Happy to share how long to stay, and what I'd skip —",
     promptLink: 'just ask',
+    form: {
+      endpoint: 'https://contact.hgoncalves.uk/',
+      siteKey: '0x4AAAAAAFePNcKEhOqNaS_O',
+      email: 'Your email',
+      name: 'Your name',
+      optional: 'optional',
+      about: 'About',
+      trip: 'Where to?',
+      tripPlaceholder: 'Peru, Patagonia…',
+      message: 'What would you like to know?',
+      messagePlaceholder: "How long you have, what you're into, what you're unsure about…",
+      send: 'Send',
+      close: 'Close',
+      sending: 'Sending…',
+      direct: 'Or write to',
+      sent: { title: 'Got it, thanks!', text: "I'll reply to your email soon." },
+      checks: {
+        email: 'Needed, so I can reply',
+        emailFormat: "Doesn't look quite right",
+        message: 'A few words more, please',
+      },
+      errors: {
+        invalid: 'Something in the form needs another look.',
+        bot: "Couldn't confirm you're not a bot. Please try once more.",
+        rate: 'One moment! Give it a minute, then try again.',
+        failed: "Couldn't send it just now. Try again in a moment, or write to the address below.",
+      },
+    },
   },
   meta: {
     title: 'Trips · Hélder Gonçalves',

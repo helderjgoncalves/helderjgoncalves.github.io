@@ -1234,10 +1234,67 @@ $viewer-swipe: '(hover: none) and (pointer: coarse) and (max-width: #{$bp-md - 1
     margin: 1.25rem 0 0;
     color: $color-text-soft;
     line-height: 1.5;
+    // Two even lines on phones, rather than "ask." left on its own.
+    text-wrap: balance;
 
     a {
       @include prose-link;
       font-weight: 600;
+    }
+  }
+
+  // While its form is open, the line heads it: this closes it, at the end of
+  // the line, so its right edge is the form's.
+  &__ask-close {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-left: auto;
+    padding: 0.35rem 0.75rem 0.35rem 0.6rem;
+    border: 1px solid $color-rule;
+    border-radius: $radius-pill;
+    background: none;
+    color: $color-text-muted;
+    font: inherit;
+    font-size: $fs-sm;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    @include nav-control;
+
+    &:hover,
+    &:focus-visible { color: $color-accent; }
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    // On phones the line wraps, and a worded pill squeezed it further: a round
+    // ×, the size of the line's mark, like the top bar's round controls. The
+    // word stays for screen readers.
+    @include sm-down {
+      flex: none;
+      justify-content: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      padding: 0;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  &__ask-close-label {
+    @include sm-down {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
     }
   }
 
@@ -1662,6 +1719,310 @@ $trip-cover-widest: 2.1;
       width: 16px;
       height: 16px;
     }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: progress;
+    }
+  }
+
+  // "Email me" and the route's "just ask" open the form where they are, so the
+  // offer reads the same until someone takes it up. It grows from there (the
+  // rows animate from 0fr) while the page scrolls it into view.
+  &__slot {
+    margin-top: 1.5rem;
+    text-align: left;
+
+    &--wide { margin-top: 1rem; }
+  }
+
+  &__reveal {
+    display: grid;
+    grid-template-rows: 1fr;
+    animation: trip-help-grow 520ms $ease backwards;
+
+    @media (prefers-reduced-motion: reduce) { animation: none; }
+  }
+
+  // Clips only while it grows, so the card's shadow is whole once it's open.
+  &__clip {
+    min-height: 0;
+    animation: trip-help-clip 520ms backwards;
+
+    @media (prefers-reduced-motion: reduce) { animation: none; }
+  }
+
+  &__form {
+    display: grid;
+    gap: 1rem;
+    min-height: 0;
+    padding: 1.25rem;
+    border: 1px solid $color-rule;
+    border-radius: $radius-lg;
+    background: $color-card;
+    box-shadow: $shadow-card;
+    text-align: left;
+    animation: trip-help-open 520ms $ease both;
+
+    @include sm-up { padding: 1.5rem; }
+
+    @media (prefers-reduced-motion: reduce) { animation: none; }
+  }
+
+  // Under the route: the message on the left, as tall as email and name
+  // stacked beside it; everything else across both columns. Split in half, so
+  // the second column starts under the route's third card.
+  &__form--wide {
+    @include md-up {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 1rem;
+
+      > * { grid-column: 1 / -1; }
+
+      // One grid for both halves: the message's label shares the email's row
+      // (subgrid), so an error wrapping either label moves both fields
+      // together, and the message box fills from the email field's top to the
+      // name field's foot. Its own height mustn't size those rows (min-height
+      // 0), or the two columns grow each other.
+      > .trip-help__row { display: contents; }
+
+      > .trip-help__field:has(textarea),
+      > .trip-help__row > .trip-help__field:first-child {
+        grid-template-rows: subgrid;
+        row-gap: 0.35rem;
+      }
+
+      > .trip-help__field:has(textarea) {
+        grid-column: 1;
+        grid-row: 1 / span 3;
+
+        textarea {
+          grid-row: 2 / span 2;
+          min-height: 0;
+        }
+      }
+
+      > .trip-help__row > .trip-help__field:first-child {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+      }
+
+      > .trip-help__row > .trip-help__field:last-child {
+        grid-column: 2;
+        grid-row: 3;
+        grid-template-rows: none;
+      }
+    }
+  }
+
+  // Folds the form away again (× or Esc): the opening, run backwards.
+  &__slot--closing {
+    .trip-help__reveal { animation: trip-help-shrink 360ms $ease forwards; }
+    .trip-help__clip { overflow: hidden; }
+    .trip-help__form { animation: trip-help-fade 240ms $ease forwards; }
+  }
+
+  // The trip a trip page asks about, as a chip rather than a field to fill.
+  &__about {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    justify-self: start;
+    margin: 0;
+    padding: 0.3rem 0.75rem;
+    border-radius: $radius-pill;
+    background: $color-accent-soft;
+    color: $color-accent-dark;
+    font-size: $fs-sm;
+    font-weight: 600;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  // Side by side, the two fields share their label row (subgrid), so an error
+  // that wraps one label moves both fields down together.
+  &__row {
+    display: grid;
+    gap: 1rem;
+
+    @include sm-up {
+      grid-template-columns: 1fr 1fr;
+
+      > .trip-help__field {
+        grid-row: span 2;
+        grid-template-rows: subgrid;
+        row-gap: 0.35rem;
+      }
+    }
+  }
+
+  &__field {
+    display: grid;
+    align-content: start;
+    gap: 0.35rem;
+
+    label {
+      font-size: $fs-sm;
+      font-weight: 600;
+    }
+
+    input,
+    textarea { @include text-field; }
+
+    textarea {
+      min-height: 8.5rem;
+      resize: vertical;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    margin-top: 0.5rem;
+
+    .trip-help__email {
+      margin-top: 0;
+      cursor: pointer;
+    }
+
+    @include sm-down {
+      justify-content: center;
+      text-align: center;
+
+      .trip-help__email {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+
+  &__optional {
+    font-weight: 400;
+    color: $color-text-muted;
+  }
+
+  // Bots fill in every field; people never see this one.
+  &__trap {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  // Turnstile only draws itself here when it needs the visitor. Until then it
+  // holds just a hidden input, so it cancels its own gap in the grid.
+  &__check {
+    justify-self: center;
+    margin-bottom: -1rem;
+  }
+
+  // Once it's sent, the same card says so.
+  &__sent {
+    justify-items: center;
+    gap: 0.35rem;
+    padding-block: 2rem;
+    text-align: center;
+
+    &:focus { outline: none; }
+  }
+
+  &__sent-mark {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 0.4rem;
+    border-radius: 50%;
+    background: $color-accent-soft;
+    color: $color-accent-dark;
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  &__sent-title {
+    margin: 0;
+    font-size: $fs-md;
+    font-weight: 700;
+  }
+
+  &__sent-text {
+    margin: 0;
+    color: $color-text-soft;
+  }
+
+  // A field's label line, with what needs fixing at its end: on the line,
+  // not under the field, so an error never moves the fields around it.
+  &__label {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.15rem 0.75rem;
+  }
+
+  &__problem {
+    display: inline-flex;
+    align-items: center;
+    align-self: center;
+    gap: 0.3rem;
+    font-size: $fs-sm;
+    color: $color-danger;
+    animation: trip-help-open $dur-med $ease both;
+
+    @media (prefers-reduced-motion: reduce) { animation: none; }
+
+    svg {
+      flex: none;
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  // When sending fails: one tinted notice above Send, not loose text.
+  &__notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid color-mix(in srgb, $color-danger 35%, transparent);
+    border-radius: $radius-md;
+    background: color-mix(in srgb, $color-danger 10%, transparent);
+    color: $color-text;
+    font-size: $fs-sm;
+    line-height: 1.5;
+    animation: trip-help-open $dur-med $ease both;
+
+    @media (prefers-reduced-motion: reduce) { animation: none; }
+
+    svg {
+      flex: none;
+      width: 18px;
+      height: 18px;
+      margin-top: 0.05rem;
+      color: $color-danger;
+    }
+  }
+
+  &__direct {
+    margin: 0;
+    font-size: $fs-sm;
+    color: $color-text-muted;
+
+    a {
+      font-weight: 600;
+      @include prose-link;
+    }
   }
 
   // The way back, on its own line so the button stands alone as the offer.
@@ -1681,6 +2042,29 @@ $trip-cover-widest: 2.1;
       height: 14px;
     }
   }
+}
+
+@keyframes trip-help-grow {
+  from { grid-template-rows: 0fr; }
+  to { grid-template-rows: 1fr; }
+}
+
+@keyframes trip-help-clip {
+  from, to { overflow: hidden; }
+}
+
+@keyframes trip-help-shrink {
+  from { grid-template-rows: 1fr; }
+  to { grid-template-rows: 0fr; margin-top: 0; }
+}
+
+@keyframes trip-help-fade {
+  to { opacity: 0; transform: translateY(-4px); }
+}
+
+@keyframes trip-help-open {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
 }
 
 .homelab-arch {

@@ -12,11 +12,10 @@ import {
 } from '../data/trips';
 import { tripsPage } from '../data/tripsPage';
 import { Footer } from './Footer';
-import { Icon } from './Icon';
 import { PhotoGrid } from './PhotoGrid';
 import { PhotoViewer } from './PhotoViewer';
 import { Section } from './Section';
-import { TripHelp } from './TripHelp';
+import { TripAsk, TripHelp } from './TripHelp';
 import { TripHero } from './TripHero';
 import { SiteNav } from './SiteNav';
 
@@ -77,15 +76,7 @@ export function TripPage({ trip }: { trip: Trip }) {
               );
             })}
           </ol>
-          <p className="trip-route__ask">
-            <span className="trip-route__ask-mark">
-              <Icon name="email" />
-            </span>
-            <span>
-              {tripsPage.help.prompt}{' '}
-              <a href={`mailto:${tripsPage.help.email}`} draggable={false}>{tripsPage.help.promptLink}</a>.
-            </span>
-          </p>
+          <TripAsk trip={tripPlace(trip)} />
         </Section>
 
         {photoSections(trip).map((section, index) => (
@@ -127,7 +118,7 @@ export function TripPage({ trip }: { trip: Trip }) {
           </Section>
         )}
 
-        <TripHelp title={`Heading to ${tripPlace(trip)}?`} back />
+        <TripHelp title={`Heading to ${tripPlace(trip)}?`} trip={tripPlace(trip)} back />
       </main>
 
       <Footer />

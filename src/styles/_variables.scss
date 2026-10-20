@@ -71,6 +71,13 @@ $aurora-violet: #9b8cff;
 
   --nav-bg:             rgba(255, 255, 255, 0.78);
 
+  // Text fields on a card. Light sets them into it (the page colour on white);
+  // dark lifts them a step above the card, since a field darker than its card
+  // reads as a hole and outweighs everything around it.
+  --field-bg:           #{$canvas};
+  // A field that needs fixing, and the line under it: clears 4.5:1 on the card.
+  --color-danger:       #b42318;
+
   --shadow-card:        0 1px 2px rgba(28, 35, 48, 0.04), 0 8px 24px rgba(28, 35, 48, 0.06);
   --shadow-hover:       0 2px 4px rgba(28, 35, 48, 0.06), 0 12px 32px rgba(28, 35, 48, 0.10);
 
@@ -114,6 +121,9 @@ $aurora-violet: #9b8cff;
 
   --nav-bg:             rgba(14, 19, 28, 0.78);
 
+  --field-bg:           #1c2436;
+  --color-danger:       #ff8a80;
+
   --shadow-card:        0 1px 2px rgba(0, 0, 0, 0.30), 0 8px 24px rgba(0, 0, 0, 0.25);
   --shadow-hover:       0 2px 4px rgba(0, 0, 0, 0.35), 0 12px 32px rgba(0, 0, 0, 0.40);
 
@@ -144,6 +154,8 @@ $color-note-bg:     var(--note-bg);
 $color-note-border: var(--note-border);
 $color-rule:        var(--color-rule);
 $color-bg:          var(--color-bg);
+$color-field-bg:    var(--field-bg);
+$color-danger:      var(--color-danger);
 $color-card:        var(--color-card);
 $color-nav-bg:      var(--nav-bg);
 

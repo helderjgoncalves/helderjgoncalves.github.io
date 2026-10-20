@@ -104,6 +104,7 @@ scripts/dist.test.mjs     # post-build assertions on dist/ (`npm test`)
 scripts/og-cards/         # HTML sources for the social cards + `npm run cards`
 scripts/cv/build.mjs      # the CV PDFs from cv.ts (`npm run cv`)
 scripts/media-guard.js    # Cloudflare cron Worker capping the clips' R2 reads (dashboard, not built)
+scripts/contact-worker.js # Cloudflare Worker sending the trip-tips form by email (dashboard, not built)
 .github/workflows/deploy.yml  # GitHub Pages deploy on push to main
 index.html                # source entry (loaded by `vite dev`); pre-rendered at build
 vite.config.ts            # base = '/' (user/org GitHub Pages site)
@@ -236,8 +237,31 @@ has a home-page card; the Travel section links to it too.
 - `/trips/` and every trip page close with `TripHelp`, a quiet offer of free
   tips by email (copy and its own address, `travel@`, in `tripsPage.help`). Trip pages
   also say it once under the route, a single line, so a long run of photos
-  doesn't hide the offer. Keep it a friend's offer: no form, no pricing,
-  nothing in the top bar.
+  doesn't hide the offer. Its "just ask" and the closing "Email me" are
+  mailto: links until the page's script runs; then each opens the same short
+  form right where it is (`TripHelpForm`; jumping to the foot of a long trip
+  page lost the reader's place). Under the route it takes the page's width,
+  in two halves from md up (the message beside email and name, the second
+  half starting under the route's third card), since a narrow column there
+  sat stranded beside empty space. While open, the route's line heads it,
+  with a Close pill at its end (a round × on phones, where the line wraps and
+  the worded pill squeezed it; Esc closes either form; a × in the card's
+  corner was tried and floated over the first row). The two places are one
+  form: only one is open at a time (opening one folds the other away) and
+  they share one draft. Closing keeps what was typed, so reopening either
+  brings it back until the page is left; only a send that succeeds clears it. A field's error sits on its label line, and fields side
+  by side share that row (subgrid), so an error never shifts the alignment. A mailto: does nothing on a computer
+  without a mail app:
+  email, message, and name and trip as optional fields (a trip page fills in
+  its `place`), with the address under it as a link for anyone who'd rather
+  use their own mail. It posts to `scripts/contact-worker.js`, a Worker
+  pasted into the Cloudflare dashboard (not built) on `contact.hgoncalves.uk`,
+  which turns junk away (a hidden field, a minimum fill time, a rate limit,
+  a look at the message, then Turnstile in interaction-only mode, loaded
+  only once the form opens) and emails the rest through Email Routing,
+  replying to the visitor. The build warns while `form.siteKey` is a
+  Turnstile test key. Keep it a friend's offer: nothing more in the form, no
+  pricing, nothing in the top bar.
 - Never copy or closely paraphrase other sites' travel copy (tour operators,
   guides, blogs), even translated. Their pages may inform which stops exist,
   never the wording or the images in it; every line here is written fresh.
@@ -526,8 +550,8 @@ Conventions:
 
 ### Interaction vocabulary
 
-Every interactive element belongs to one of seven named families, each a mixin
-in `_mixins.scss`. **Never invent an eighth at the call site** — that is how the
+Every interactive element belongs to one of eight named families, each a mixin
+in `_mixins.scss`. **Never invent a ninth at the call site** — that is how the
 same affordance ended up with three different hover states across two pages.
 Reach for the mixin; if nothing fits, add a family here and document why.
 
@@ -535,11 +559,12 @@ Reach for the mixin; if nothing fits, add a family here and document why.
 | --- | --- | --- | --- |
 | Action link | `action-link` (+ `action-link-primary`) | "View case study", "Live status page" | accent text + accent rule |
 | Prose link | `prose-link` | `.homelab-stack__note a`, `.footer a`, `.trip-help__back a` | accent → accent-dark |
-| Nav control | `nav-control` | `.theme-toggle`, `.nav__menu` | accent tint deepens, border firms, press scales |
+| Nav control | `nav-control` | `.theme-toggle`, `.nav__menu`, `.trip-route__ask-close` (closing the form under a trip's route) | accent tint deepens, border firms, press scales |
 | Hero button | `hero-button` | `.hero__contact`, `.hero__download`, `.homelab-cta`, `.hero-jumps__link`, `.viewer__button`, `.viewer__link` | white glass brightens, lifts 1px |
 | Nav link | — (`.nav__links a`) | `SiteNav` page links (every page; below md they live in the ☰ panel, which closes on Esc, an outside tap or a link) | soft → accent; the current page rests in accent |
 | Card link | `card-link` | `.door` (home-page cards), `.trip-card` (`/trips/`), `.gallery__link` (photo tiles), `.trip-route__card--link` (a trip's route stops, to their photo section; on phones, where the route is a path rather than cards, only the name turns accent) | card lifts 2px, shadow deepens, inner action line turns accent |
-| Primary button | `primary-button` | `.trip-help__email` ("Email me" closing the trip pages) | fill deepens to accent-dark, lifts 1px, gains a shadow |
+| Primary button | `primary-button` | `.trip-help__email` ("Email me" closing the trip pages, then the form's "Send") | fill deepens to accent-dark, lifts 1px, gains a shadow |
+| Text field | `text-field` | `.trip-help__field` inputs (the trip-tips form) | border firms on hover; accent border and a soft ring on focus |
 
 `card-link` exists because the home-page doors are whole-surface targets: a
 lone underlined link inside a card left most of the card dead to clicks. Its

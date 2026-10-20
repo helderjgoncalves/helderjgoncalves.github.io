@@ -622,4 +622,9 @@ if (sampleTrips.length) {
   );
 }
 
+// Cloudflare's test site keys start 1x/2x/3x and pass or fail everyone.
+if (/^[123]x0+/.test(tripsPage.help.form.siteKey)) {
+  console.warn('⚠ The trip-tips form still uses a Turnstile test key: set tripsPage.help.form.siteKey');
+}
+
 await fs.rm(ssrDir, { recursive: true, force: true });
