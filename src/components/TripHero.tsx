@@ -8,10 +8,12 @@ import { TripFacts } from './TripFacts';
 export function TripHero({ trip }: { trip: Trip }) {
   const { photo, focus, phoneZoom } = trip.cover;
   // Every layer picks the same copy from the same srcset, so the photo downloads once.
+  // Capped at 2048: the band and its fade cover the hero's foot, so the 2880 copy
+  // adds little here for a much bigger file; the viewer still offers it.
   const layer = (className: string, alt: string) => (
     <picture>
       {hasAvif(photo) && (
-        <source type="image/avif" srcSet={largeSrcSet(photo)?.srcSet ?? avifSrc(largeSrc(photo))} sizes="100vw" />
+        <source type="image/avif" srcSet={largeSrcSet(photo, 2048)?.srcSet ?? avifSrc(largeSrc(photo))} sizes="100vw" />
       )}
       <img
         className={className}
@@ -31,6 +33,13 @@ export function TripHero({ trip }: { trip: Trip }) {
       className="page-hero trip-cover"
       style={phoneZoom ? ({ '--phone-zoom': phoneZoom } as CSSProperties) : undefined}
     >
+      {photo.preview && (
+        <div
+          className="trip-cover__preview"
+          aria-hidden="true"
+          style={{ backgroundImage: `url(${photo.preview})`, backgroundPosition: focus }}
+        />
+      )}
       <div className="trip-cover__extend" aria-hidden="true">
         {layer('trip-cover__copy trip-cover__copy--left', '')}
         {layer('trip-cover__copy', '')}

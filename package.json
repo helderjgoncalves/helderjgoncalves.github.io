@@ -14,6 +14,7 @@
     "test": "node --test scripts/dist.test.mjs",
     "lint": "tsc -b --noEmit",
     "cards": "node scripts/og-cards/render.mjs",
+    "previews": "node scripts/cover-previews.mjs",
     "cv": "node scripts/cv/build.mjs"
   },
   "dependencies": {

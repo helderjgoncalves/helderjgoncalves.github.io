@@ -1570,6 +1570,19 @@ $trip-cover-widest: 2.1;
 
   @include md-up { padding-top: 4rem; }
 
+  // The cover's 32 px preview, inlined in the page, so the hero has its colours
+  // from the first paint: an AVIF draws nothing until it has fully arrived.
+  // The photo paints over it, and on ultra-wide screens so does the extension.
+  // Scaled past the hero's clip, where the blur's edges go see-through.
+  &__preview {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-size: cover;
+    filter: blur(24px);
+    transform: scale(1.15);
+  }
+
   // Once the photo stops widening, each side carries it on: the photo flipped
   // against its own edge, so the pixels at the seam match. Under the photo
   // itself sits an unflipped copy, so its edge fade crosses from sharp to
@@ -1618,6 +1631,9 @@ $trip-cover-widest: 2.1;
   // in smoothly as the window widens past that.
   &__img {
     --edge: clamp(0px, var(--trip-cover-gap), 8rem);
+    // A photo that fails to load would draw its alt text and icon over the
+    // preview; screen readers still read the alt.
+    color: transparent;
     position: absolute;
     top: 0;
     left: 50%;

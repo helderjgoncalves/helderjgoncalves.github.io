@@ -37,6 +37,7 @@ npm run preview  # serve ./dist at http://localhost:4173 (matches production)
 npm run lint     # tsc -b --noEmit (no ESLint configured)
 npm test         # node --test scripts/dist.test.mjs — checks ./dist (after build)
 npm run cards    # re-render public/og/*.jpg from scripts/og-cards/ (manual)
+npm run previews # write each trip cover's blurred stand-in into photos.ts (manual)
 npm run cv       # rebuild the CV PDFs from cv.ts (manual; see "Downloadable CV")
 ```
 
@@ -102,6 +103,7 @@ public/                   # static assets copied verbatim (favicon, portrait, og
 scripts/prerender.mjs     # post-build SSR injection + head metadata + sitemap
 scripts/dist.test.mjs     # post-build assertions on dist/ (`npm test`)
 scripts/og-cards/         # HTML sources for the social cards + `npm run cards`
+scripts/cover-previews.mjs # trip covers' inline previews (`npm run previews`)
 scripts/cv/build.mjs      # the CV PDFs from cv.ts (`npm run cv`)
 scripts/media-guard.js    # Cloudflare cron Worker capping the clips' R2 reads (dashboard, not built)
 scripts/contact-worker.js # Cloudflare Worker sending the trip-tips form by email (dashboard, not built)
@@ -216,7 +218,13 @@ has a home-page card; the Travel section links to it too.
  from its foot below md, trimming sky and sides to lift the subject clear
  (1.35 for Patagonia; much more and the top of the subject goes). It applies
  to short landscape windows too: there the band covers even more, and the
- zoom trims the subject's top a little but keeps it in view.
+ zoom trims the subject's top a little but keeps it in view. The hero
+ offers the cover only up to its 2048 copy (the band covers its foot, so
+ the 2880 adds little there), and until that arrives shows the cover's
+ `preview`, a 32 px JPEG inlined in the page and blurred, since an AVIF
+ draws nothing until it has fully downloaded. `npm run previews` writes it
+ into `photos.ts`; the build throws while a cover has none, so re-run it
+ when a trip's cover changes.
   The page is for people planning a trip; the **wonder goals** (the New Seven
   Wonders and the classic Seven Natural Wonders, `home.goals`) are
   personal, so they stay on the home page. Each goal's `after` names the

@@ -44,6 +44,9 @@ for (const trip of trips) {
   if (!tripPhotos(trip).includes(trip.cover.photo)) {
     throw new Error(`trips/${trip.slug}: cover ${trip.cover.photo.src} isn't in any of its stops`);
   }
+  if (!trip.cover.photo.preview) {
+    throw new Error(`trips/${trip.slug}: cover ${trip.cover.photo.src} has no preview. Run \`npm run previews\`.`);
+  }
 }
 
 export function tripPath(trip: Trip): string {
