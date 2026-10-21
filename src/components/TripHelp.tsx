@@ -87,7 +87,7 @@ interface TripHelpFormProps {
 
 /**
  * The form "Email me" and the route's "just ask" open in place. It grows open
- * where it was asked for and scrolls just far enough to be whole on screen.
+ * where it was asked for and scrolls to the middle of the screen.
  */
 export function TripHelpForm({ trip = '', wide = false, closing = false, draft, onClose, onClosed }: TripHelpFormProps) {
   const { email, form } = tripsPage.help;
@@ -110,7 +110,8 @@ export function TripHelpForm({ trip = '', wide = false, closing = false, draft, 
       const full = box.querySelector<HTMLElement>('.trip-help__form')?.offsetHeight ?? 0;
       box.style.minHeight = `${full}px`;
       release = window.setTimeout(() => (box.style.minHeight = ''), 700);
-      box.scrollIntoView({ block: 'nearest' });
+      // Centred while it fits; taller (phones), its top goes under the nav instead.
+      box.scrollIntoView({ block: full < window.innerHeight * 0.8 ? 'center' : 'start' });
       box
         .querySelector<HTMLElement>('input[name=trip]:not([type=hidden]), textarea')
         ?.focus({ preventScroll: true });
