@@ -1,4 +1,4 @@
-import { photoId, type Photo } from '../photos';
+import type { Photo } from '../photos';
 import { argentina } from './argentina';
 import { belize } from './belize';
 import { bolivia } from './bolivia';
@@ -114,17 +114,13 @@ export function tripOf(photo: Photo): Trip | undefined {
   return trips.find((trip) => tripPhotos(trip).some((p) => p.src === photo.src));
 }
 
-/** A photo's place on its trip page, or undefined if it isn't on a trip. */
-export function tripHref(photo: Photo): string | undefined {
-  const trip = tripOf(photo);
-  return trip && `${tripPath(trip)}#${photoId(photo)}`;
-}
-
-/** The photo viewer's link under the caption, to the photo on its trip page. */
+/**
+ * The photo viewer's link under the caption, to the top of the photo's trip.
+ * Not to the photo's own link, which would just open the same photo again.
+ */
 export function tripLink(photo: Photo): { href: string; label: string } | undefined {
   const trip = tripOf(photo);
-  const href = tripHref(photo);
-  return trip && href ? { href, label: `${tripPlace(trip)} trip` } : undefined;
+  return trip && { href: tripPath(trip), label: `${tripPlace(trip)} trip` };
 }
 
 /**
