@@ -495,8 +495,10 @@ keep tracking under 1pt.
 `cv.ts` or `private.mjs`) stays on record but renders nowhere: not on the
 site, not in any PDF. Bullets dropped for space, superseded wordings and
 long records with every known fact are kept this way, so nothing is lost
-when the two-page limit forces a cut. The certifications in `cv.ts` are
-hidden records too; nothing renders them.
+when the two-page limit forces a cut. Certifications take `hidden` too: both
+are hidden for now, so the `/cv/` page drops its Certifications section and
+the PDF's heading reads "Awards"; un-hiding one brings both back. Hide
+through the data, never by deleting the component that renders it.
 
 ### Social cards (`public/og/`)
 

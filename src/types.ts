@@ -75,12 +75,13 @@ export interface SideProject {
   href?: string;
 }
 
-/** On record only: nothing renders certifications. */
+/** `hidden` keeps a certification on record without showing it on the site or in any PDF. */
 export interface Certification {
   name: string;
   issuer: string;
+  year?: number;
   code?: string;
-  hidden: true;
+  hidden?: boolean;
 }
 
 export interface Award {

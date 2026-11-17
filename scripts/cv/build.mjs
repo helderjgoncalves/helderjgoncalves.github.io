@@ -22,6 +22,7 @@ const chrome = process.env.CHROME ?? '/Applications/Google Chrome.app/Contents/M
 
 const phoneFile = path.join(here, 'phone.local');
 const phone = fs.existsSync(phoneFile) ? fs.readFileSync(phoneFile, 'utf8').trim() : '';
+const certifications = cv.certifications.filter((c) => !c.hidden);
 const website = 'hgoncalves.uk';
 
 const webSkills = [
@@ -267,7 +268,8 @@ ${stack(p.techPills)}`,
 </div>
 
 <div class="keep">
-<h2>Awards</h2>
+<h2>${certifications.length ? 'Certifications &amp; Awards' : 'Awards'}</h2>
+${certifications.map((c) => entry(esc(c.code), `${esc(c.name)}, ${esc(c.issuer)}`)).join('\n')}
 ${cv.awards.map((a) => entry(String(a.year), `<b>${esc(a.title)}</b>, ${esc(a.context)}: ${esc(a.description)}`)).join('\n')}
 </div>
 

@@ -7,6 +7,7 @@ import { Internships } from './components/Internships';
 import { Education } from './components/Education';
 import { SideProjects } from './components/SideProjects';
 import { Languages } from './components/Languages';
+import { Certifications } from './components/Certifications';
 import { LeadershipAwards } from './components/LeadershipAwards';
 import { HomelabPage } from './components/HomelabPage';
 import { TripPage } from './components/TripPage';
@@ -51,6 +52,7 @@ function CvPage() {
         <SideProjects items={cv.sideProjects} />
         <Education data={cv.education} />
         <Languages items={cv.languages} />
+        <Certifications items={cv.certifications} />
         <LeadershipAwards items={cv.awards} />
       </main>
 
