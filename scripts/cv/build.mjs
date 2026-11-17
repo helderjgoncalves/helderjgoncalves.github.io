@@ -2,8 +2,11 @@
 // standard headings, no images.
 //
 // - web: the site's download, public/helder-goncalves-cv.pdf (no phone).
-// - staff, lead: tailored for applications, written to out/ (git-ignored),
-//   with the phone number from phone.local (git-ignored); skipped without it.
+// - staff, lead: tailored for applications, written to out/ (git-ignored).
+//   Their content is in private.mjs and the phone number in phone.local,
+//   both git-ignored; each is skipped without them.
+//
+// Items with `hidden: true` stay on record but never render.
 //
 // Usage: npm run cv
 
@@ -21,33 +24,15 @@ const phoneFile = path.join(here, 'phone.local');
 const phone = fs.existsSync(phoneFile) ? fs.readFileSync(phoneFile, 'utf8').trim() : '';
 const website = 'hgoncalves.uk';
 
-const skills = {
-  web: [
-    ['Architecture', 'Software architecture, system design, distributed systems integration, REST APIs, embedded Chromium WebView (CEF / CefGlue), design systems, incremental migration'],
-    ['Reliability', 'Site Reliability Engineering (SRE), telemetry and observability, crash, hang and freeze metrics, feature flags, dark launches, progressive delivery'],
-    ['Programming', 'TypeScript, JavaScript, React, Node.js, C#, .NET, Avalonia, HTML, CSS, SCSS, C, C++'],
-    ['Testing', 'Jest, React Testing Library, unit and component testing'],
-    ['Leadership', 'Technical leadership, cross-team direction, mentoring, design and code reviews, Product and UX partnership'],
-    ['AI', 'Generative AI, LLM integration, agentic AI, AI-assisted developer tools'],
-    ['Cloud & delivery', 'AWS, Snowflake, Cloudflare (R2, Workers, WAF, Zero Trust), CI/CD with GitHub Actions, Docker, Git'],
-  ],
-  staff: [
-    ['Architecture', 'Software architecture, system design, distributed systems integration, REST APIs, desktop and web applications, embedded Chromium WebView (CEF / CefGlue), design systems, incremental migration'],
-    ['Reliability', 'Site Reliability Engineering (SRE), telemetry and observability, crash, hang and freeze metrics, feature flags, dark launches, progressive delivery, automated testing (Jest, React Testing Library)'],
-    ['AI', 'Generative AI, LLM integration, agentic AI, AI-assisted developer tools'],
-    ['Programming', 'TypeScript, JavaScript, React, Node.js, C#, .NET, Avalonia, HTML, CSS, SCSS, C, C++'],
-    ['Leadership', 'Technical leadership, cross-team technical direction, mentoring, design and code reviews'],
-    ['Cloud & delivery', 'AWS, Snowflake, Cloudflare (R2, Workers, WAF, Zero Trust), CI/CD with GitHub Actions, Docker, Git'],
-  ],
-  lead: [
-    ['Programming', 'TypeScript, JavaScript, React, Node.js, C#, .NET, Avalonia, HTML, CSS, SCSS, C, C++'],
-    ['Testing', 'Jest, React Testing Library, unit and component testing'],
-    ['Leadership', 'Technical leadership, team leadership, mentoring, design and code reviews, cross-team collaboration with Product and UX'],
-    ['AI', 'Generative AI, LLM integration, agentic AI, AI-assisted developer tools'],
-    ['Practices', 'Software architecture, REST APIs, embedded Chromium WebView (CEF / CefGlue), design systems, Site Reliability Engineering (SRE), telemetry and observability, feature flags, dark launches, incremental migration'],
-    ['Cloud & delivery', 'AWS, Snowflake, Cloudflare (R2, Workers, WAF, Zero Trust), CI/CD with GitHub Actions, Docker, Git'],
-  ],
-};
+const webSkills = [
+  ['Architecture', 'Software architecture, system design, distributed systems integration, REST APIs, embedded Chromium WebView (CEF / CefGlue), design systems, incremental migration'],
+  ['Reliability', 'Site Reliability Engineering (SRE), telemetry and observability, crash, hang and freeze metrics, feature flags, dark launches, progressive delivery'],
+  ['Programming', 'TypeScript, JavaScript, React, Node.js, C#, .NET, Avalonia, HTML, CSS, SCSS, C, C++'],
+  ['Testing', 'Jest, React Testing Library, unit and component testing'],
+  ['Leadership', 'Technical leadership, cross-team direction, mentoring, design and code reviews, Product and UX partnership'],
+  ['AI', 'Generative AI, LLM integration, agentic AI, AI-assisted developer tools'],
+  ['Cloud & delivery', 'AWS, Snowflake, Cloudflare (R2, Workers, WAF, Zero Trust), CI/CD with GitHub Actions, Docker, Git'],
+];
 
 const variants = {
   web: {
@@ -56,58 +41,28 @@ const variants = {
     page2: 'earlier',
     tagline: 'Software Architecture · Technical Leadership · Reliability · Generative AI',
     summary:
-      'Lead Software Engineer with 10+ years building developer tools in React, TypeScript and .NET, used daily by thousands of enterprise developers. Grew with one product from Junior to Lead, taking on wider scope at each step. Leads through architecture and mentoring: measure before fixing, evolve large systems incrementally behind feature flags rather than rewrite them, and hold design to a bar that survives real code. Drives product-wide work in reliability, cloud architecture, design systems and Generative AI.',
+      'Lead Software Engineer with 10+ years building developer tools in React, TypeScript and .NET, used daily by thousands of enterprise developers. Grew with one product from Junior to Lead, taking on wider scope at each step. Leads through architecture and mentoring: measure before fixing, evolve large systems incrementally behind feature flags rather than rewrite them, and hold design to a bar that survives real code. Drives product-wide work in reliability, cloud integration, design systems and Generative AI.',
+    highlights: [
+      ['10+ years', 'building developer tools'],
+      ['~15% → ~3%', 'IDE crash ratio'],
+      ['50%+', 'conflicts auto-resolved'],
+      ['2 teams', '12 engineers led'],
+    ],
+    skills: webSkills,
     // The site's own bullets, so the download mirrors the /cv/ page.
-    bullets: cv.work.groups.flatMap((g) => g.bullets.map((b) => b.description)),
-    labels: cv.work.groups.flatMap((g) => g.bullets.map((b) => b.label)),
-  },
-  staff: {
-    photo: true,
-    file: path.join(here, 'out/helder-goncalves-cv-staff.pdf'),
-    page2: 'earlier',
-    tagline: 'Software Architecture · Developer Platforms · Reliability · Generative AI',
-    summary:
-      'Lead Software Engineer with 10+ years shaping the architecture of developer tools used daily by thousands of enterprise developers. Core stack: React, TypeScript and .NET. Sets technical direction beyond his own teams through architecture guidance and design reviews. Favours evidence and incremental change: telemetry before fixes, and migrations shipped component by component behind feature flags, never a forked product. Drives multi-year, product-wide work in reliability, cloud architecture, design systems and Generative AI.',
-    labels: ['Architecture Ownership', 'Stability Programme', 'Cloud Platform Client', 'Generative AI', 'Platform Migration', 'Design System', 'SRE & Progressive Delivery', 'Granular Merge'],
-    bullets: [
-      'Own the architecture of 2 teams (12 engineers); shape technical direction for other engineering groups through architecture guidance, design and code reviews.',
-      'Built the telemetry that pinpoints the IDE’s high-impact failures and led the fixes: crash ratio from ~15% to ~3% (80% lower). The approach now covers hangs and freezes.',
-      'Re-architected the desktop IDE’s integration with OutSystems Developer Cloud (ODC), from a single backend dependency to distributed cloud services.',
-      'Led the integration of Mentor, OutSystems’ LLM-based agentic AI, into ODC Studio: conversational, AI-assisted development in the visual IDE, live since March 2026.',
-      'With the wider team, made the multi-year move off Windows-only WPF to React and TypeScript in an embedded Chromium WebView, component by component behind feature flags, never forking; it gained macOS.',
-      'Led the 2026 company-wide Design System modernization from design to production: built its infrastructure and set the bar for what could ship, sending designs back to UX when they would not hold up in code.',
-      'Introduced Site Reliability Engineering (SRE) practices and dark launches, so features reach production behind feature flags and roll out gradually.',
-      'Made merge granular, so edits to different parts of the same screen no longer conflict; automatic text merge now resolves over 50% of the rest without user intervention.',
-    ],
-  },
-  lead: {
-    photo: true,
-    file: path.join(here, 'out/helder-goncalves-cv-lead.pdf'),
-    page2: 'earlier',
-    tagline: 'Technical Leadership · React · TypeScript · .NET · Generative AI',
-    summary:
-      'Lead Software Engineer with 10+ years building developer tools used daily by thousands of enterprise developers. Core stack: React, TypeScript and .NET. Leads by growing people: mentoring, design and code reviews, and close partnership with Product and UX. Gives teams the means to ship continuously and safely: SRE practices, telemetry and gradual rollouts behind feature flags. Grew from Junior to Lead at OutSystems on the same product; Top Performer Award 2023.',
-    labels: ['Team Leadership', 'Generative AI', 'Stability Programme', 'SRE & Progressive Delivery', 'Design System', 'Merge & Conflict Resolution', 'Desktop Notifications', 'Platform Migration', 'Cloud Platform Client'],
-    bullets: [
-      'Lead architecture and mentoring for 2 teams (12 engineers): review designs and code, grow engineers, and advise other engineering groups on design.',
-      'Led the integration of Mentor, OutSystems’ LLM-based agentic AI, into ODC Studio: conversational, AI-assisted development in the visual IDE, live since March 2026.',
-      'Built the telemetry that pinpoints the IDE’s high-impact failures and led the fixes: crash ratio from ~15% to ~3% (80% lower). Later extended to hangs and freezes.',
-      'Introduced Site Reliability Engineering (SRE) practices and dark launches, so the teams ship to production continuously behind feature flags and roll out gradually.',
-      'Led the 2026 company-wide Design System modernization: built its infrastructure and set the bar for what could ship, working with UX to rework designs that would not hold up in code.',
-      'Made merge granular, so edits to different parts of the same screen no longer conflict, and built automatic text merge, which now resolves over 50% of the rest without user intervention.',
-      'Designed and built desktop notifications into the IDE from scratch, giving it a channel to reach developers outside its own window.',
-      'With the wider team, made the multi-year move off Windows-only WPF to React and TypeScript in an embedded Chromium WebView, component by component behind feature flags, never forking; it gained macOS.',
-      'Re-architected the desktop IDE’s integration with OutSystems Developer Cloud (ODC), from a single backend dependency to distributed cloud services.',
-    ],
+    items: cv.work.groups.flatMap((g) =>
+      g.bullets.map((b) => ({ label: b.label, text: b.description, hidden: b.hidden })),
+    ),
   },
 };
 
-const highlights = [
-  ['10+ years', 'building developer tools'],
-  ['~15% → ~3%', 'IDE crash ratio'],
-  ['50%+', 'conflicts auto-resolved'],
-  ['2 teams', '12 engineers led'],
-];
+// staff, lead: their tagline, summary, highlights, skills and items.
+const privateFile = path.join(here, 'private.mjs');
+const tailored = fs.existsSync(privateFile) ? (await import(pathToFileURL(privateFile).href)).default : {};
+if (!fs.existsSync(privateFile)) console.warn(`⚠ skipped the tailored CVs: ${path.relative(process.cwd(), privateFile)} is missing`);
+for (const [key, v] of Object.entries(tailored)) {
+  variants[key] = { photo: true, page2: 'earlier', file: path.join(here, `out/helder-goncalves-cv-${key}.pdf`), ...v };
+}
 
 // The site's contact icons (src/components/Icon.tsx), as plain SVG.
 const iconPaths = {
@@ -116,6 +71,7 @@ const iconPaths = {
   linkedin: '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v8M8 7v.01M12 18v-5a2 2 0 0 1 4 0v5M12 13v5"/>',
   github: '<path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/>',
   website: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+  location: '<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
 };
 const icon = (name) =>
   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${iconPaths[name]}</svg>`;
@@ -151,9 +107,10 @@ function render(key) {
   const contacts = [
     [['email', email], ...(key === 'web' ? [] : [['phone', phone]]), ['website', website]],
     [['linkedin', linkedin], ['github', github]],
+    [['location', cv.profile.location]],
   ];
   const contact = ([i, t]) =>
-    `<span class="c"><span class="i">${icon(i)}</span>${i === 'email' || i === 'phone' ? esc(t) : `<a href="https://${esc(t)}">${esc(t)}</a>`}</span>`;
+    `<span class="c"><span class="i">${icon(i)}</span>${['email', 'phone', 'location'].includes(i) ? esc(t) : `<a href="https://${esc(t)}">${esc(t)}</a>`}</span>`;
   // Parsers that join pages glue page 2's first line onto page 1's last one,
   // so page 2 opens with a running header that can absorb it. It is two lines
   // so the next heading sits a measurable gap below a line on its own page.
@@ -250,11 +207,11 @@ ${contacts.map((row) => `<p class="contact">${row.map(contact).join(' ')}</p>`).
 
 <h2>Summary</h2>
 ${entry('', `<p class="summary">${esc(v.summary)}</p>
-<div class="highlights">${highlights.map(([n, l]) => `<div class="hl"><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join(' ')}</div>`)}
+<div class="highlights">${v.highlights.map(([n, l]) => `<div class="hl"><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join(' ')}</div>`)}
 
 <h2>Skills</h2>
 <div class="skills">
-${skills[key].map(([k, s]) => entry(`${esc(k)}:`, esc(s))).join('\n')}
+${v.skills.map(([k, s]) => entry(`${esc(k)}:`, esc(s))).join('\n')}
 </div>
 
 <h2>Experience</h2>
@@ -262,7 +219,7 @@ ${entry(
   esc(current.period),
   `${head(esc(fullTitle(current.title)), cv.work.company)}
 <ul>
-${v.bullets.map((b, i) => `<li><b>${esc(v.labels[i])}:</b> ${esc(b)}</li>`).join('\n')}
+${v.items.filter((item) => !item.hidden).map((item) => `<li><b>${esc(item.label)}:</b> ${esc(item.text)}</li>`).join('\n')}
 </ul>`,
   'job',
 )}
@@ -310,8 +267,7 @@ ${stack(p.techPills)}`,
 </div>
 
 <div class="keep">
-<h2>Certifications &amp; Awards</h2>
-${cv.certifications.map((c) => entry(esc(c.code), `${esc(c.name)}, ${esc(c.issuer)}`)).join('\n')}
+<h2>Awards</h2>
 ${cv.awards.map((a) => entry(String(a.year), `<b>${esc(a.title)}</b>, ${esc(a.context)}: ${esc(a.description)}`)).join('\n')}
 </div>
 

@@ -484,11 +484,19 @@ keep tracking under 1pt.
  and **no phone number**. The repo and the site are public, so the phone
  never goes in `cv.ts`, the script or any committed file; the script throws
  if it reaches this one.
-- **`staff`** and **`lead`** are tailored for applications (their own
- summary, skills and bullet wording in the script) and carry the phone,
- read from `scripts/cv/phone.local`. Both that file and their output,
- `scripts/cv/out/`, are git-ignored; without the file they are skipped with
- a warning. They go to recruiters directly, never into the repo.
+- **`staff`** and **`lead`** are tailored for applications and carry the
+ phone, read from `scripts/cv/phone.local`. Their tagline, summary,
+ highlights, skills and bullets live in `scripts/cv/private.mjs`, which must
+ never reach this public repo. That file, the phone file and their output, `scripts/cv/out/`, are
+ all git-ignored; without them the variants are skipped with a warning. They
+ go to recruiters directly, never into the repo.
+
+**Never delete a work item; hide it.** A bullet with `hidden: true` (in
+`cv.ts` or `private.mjs`) stays on record but renders nowhere: not on the
+site, not in any PDF. Bullets dropped for space, superseded wordings and
+long records with every known fact are kept this way, so nothing is lost
+when the two-page limit forces a cut. The certifications in `cv.ts` are
+hidden records too; nothing renders them.
 
 ### Social cards (`public/og/`)
 

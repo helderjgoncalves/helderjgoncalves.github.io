@@ -31,7 +31,7 @@ export function WorkExperience({ data }: WorkExperienceProps) {
               <div key={group.heading} className="group">
                 <h3 className="group__heading">{group.heading}</h3>
                 <ul className="group__list">
-                  {group.bullets.map((bullet) => (
+                  {group.bullets.filter((bullet) => !bullet.hidden).map((bullet) => (
                     <li key={bullet.label} className="group__item">
                       <strong>{bullet.label}:</strong>
                       {bullet.description}

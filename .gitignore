@@ -38,3 +38,6 @@ cv-from-pdf.md
 
 # Tailored CV PDFs (they carry the phone number) — never commit
 scripts/cv/out/
+
+# Tailored CV content (private) — never commit
+scripts/cv/private.mjs

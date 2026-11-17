@@ -2373,50 +2373,6 @@ $trip-cover-widest: 2.1;
   }
 }
 
-// ---- Certifications ----
-.certifications {
-  display: grid;
-  gap: 0.6rem;
-
-  &__item {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.5rem;
-    color: $color-text-soft;
-
-    &::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: $color-accent;
-      flex-shrink: 0;
-      margin-right: 0.15rem;
-      align-self: center;
-    }
-
-    strong {
-      color: $color-text;
-      font-weight: 600;
-    }
-
-    em {
-      font-style: normal;
-      color: $color-text-muted;
-      font-size: $fs-sm;
-    }
-
-    // The issuer span starts with "· " — the dot has built-in whitespace
-    // around its glyph that combines with the flex gap to make the gap
-    // before the bullet look bigger than the surrounding ones. Pull the
-    // span back into the gap so the visible spacing matches the rest.
-    > span {
-      margin-left: -0.25rem;
-    }
-  }
-}
-
 // ---- Awards ----
 .awards {
   display: grid;

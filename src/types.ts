@@ -18,6 +18,7 @@ export interface ContactLink {
 export interface ProfileData {
   name: string;
   title: string;
+  location: string;
   photo: string;
   paragraphs: string[];
   contacts: ContactLink[];
@@ -25,7 +26,8 @@ export interface ProfileData {
 
 export interface ExperienceGroup {
   heading: string;
-  bullets: { label: string; description: string }[];
+  /** `hidden` keeps a bullet on record without showing it on the site or in any PDF. */
+  bullets: { label: string; description: string; hidden?: boolean }[];
 }
 
 export interface RoleHistoryEntry {
@@ -73,11 +75,12 @@ export interface SideProject {
   href?: string;
 }
 
+/** On record only: nothing renders certifications. */
 export interface Certification {
   name: string;
   issuer: string;
-  year?: number;
   code?: string;
+  hidden: true;
 }
 
 export interface Award {

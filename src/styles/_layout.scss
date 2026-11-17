@@ -257,6 +257,12 @@
     color: rgba($white, 0.9);
   }
 
+  &__location {
+    margin-top: 0.35rem;
+    font-size: $fs-sm;
+    color: rgba($white, 0.75);
+  }
+
   // Download CV takes two forms. From md up it is a labelled pill under the
   // title, not another row in the contacts list, where it read as a fourth
   // way to reach me rather than an action. On phones a centred pill dominated
