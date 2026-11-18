@@ -1,4 +1,5 @@
 import type { ProfileData } from '../types';
+import { Highlights } from './Highlights';
 import { Section } from './Section';
 
 interface ProfileProps {
@@ -15,6 +16,7 @@ export function Profile({ profile }: ProfileProps) {
           </p>
         ))}
       </div>
+      <Highlights items={profile.highlights} />
     </Section>
   );
 }

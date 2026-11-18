@@ -480,12 +480,21 @@ capitals as separate letters ("S U M M A R Y"), so no heading is recognised:
 keep tracking under 1pt.
 
 The script builds one PDF, the public download
-`public/helder-goncalves-cv.pdf`: the site's own experience bullets, a
-summary blending the Staff and Lead pitch, and **no phone number**. The repo
+`public/helder-goncalves-cv.pdf`: the site's own profile and experience
+bullets, and **no phone number**. The repo
 and the site are public, so the phone never goes in `cv.ts`, the script or
 any committed file. The tailored versions sent to recruiters (with the phone)
 live in a private copy of this repo that is never pushed; nothing of them
-belongs here.
+belongs here. A bullet's `id` is how those versions pick it; the public PDF
+shows every bullet that isn't hidden.
+
+The profile in `cv.ts` feeds both the page and the PDF. Its `highlights`
+(four figures) close the page's Profile section as one card
+(`Highlights.tsx`) and form the PDF's strip; a figure never wraps, so keep
+each short ("~15% → ~3%" is the longest that fits a quarter of the column).
+The `tagline` and the working `hours` are the PDF's alone: the hero shows
+the role and a short `location` beside a pin, since a longer line there
+wrapped badly.
 
 **Never delete a work item; hide it.** A bullet with `hidden: true` in
 `cv.ts` stays on record but renders nowhere: not on the

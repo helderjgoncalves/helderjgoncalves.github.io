@@ -18,18 +18,25 @@ export interface ContactLink {
 export interface ProfileData {
   name: string;
   title: string;
+  /** Under the title in the PDF; the page leaves it out to keep the hero short. */
+  tagline: string;
   location: string;
   /** Working hours: the PDF adds them to the location; the hero stays short without them. */
   hours: string;
   photo: string;
   paragraphs: string[];
+  /** The card of figures under the profile, and the PDF's strip. */
+  highlights: { value: string; label: string }[];
   contacts: ContactLink[];
 }
 
 export interface ExperienceGroup {
   heading: string;
-  /** `hidden` keeps a bullet on record without showing it on the site or in any PDF. */
-  bullets: { label: string; description: string; hidden?: boolean }[];
+  /**
+   * `id` names a bullet so a tailored PDF can pick it.
+   * `hidden` keeps a bullet on record without showing it on the site or in any PDF.
+   */
+  bullets: { id?: string; label: string; description: string; hidden?: boolean }[];
 }
 
 export interface RoleHistoryEntry {

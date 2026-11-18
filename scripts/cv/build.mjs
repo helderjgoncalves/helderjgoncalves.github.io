@@ -23,12 +23,11 @@ const certifications = cv.certifications.filter((c) => !c.hidden);
 const website = 'hgoncalves.uk';
 
 const webSkills = [
-  ['Architecture', 'Software architecture, system design, distributed systems integration, REST APIs, embedded Chromium WebView (CEF / CefGlue), design systems, incremental migration'],
-  ['Reliability', 'Site Reliability Engineering (SRE), telemetry and observability, crash, hang and freeze metrics, feature flags, dark launches, progressive delivery'],
-  ['Programming', 'TypeScript, JavaScript, React, Node.js, C#, .NET, Avalonia, HTML, CSS, SCSS, C, C++'],
-  ['Testing', 'Jest, React Testing Library, unit and component testing'],
-  ['Leadership', 'Technical leadership, cross-team direction, mentoring, design and code reviews, Product and UX partnership'],
+  ['Architecture', 'Software architecture, system design, distributed systems integration, REST APIs, desktop and web applications, embedded Chromium WebView (CEF / CefGlue), design systems, incremental migration'],
+  ['Reliability', 'Site Reliability Engineering (SRE), telemetry and observability, crash, hang and freeze metrics, feature flags, dark launches, progressive delivery, automated testing (Jest, React Testing Library)'],
   ['AI', 'Generative AI, LLM integration, agentic AI, AI-assisted developer tools'],
+  ['Programming', 'TypeScript, JavaScript, React, Node.js, C#, .NET, Avalonia, HTML, CSS, SCSS, C, C++'],
+  ['Leadership', 'Technical leadership, cross-team technical direction, mentoring, design and code reviews'],
   ['Cloud & delivery', 'AWS, Snowflake, Cloudflare (R2, Workers, WAF, Zero Trust), CI/CD with GitHub Actions, Docker, Git'],
 ];
 
@@ -37,15 +36,10 @@ const variants = {
     photo: true,
     file: path.join(here, '../../public/helder-goncalves-cv.pdf'),
     page2: 'earlier',
-    tagline: 'Software Architecture · Technical Leadership · Reliability · Generative AI',
-    summary:
-      'Lead Software Engineer with 10+ years building developer tools in React, TypeScript and .NET, used daily by thousands of enterprise developers. Grew with one product from Junior to Lead, taking on wider scope at each step. Leads through architecture and mentoring: measure before fixing, evolve large systems incrementally behind feature flags rather than rewrite them, and hold design to a bar that survives real code. Drives product-wide work in reliability, cloud integration, design systems and Generative AI.',
-    highlights: [
-      ['10+ years', 'building developer tools'],
-      ['~15% → ~3%', 'IDE crash ratio'],
-      ['50%+', 'conflicts auto-resolved'],
-      ['2 teams', '12 engineers led'],
-    ],
+    // The /cv/ page's own profile, so the download mirrors it.
+    tagline: cv.profile.tagline,
+    summary: cv.profile.paragraphs.join(' '),
+    highlights: cv.profile.highlights.map((h) => [h.value, h.label]),
     skills: webSkills,
     // The site's own bullets, so the download mirrors the /cv/ page.
     items: cv.work.groups.flatMap((g) =>

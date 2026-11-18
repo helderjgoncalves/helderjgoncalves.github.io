@@ -4,12 +4,19 @@ export const cv: CvData = {
   profile: {
     name: 'Hélder Gonçalves',
     title: 'Lead Software Engineer',
+    tagline: 'Software Architecture · Technical Leadership · Reliability · Generative AI',
     location: 'Europe (EU citizen) · Remote',
     hours: 'comfortable working US East Coast hours',
     photo: '/portrait.jpg',
     paragraphs: [
-      'Lead Software Engineer with 10+ years building developer tools in React, TypeScript and .NET, used daily by thousands of enterprise developers. I lead architecture and mentoring for 2 teams (12 engineers) and shape technical direction for other engineering groups.',
-      'I lead long-running, product-wide initiatives: a reliability programme that cut the OutSystems IDE’s crash ratio from ~15% to ~3%, the company-wide Design System modernization, the IDE’s move onto OutSystems Developer Cloud (ODC) services, and the Generative AI integration of Mentor, OutSystems’ LLM-based agentic AI, generally available in ODC Studio since March 2026.',
+      'Lead Software Engineer with 10+ years shaping the architecture of developer tools used daily by thousands of enterprise developers. Core stack: React, TypeScript and .NET. Sets technical direction for other engineering groups through architecture guidance and design reviews.',
+      'Favours evidence and incremental change: telemetry before fixes, and migrations shipped component by component behind feature flags, never a forked product. Drives multi-year, product-wide work in reliability, cloud integration, design systems and Generative AI.',
+    ],
+    highlights: [
+      { value: '10+ years', label: 'building developer tools' },
+      { value: '~15% → ~3%', label: 'IDE crash ratio' },
+      { value: '50%+', label: 'conflicts auto-resolved' },
+      { value: '2 teams', label: '12 engineers led' },
     ],
     contacts: [
       { label: 'helder@hgoncalves.uk', href: 'mailto:helder@hgoncalves.uk', icon: 'email' },
@@ -29,52 +36,54 @@ export const cv: CvData = {
     ],
     groups: [
       {
-        heading: 'AI & Technical Leadership',
+        heading: 'Architecture & Reliability',
         bullets: [
           {
-            label: 'Generative AI Integration',
+            id: 'architecture',
+            label: 'Architecture Ownership',
             description:
-              'Led the integration of Mentor, OutSystems’ LLM-based agentic AI, into ODC Studio: conversational, AI-assisted development in the visual IDE, live since March 2026.',
+              'Own the architecture of 2 teams (12 engineers); shape technical direction for other engineering groups through architecture guidance, design and code reviews.',
           },
           {
             label: 'Architecture & Mentoring',
+            hidden: true,
             description:
               'Own the architecture of 2 teams (12 engineers) and mentor their engineers; guide other engineering groups through architecture, design and code reviews.',
           },
-        ],
-      },
-      {
-        heading: 'Reliability & Quality Engineering',
-        bullets: [
           {
-            label: 'Stability & Observability',
+            id: 'stability',
+            label: 'Stability Programme',
             description:
               'Built the telemetry that pinpoints the IDE’s high-impact failures and led the fixes: crash ratio from ~15% to ~3% (80% lower). The approach now covers hangs and freezes.',
           },
           {
+            id: 'sre',
             label: 'SRE & Progressive Delivery',
             description:
               'Introduced Site Reliability Engineering (SRE) practices and dark launches, so the teams ship to production continuously behind feature flags and roll out gradually.',
           },
+          {
+            label: 'SRE & Progressive Delivery',
+            hidden: true,
+            description:
+              'Introduced Site Reliability Engineering (SRE) practices and dark launches, so features reach production behind feature flags and roll out gradually.',
+          },
         ],
       },
       {
-        heading: 'Developer Experience',
+        heading: 'Generative AI',
         bullets: [
           {
-            label: 'Design System Modernization',
+            id: 'mentor',
+            label: 'Mentor Integration',
             description:
-              'Led the 2026 company-wide Design System modernization from design to production: built its infrastructure and set the bar for what could ship, sending designs back to UX when they would not hold up in code.',
+              'Led the integration of Mentor, OutSystems’ LLM-based agentic AI, into ODC Studio: conversational, AI-assisted development in the visual IDE, live since March 2026.',
           },
           {
-            label: 'Merge & Conflict Resolution',
+            id: 'aiEnablement',
+            label: 'AI Enablement',
             description:
-              'Made merge granular, so edits to different parts of the same screen no longer conflict; automatic text merge now resolves over 50% of the rest, in a redesigned merge UI.',
-          },
-          {
-            label: 'Desktop Notifications',
-            description:
-              'Designed and built desktop notifications into the IDE from scratch, giving it a channel to reach developers outside its own window.',
+              'Co-wrote the agent skills the IDE group’s ~20 developers use and keep its AI guidelines correct, so their agents follow the codebase’s conventions.',
           },
         ],
       },
@@ -82,14 +91,45 @@ export const cv: CvData = {
         heading: 'Technical Architecture & Cloud Integration',
         bullets: [
           {
+            id: 'cloudClient',
             label: 'Cloud Platform Client',
             description:
               'Re-architected the desktop IDE’s integration with OutSystems Developer Cloud (ODC), from a single backend dependency to distributed cloud services.',
           },
           {
+            id: 'migration',
+            label: 'Platform Migration',
+            description:
+              'With the wider team, moved the IDE off Windows-only WPF to React and TypeScript in an embedded Chromium WebView over several years, component by component behind feature flags; it gained macOS.',
+          },
+          {
             label: 'Incremental Platform Migration',
+            hidden: true,
             description:
               'With the wider team, made the multi-year move off Windows-only WPF to React and TypeScript in an embedded Chromium WebView, component by component behind feature flags, never forking; it gained macOS.',
+          },
+        ],
+      },
+      {
+        heading: 'Developer Experience',
+        bullets: [
+          {
+            id: 'designSystem',
+            label: 'Design System',
+            description:
+              'Led the 2026 company-wide Design System modernization from design to production: built its infrastructure and set the bar for what could ship, sending designs back to UX when they would not hold up in code.',
+          },
+          {
+            id: 'merge',
+            label: 'Merge & Conflict Resolution',
+            description:
+              'Made merge granular, so edits to different parts of the same screen no longer conflict; automatic text merge now resolves over 50% of the rest, in a redesigned merge UI.',
+          },
+          {
+            id: 'notifications',
+            label: 'Desktop Notifications',
+            description:
+              'Designed and built desktop notifications into the IDE from scratch, giving it a channel to reach developers outside its own window.',
           },
         ],
       },

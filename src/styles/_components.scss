@@ -34,6 +34,80 @@
   }
 }
 
+// The PDF's strip of figures as one card, under the profile like the PDF's
+// under its summary: the claims first, then the figures that back them (lifted
+// over the hero, they came before the reader knew what they measured). The
+// cells sit 1px apart on the rule colour, so the dividers stay crisp in either
+// layout (2×2 or 4 across). Figures in the text colour: blue (accent or
+// heading) made them read as headings. The bar on top is the PDF's own (same
+// blues, fixed across themes like the hero's), the card's one touch of brand.
+.highlights {
+  @include card;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  margin: 1.6rem 0 0;
+  overflow: hidden;
+  background: $color-rule;
+
+  @include md-up {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 1;
+    height: 3px;
+    background: linear-gradient(90deg, $blue-700, $blue-600 55%, $blue-400);
+  }
+
+  // The label comes first in the markup, so it is read as the term; the
+  // figure still shows above it.
+  &__item {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    padding: 1.05rem 1.15rem 1rem;
+    background: $color-card;
+
+    @include md-up {
+      padding: 1.3rem 1.15rem 1.2rem;
+    }
+  }
+
+  // One line always: at a quarter of the column there is no room for a larger
+  // size ("~15% → ~3%" wrapped at $fs-2xl). On phones the size follows the
+  // width, or the card's overflow clipped the figure at 320–390px.
+  &__value {
+    margin: 0;
+    font-size: clamp(1.1rem, 5.6vw, #{$fs-xl});
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    color: $color-text;
+
+    @include md-up {
+      font-size: $fs-xl;
+    }
+  }
+
+  &__arrow {
+    font-weight: 400;
+    color: $color-text-muted;
+  }
+
+  &__label {
+    margin: 0.3rem 0 0;
+    font-size: $fs-sm;
+    color: $color-text-muted;
+  }
+}
+
 // ---- Timeline (work + internships + education) ----
 .timeline {
   position: relative;
