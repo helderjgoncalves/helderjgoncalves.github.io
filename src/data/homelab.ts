@@ -52,12 +52,7 @@ export const homelab: HomelabPageData = {
     {
       title: 'One hostname everywhere',
       description:
-        'Public DNS resolves to Cloudflare; AdGuard Home rewrites map the same names to internal IPs for LAN and VPN clients alike. Either way the request hits the same reverse proxy — same URLs, same TLS, same app logins, one bookmark.',
-    },
-    {
-      title: 'Encrypted lookups',
-      description:
-        'Lookups leave over DoH, so nothing on the path sees a plaintext hostname — the name resolution is encrypted, not just the request that follows it. AdGuard Home speaks DoH natively, with no second resolver bolted alongside.',
+        'Public DNS resolves to Cloudflare; AdGuard Home rewrites map the same names to internal IPs for LAN and VPN clients alike, and resolves everything else over DoH. Either way the request hits the same reverse proxy — same URLs, same TLS, same app logins, one bookmark.',
     },
     {
       title: 'Auth at the edge',
@@ -76,9 +71,22 @@ export const homelab: HomelabPageData = {
       evidence: { label: 'Live status page', href: 'https://status.hgoncalves.uk' },
     },
     {
+      title: 'Updates that undo themselves',
+      description:
+        'Updates run unattended, tiered by risk: low-risk services update each morning and roll themselves back if unhealthy, a database app follows its major with no rollback, and the rest wait for me. A weekly email lists what changed and what is waiting; a run that fails, or never runs, raises an alert.',
+      evidence: {
+        label: 'The updater on GitHub',
+        href: 'https://github.com/helderjgoncalves/Homelab-Infrastructure/tree/main/updates',
+      },
+    },
+    {
       title: 'Secrets stay out of Git',
       description:
-        'Every stack is compose-as-code with `.env.example` templates. Runtime secrets live only in ignored env files; config is reproducible, credentials are not.',
+        'Every stack is compose-as-code with .env.example templates. Runtime secrets live only in ignored env files; config is reproducible, credentials are not. CI scans the whole Git history for leaks on every push.',
+      evidence: {
+        label: 'CI on every push',
+        href: 'https://github.com/helderjgoncalves/Homelab-Infrastructure/actions/workflows/validate.yml',
+      },
     },
   ],
   stack: [
@@ -111,7 +119,7 @@ export const homelab: HomelabPageData = {
   meta: {
     title: 'Self-Hosted Home Lab · Hélder Gonçalves',
     description:
-      'Case study of a NAS private cloud: no inbound ports, Cloudflare Tunnel into Traefik, zero-trust access, DNS over HTTPS and monitoring, all declared in Git.',
+      'Case study of a NAS private cloud: no inbound ports, Cloudflare Tunnel into Traefik, zero-trust access, monitoring and self-reverting updates, all declared in Git.',
     canonical: 'https://hgoncalves.uk/homelab/',
     image: 'https://hgoncalves.uk/og/homelab.jpg',
     datePublished: '2026-08-10',
