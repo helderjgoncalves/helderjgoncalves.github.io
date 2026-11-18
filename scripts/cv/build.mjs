@@ -2,9 +2,8 @@
 // standard headings, no images.
 //
 // - web: the site's download, public/helder-goncalves-cv.pdf (no phone).
-// - staff, lead: tailored for applications, written to out/ (git-ignored).
-//   Their content is in private.mjs and the phone number in phone.local,
-//   both git-ignored; each is skipped without them.
+//   The tailored versions for applications live in a private copy of this
+//   repo, never here.
 //
 // Items with `hidden: true` stay on record but never render.
 //
@@ -20,8 +19,6 @@ import { cv } from '../../src/data/cv.ts';
 const here = path.dirname(fileURLToPath(import.meta.url));
 const chrome = process.env.CHROME ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 
-const phoneFile = path.join(here, 'phone.local');
-const phone = fs.existsSync(phoneFile) ? fs.readFileSync(phoneFile, 'utf8').trim() : '';
 const certifications = cv.certifications.filter((c) => !c.hidden);
 const website = 'hgoncalves.uk';
 
@@ -56,19 +53,9 @@ const variants = {
     ),
   },
 };
-
-// staff, lead: their tagline, summary, highlights, skills and items.
-const privateFile = path.join(here, 'private.mjs');
-const tailored = fs.existsSync(privateFile) ? (await import(pathToFileURL(privateFile).href)).default : {};
-if (!fs.existsSync(privateFile)) console.warn(`⚠ skipped the tailored CVs: ${path.relative(process.cwd(), privateFile)} is missing`);
-for (const [key, v] of Object.entries(tailored)) {
-  variants[key] = { photo: true, page2: 'earlier', file: path.join(here, `out/helder-goncalves-cv-${key}.pdf`), ...v };
-}
-
 // The site's contact icons (src/components/Icon.tsx), as plain SVG.
 const iconPaths = {
   email: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
-  phone: '<path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
   linkedin: '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v8M8 7v.01M12 18v-5a2 2 0 0 1 4 0v5M12 13v5"/>',
   github: '<path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/>',
   website: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
@@ -106,12 +93,12 @@ function render(key) {
   const github = cv.profile.contacts.find((c) => c.icon === 'github').label;
   const ed = cv.education;
   const contacts = [
-    [['email', email], ...(key === 'web' ? [] : [['phone', phone]]), ['website', website]],
+    [['email', email], ['website', website]],
     [['linkedin', linkedin], ['github', github]],
-    [['location', v.location ?? cv.profile.location]],
+    [['location', cv.profile.location]],
   ];
   const contact = ([i, t]) =>
-    `<span class="c"><span class="i">${icon(i)}</span>${['email', 'phone', 'location'].includes(i) ? esc(t) : `<a href="https://${esc(t)}">${esc(t)}</a>`}</span>`;
+    `<span class="c"><span class="i">${icon(i)}</span>${['email', 'location'].includes(i) ? esc(t) : `<a href="https://${esc(t)}">${esc(t)}</a>`}</span>`;
   // Parsers that join pages glue page 2's first line onto page 1's last one,
   // so page 2 opens with a running header that can absorb it. It is two lines
   // so the next heading sits a measurable gap below a line on its own page.
@@ -280,17 +267,10 @@ ${entry('', esc(cv.languages.join(', ')))}
 </body></html>`;
 }
 
-fs.mkdirSync(path.join(here, 'out'), { recursive: true });
 for (const key of Object.keys(variants)) {
-  if (key !== 'web' && !phone) {
-    console.warn(`⚠ skipped ${key}: put the phone number in ${path.relative(process.cwd(), phoneFile)}`);
-    continue;
-  }
   const html = path.join(os.tmpdir(), `cv-${key}.html`);
   const pdf = variants[key].file;
-  const markup = render(key);
-  if (key === 'web' && phone && markup.includes(phone)) throw new Error('the public CV must not carry the phone number');
-  fs.writeFileSync(html, markup);
+  fs.writeFileSync(html, render(key));
   execFileSync(chrome, [
     '--headless=new',
     '--disable-gpu',

@@ -479,20 +479,16 @@ decoration in flow. And letter-spacing over about 1pt makes extractors read
 capitals as separate letters ("S U M M A R Y"), so no heading is recognised:
 keep tracking under 1pt.
 
-- **`web`** is the public download, `public/helder-goncalves-cv.pdf`: the
- site's own experience bullets, a summary blending the Staff and Lead pitch,
- and **no phone number**. The repo and the site are public, so the phone
- never goes in `cv.ts`, the script or any committed file; the script throws
- if it reaches this one.
-- **`staff`** and **`lead`** are tailored for applications and carry the
- phone, read from `scripts/cv/phone.local`. Their tagline, summary,
- highlights, skills and bullets live in `scripts/cv/private.mjs`, which must
- never reach this public repo. That file, the phone file and their output, `scripts/cv/out/`, are
- all git-ignored; without them the variants are skipped with a warning. They
- go to recruiters directly, never into the repo.
+The script builds one PDF, the public download
+`public/helder-goncalves-cv.pdf`: the site's own experience bullets, a
+summary blending the Staff and Lead pitch, and **no phone number**. The repo
+and the site are public, so the phone never goes in `cv.ts`, the script or
+any committed file. The tailored versions sent to recruiters (with the phone)
+live in a private copy of this repo that is never pushed; nothing of them
+belongs here.
 
-**Never delete a work item; hide it.** A bullet with `hidden: true` (in
-`cv.ts` or `private.mjs`) stays on record but renders nowhere: not on the
+**Never delete a work item; hide it.** A bullet with `hidden: true` in
+`cv.ts` stays on record but renders nowhere: not on the
 site, not in any PDF. Bullets dropped for space, superseded wordings and
 long records with every known fact are kept this way, so nothing is lost
 when the two-page limit forces a cut. Certifications take `hidden` too: both
