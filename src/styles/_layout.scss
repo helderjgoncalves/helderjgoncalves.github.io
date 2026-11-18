@@ -258,9 +258,16 @@
   }
 
   &__location {
-    margin-top: 0.35rem;
+    margin-top: 0.45rem;
     font-size: $fs-sm;
-    color: rgba($white, 0.75);
+    color: rgba($white, 0.8);
+
+    svg {
+      width: 1.05em;
+      height: 1.05em;
+      margin-right: 0.35em;
+      vertical-align: -0.17em;
+    }
   }
 
   // Download CV takes two forms. From md up it is a labelled pill under the

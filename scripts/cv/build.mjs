@@ -95,7 +95,7 @@ function render(key) {
   const contacts = [
     [['email', email], ['website', website]],
     [['linkedin', linkedin], ['github', github]],
-    [['location', cv.profile.location]],
+    [['location', `${cv.profile.location}; ${cv.profile.hours}`]],
   ];
   const contact = ([i, t]) =>
     `<span class="c"><span class="i">${icon(i)}</span>${['email', 'location'].includes(i) ? esc(t) : `<a href="https://${esc(t)}">${esc(t)}</a>`}</span>`;

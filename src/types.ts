@@ -19,6 +19,8 @@ export interface ProfileData {
   name: string;
   title: string;
   location: string;
+  /** Working hours: the PDF adds them to the location; the hero stays short without them. */
+  hours: string;
   photo: string;
   paragraphs: string[];
   contacts: ContactLink[];

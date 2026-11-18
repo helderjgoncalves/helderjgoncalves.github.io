@@ -4,7 +4,8 @@ export const cv: CvData = {
   profile: {
     name: 'Hélder Gonçalves',
     title: 'Lead Software Engineer',
-    location: 'Europe (EU citizen) · Remote; comfortable working US East Coast hours',
+    location: 'Europe (EU citizen) · Remote',
+    hours: 'comfortable working US East Coast hours',
     photo: '/portrait.jpg',
     paragraphs: [
       'Lead Software Engineer with 10+ years building developer tools in React, TypeScript and .NET, used daily by thousands of enterprise developers. I lead architecture and mentoring for 2 teams (12 engineers) and shape technical direction for other engineering groups.',

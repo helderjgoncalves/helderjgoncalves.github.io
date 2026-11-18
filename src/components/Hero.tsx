@@ -35,7 +35,10 @@ export function Hero({ profile, showDownload = false }: HeroProps) {
         <div>
           <h1 className="hero__name">{profile.name}</h1>
           <p className="hero__title">{profile.title}</p>
-          <p className="hero__location">{profile.location}</p>
+          <p className="hero__location">
+            <Icon name="location" />
+            {profile.location}
+          </p>
           {showDownload && <CvDownload variant="pill" />}
         </div>
 
