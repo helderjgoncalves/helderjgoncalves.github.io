@@ -1,0 +1,157 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ---- Home page: the cards to the rest of the site ----
+.doors {
+  display: grid;
+  gap: 1rem;
+
+  @include md-up {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+.door {
+  @include card;
+  @include card-link;
+  display: flex;
+  flex-direction: column;
+  padding: 1.35rem 1.25rem 1.25rem;
+
+  &__eyebrow {
+    font-size: $fs-xs;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $color-text-muted;
+  }
+
+  &__title {
+    margin-top: 0.35rem;
+    font-size: $fs-lg;
+    font-weight: 700;
+    color: $color-heading;
+  }
+
+  &__line {
+    flex: 1;
+    margin-top: 0.6rem;
+    color: $color-text-soft;
+    line-height: 1.6;
+  }
+
+  // Looks like an action link but is a span: the whole card is the anchor.
+  &__cta {
+    @include action-link;
+    @include action-link-primary;
+    align-self: flex-start;
+    margin-top: 1.1rem;
+  }
+
+  &:hover &__cta,
+  &:focus-visible &__cta { border-color: $color-accent; }
+}
+
+// The home page's hero: a bigger title, the sunrise at full strength.
+.home-hero {
+  @include md-up { padding: 4.5rem 0 4.25rem; }
+
+  &__title {
+    font-size: clamp(2.2rem, 8vw, $fs-4xl);
+    max-width: 18ch;
+  }
+
+  .page-hero__thesis { max-width: 38rem; }
+}
+
+// A theme's way onwards under its photos ("All trips").
+.theme-more {
+  display: flex;
+  margin-top: 1.15rem;
+
+  &__link {
+    @include action-link;
+    @include action-link-primary;
+  }
+}
+
+// ---- Home page: the wonder goals ----
+.wonders {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+
+  @include sm-up { grid-template-columns: repeat(2, 1fr); }
+  @include md-up { grid-template-columns: repeat(4, 1fr); }
+
+  &__intro {
+    color: $color-text-soft;
+    line-height: 1.6;
+  }
+
+  &__bar {
+    height: 8px;
+    margin-top: 0.9rem;
+    border-radius: $radius-pill;
+    background: $color-rule;
+    overflow: hidden;
+
+    span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: $color-accent;
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.8rem 0.9rem;
+    border: 1px dashed $color-rule;
+    border-radius: $radius-md;
+    color: $color-text-muted;
+
+    &--seen {
+      @include card;
+      border: 1px solid transparent;
+      color: $color-text;
+    }
+  }
+
+  &__mark {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1.5px dashed $color-rule;
+
+    .wonders__item--seen & {
+      border: 0;
+      background: $color-accent;
+      color: $color-pill-text;
+    }
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  &__name {
+    display: block;
+    font-weight: 600;
+  }
+
+  &__place {
+    display: block;
+    font-size: $fs-xs;
+    color: $color-text-muted;
+  }
+}

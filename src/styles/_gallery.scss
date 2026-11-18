@@ -1,0 +1,207 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// Photos, not controls: no hover state, so it stays out of the interaction
+// vocabulary. Captions sit on a dark scrim, fixed across themes like the heroes.
+.gallery {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+
+  @include md-up {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.9rem;
+  }
+
+  &__intro {
+    margin-bottom: 1rem;
+    color: $color-text-soft;
+    line-height: 1.6;
+  }
+
+  // A link to a photo (/trips/<slug>/#<photo>) lands with its stop's title in
+  // view: about one section header of room above the first row.
+  > li {
+    scroll-margin-top: 4rem;
+
+    @include md-up { scroll-margin-top: 4.5rem; }
+  }
+
+  &__figure {
+    position: relative;
+    height: 100%;
+    margin: 0;
+    border-radius: $radius-md;
+    overflow: hidden;
+    background: $color-rule;
+    box-shadow: $shadow-card;
+  }
+
+  &__link {
+    display: block;
+    height: 100%;
+    border-radius: $radius-md;
+    @include card-link;
+  }
+
+  // A clip's tile wraps its img in <picture> for the HDR poster; keep the
+  // img sized against the figure as if the wrapper weren't there.
+  &__figure picture { display: contents; }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+  }
+
+  // Two columns wide at 3:2 lands within a few pixels of the 3:4 tiles'
+  // height, so the row stays level without fixing heights.
+  &__item--wide {
+    grid-column: span 2;
+
+    .gallery__img { aspect-ratio: 3 / 2; }
+  }
+
+  // Desktop's three columns already end each section on a full row.
+  &__item--fill {
+    @include md-down {
+      grid-column: span 2;
+
+      .gallery__img { aspect-ratio: 3 / 2; }
+    }
+  }
+
+  // A curiosity, sized by its words. Beside a last row of one photo it fills
+  // the two open cells and sits level with the photo's top edge, so the spare
+  // height falls below it rather than inside it; a single open cell is too
+  // narrow, so it never takes one. Otherwise, among two or more rows it is a
+  // band at the middle row break; after a single row, and on phones, a band
+  // under the photos.
+  &__note {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 1rem;
+    align-items: start;
+    margin: 0;
+    padding: 1.15rem 1.25rem 1.25rem;
+    border: 1px solid $color-note-border;
+    border-radius: $radius-md;
+    background:
+      radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, $color-accent 7%, transparent), transparent 65%),
+      $color-note-bg;
+
+    @include md-up {
+      padding: 1.4rem 1.6rem;
+
+      &[data-beside] {
+        grid-column: span 2;
+        align-self: start;
+      }
+
+      &--split { order: 1; }
+    }
+  }
+
+  &__item--after-note {
+    @include md-up { order: 2; }
+  }
+
+  &__note-mark {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: $color-card;
+    color: $color-accent;
+    box-shadow: 0 0 0 1px color-mix(in srgb, $color-accent 20%, transparent);
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &__note-label {
+    margin: 0.1rem 0 0.35rem;
+    font-size: $fs-xs;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $color-heading;
+  }
+
+  // Body size, like the rest of the page's prose: the trail headings around
+  // it are $fs-md, and the note must not outweigh them.
+  &__note-text {
+    margin: 0;
+    font-size: $fs-base;
+    line-height: 1.55;
+    color: $color-text;
+    text-wrap: pretty;
+  }
+
+  &__caption {
+    position: absolute;
+    inset: auto 0 0 0;
+    display: grid;
+    gap: 0.1rem;
+    padding: 2.75rem 0.75rem 0.65rem;
+    font-size: $fs-xs;
+    color: $white;
+    // White text has to hold over snow and bright sky, not just dark rock.
+    background: linear-gradient(
+      180deg,
+      transparent,
+      rgba($ink-900, 0.35) 35%,
+      rgba($ink-900, 0.72) 70%,
+      rgba($ink-900, 0.88)
+    );
+    text-shadow: 0 1px 3px rgba($ink-900, 0.6);
+    text-wrap: balance;
+
+    @include md-up {
+      font-size: $fs-sm;
+      padding: 3.5rem 0.95rem 0.8rem;
+    }
+  }
+
+  &__title { font-weight: 600; }
+
+  &__place {
+    font-size: $fs-xs;
+    color: rgba($white, 0.86);
+  }
+
+  // Marks a tile that opens a clip. The grid never plays or loads it: the
+  // viewer does, once the clip is the item on screen.
+  &__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border: 1px solid rgba($white, 0.5);
+    border-radius: 50%;
+    background: rgba($ink-900, 0.45);
+    backdrop-filter: blur(4px);
+    color: $white;
+    translate: -50% -50%;
+    pointer-events: none;
+
+    svg {
+      width: 1.4rem;
+      height: 1.4rem;
+      margin-left: 0.15rem;
+      fill: currentColor;
+    }
+  }
+}

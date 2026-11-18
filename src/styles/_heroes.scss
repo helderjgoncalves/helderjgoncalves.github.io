@@ -1,0 +1,148 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ---- Sub-page hero (home lab, trips; under the trip pages' cover too) ----
+.page-hero {
+  position: relative;
+  isolation: isolate;
+  padding: 2.5rem 0 3rem;
+  background:
+    radial-gradient(900px 320px at 15% -10%, var(--hero-glow), transparent 55%),
+    linear-gradient(180deg, var(--hero-from) 0%, var(--hero-to) 100%);
+  color: $white;
+  overflow: hidden;
+
+  @include md-up {
+    padding: 3.75rem 0 3.75rem;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 -1px 0;
+    height: 32px;
+    background: linear-gradient(180deg, transparent, $color-bg);
+    pointer-events: none;
+  }
+
+  &__eyebrow {
+    font-size: $fs-sm;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba($white, 0.72);
+    margin: 0 0 0.85rem;
+  }
+
+  &__title {
+    font-size: clamp(1.85rem, 6vw, $fs-3xl);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  &__thesis {
+    margin-top: 1rem;
+    font-size: clamp(1.05rem, 3.2vw, $fs-lg);
+    line-height: 1.45;
+    font-weight: 500;
+    color: rgba($white, 0.95);
+  }
+
+  &__intro {
+    margin-top: 0.85rem;
+    font-size: $fs-md;
+    line-height: 1.65;
+    color: rgba($white, 0.82);
+  }
+
+  // Raw white like the eyebrow: the hero stays brand-blue in both themes.
+  &__note {
+    margin-top: 0.85rem;
+    font-size: $fs-sm;
+    font-style: italic;
+    color: rgba($white, 0.72);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 1.75rem;
+  }
+}
+
+// Accents shared by the blue heroes (HeroAccents.tsx): a glow of slow-drifting
+// lights behind the text, a highlighted word in the title, and glass buttons
+// to the page's sections. Warm (sunrise) on the personal pages, cool (aurora)
+// on the work ones. Raw palette: like the blue, they stay the same in both
+// themes, though each theme sets how strongly they show. The hero they sit in
+// isolates, so the glow stays behind its text.
+@function _light($colour, $alpha) {
+  @return color-mix(in srgb, #{$colour} calc(#{$alpha * 100%} * var(--hero-lights-strength)), transparent);
+}
+
+.hero-glow {
+  position: absolute;
+  inset: -40% -10% -20% 30%;
+  z-index: -1;
+  background:
+    radial-gradient(38% 46% at 70% 40%, _light($sunrise-orange, 0.55), transparent 70%),
+    radial-gradient(30% 40% at 90% 70%, _light($sunrise-pink, 0.45), transparent 70%),
+    radial-gradient(26% 30% at 55% 75%, _light($sunrise-gold, 0.3), transparent 70%);
+  filter: blur(40px);
+  mix-blend-mode: var(--hero-lights-blend);
+  animation: hero-glow-drift 18s ease-in-out infinite alternate;
+  pointer-events: none;
+
+  @include md-down { inset: -20% -40% -10% -10%; }
+
+  @media (prefers-reduced-motion: reduce) { animation: none; }
+
+  &--cool {
+    background:
+      radial-gradient(38% 46% at 70% 40%, _light($aurora-teal, 0.4), transparent 70%),
+      radial-gradient(30% 40% at 90% 70%, _light($aurora-violet, 0.4), transparent 70%),
+      radial-gradient(26% 30% at 55% 75%, _light($aurora-sky, 0.3), transparent 70%);
+  }
+}
+
+@keyframes hero-glow-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-6%, 4%, 0) scale(1.08); }
+}
+
+.hero-highlight {
+  background: linear-gradient(90deg, $sunrise-gold, $sunrise-orange 45%, $sunrise-pink);
+  background-clip: text;
+  color: transparent;
+
+  &--cool { background-image: linear-gradient(90deg, $aurora-sky, $aurora-teal 50%, $aurora-violet); }
+}
+
+.hero-jumps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 2rem;
+
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 1rem;
+    border-radius: $radius-pill;
+    font-size: $fs-sm;
+    font-weight: 600;
+    color: $white;
+    text-decoration: none;
+    @include hero-button;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}

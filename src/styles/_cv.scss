@@ -1,0 +1,620 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ---- Hero (header card) ----
+.hero {
+  position: relative;
+  isolation: isolate;
+  padding: 2.25rem 0 3rem;
+  background:
+    radial-gradient(1200px 400px at 80% -20%, var(--hero-glow), transparent 60%),
+    linear-gradient(180deg, var(--hero-from) 0%, var(--hero-to) 100%);
+  color: $white;
+  overflow: hidden;
+
+  @include md-up {
+    padding: 3.5rem 0 3.5rem;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 -1px 0;
+    height: 32px;
+    background: linear-gradient(180deg, transparent, $color-bg);
+    pointer-events: none;
+  }
+
+  &__inner {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+    align-items: center;
+    text-align: center;
+    justify-items: center;
+
+    @include md-up {
+      grid-template-columns: auto 1fr auto;
+      gap: 2.5rem;
+      text-align: left;
+      justify-items: stretch;
+    }
+  }
+
+  &__photo {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: rgba($white, 0.18);
+    border: 3px solid rgba($white, 0.3);
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: $white;
+
+    @include md-up {
+      width: 120px;
+      height: 120px;
+      font-size: 2.5rem;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__name {
+    font-size: clamp(2rem, 7.5vw, $fs-3xl);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    font-weight: 800;
+    // Names must never break mid-word. Allow whole-word wrapping only.
+    overflow-wrap: normal;
+    word-break: keep-all;
+
+    @include md-up {
+      // Scale smoothly between md (~820px) and large desktop (~1333px+)
+      // so the name never has to fight for room with the contacts column.
+      font-size: clamp($fs-3xl, 4.5vw, $fs-4xl);
+    }
+  }
+
+  &__title {
+    margin-top: 0.4rem;
+    font-size: clamp(1.05rem, 4vw, $fs-lg);
+    font-weight: 400;
+    color: rgba($white, 0.9);
+  }
+
+  &__location {
+    margin-top: 0.45rem;
+    font-size: $fs-sm;
+    color: rgba($white, 0.8);
+
+    svg {
+      width: 1.05em;
+      height: 1.05em;
+      margin-right: 0.35em;
+      vertical-align: -0.17em;
+    }
+  }
+
+  // Download CV takes two forms. From md up it is a labelled pill under the
+  // title, not another row in the contacts list, where it read as a fourth
+  // way to reach me rather than an action. On phones a centred pill dominated
+  // the header, so there it is one more round icon in the contacts row.
+  &__download--pill {
+    display: none;
+
+    @include md-up {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 1rem;
+      padding: 0.5rem 1.05rem;
+      border-radius: $radius-pill;
+      font-size: $fs-sm;
+      font-weight: 600;
+      color: $white;
+      @include hero-button;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  // Mobile: horizontal row of icon-only buttons.
+  // Desktop: vertical list of icon + text links.
+  &__contacts {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    font-size: $fs-sm;
+    max-width: 100%;
+
+    @include md-up {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: flex-end;
+      justify-content: flex-start;
+      gap: 0.4rem;
+    }
+  }
+
+  &__contact {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba($white, 0.95);
+
+    // Mobile-first: round icon-only button.
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    @include hero-button;
+
+    svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      opacity: 0.95;
+    }
+
+    // Visually hide the label on mobile but keep it for assistive tech.
+    > span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    &:hover { color: $white; }
+
+    // Desktop: revert to inline icon + text link.
+    @include md-up {
+      width: auto;
+      height: auto;
+      min-height: 32px;
+      padding: 0.25rem 0;
+      gap: 0.55rem;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+
+      svg {
+        width: 16px;
+        height: 16px;
+        opacity: 0.85;
+      }
+
+      > span {
+        position: static;
+        width: auto;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        overflow: visible;
+        clip: auto;
+        white-space: normal;
+        border: 0;
+      }
+
+      // Flattened to a text link here, so the glass surface drops away and only
+      // the lift and colour shift survive.
+      &:hover,
+      &:focus-visible {
+        background: transparent;
+        border-color: transparent;
+      }
+
+      &:active {
+        background: transparent;
+      }
+    }
+  }
+
+  &__download--icon {
+    @include md-up { display: none; }
+  }
+}
+
+// ---- Pill ----
+.pill {
+  @include pill;
+
+  &--ghost {
+    background: $color-accent-soft;
+    color: $color-accent-dark;
+  }
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.5rem;
+}
+
+// ---- Profile (intro paragraphs under hero) ----
+.profile {
+  &__paragraph {
+    font-size: $fs-md;
+    color: $color-text-soft;
+    line-height: 1.65;
+    margin-top: 0.85rem;
+
+    &:first-child { margin-top: 0; }
+
+    strong {
+      color: $color-text;
+      font-weight: 600;
+    }
+  }
+}
+
+// The PDF's strip of figures as one card, under the profile like the PDF's
+// under its summary: the claims first, then the figures that back them (lifted
+// over the hero, they came before the reader knew what they measured). The
+// cells sit 1px apart on the rule colour, so the dividers stay crisp in either
+// layout (2×2 or 4 across). Figures in the text colour: blue (accent or
+// heading) made them read as headings. The bar on top is the PDF's own (same
+// blues, fixed across themes like the hero's), the card's one touch of brand.
+.highlights {
+  @include card;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  margin: 1.6rem 0 0;
+  overflow: hidden;
+  background: $color-rule;
+
+  @include md-up {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 1;
+    height: 3px;
+    background: linear-gradient(90deg, $blue-700, $blue-600 55%, $blue-400);
+  }
+
+  // The label comes first in the markup, so it is read as the term; the
+  // figure still shows above it.
+  &__item {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    padding: 1.05rem 1.15rem 1rem;
+    background: $color-card;
+
+    @include md-up {
+      padding: 1.3rem 1.15rem 1.2rem;
+    }
+  }
+
+  // One line always: at a quarter of the column there is no room for a larger
+  // size ("~15% → ~3%" wrapped at $fs-2xl). On phones the size follows the
+  // width, or the card's overflow clipped the figure at 320–390px.
+  &__value {
+    margin: 0;
+    font-size: clamp(1.1rem, 5.6vw, #{$fs-xl});
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    color: $color-text;
+
+    @include md-up {
+      font-size: $fs-xl;
+    }
+  }
+
+  &__arrow {
+    font-weight: 400;
+    color: $color-text-muted;
+  }
+
+  &__label {
+    margin: 0.3rem 0 0;
+    font-size: $fs-sm;
+    color: $color-text-muted;
+  }
+}
+
+// ---- Timeline (work + internships + education) ----
+.timeline {
+  position: relative;
+  padding-left: 1.6rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: linear-gradient(
+      180deg,
+      $color-accent 0%,
+      color-mix(in srgb, $color-accent 25%, transparent) 100%
+    );
+    border-radius: 2px;
+  }
+
+  &__item {
+    position: relative;
+    padding-bottom: 2rem;
+
+    &:last-child { padding-bottom: 0; }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -1.6rem;
+      top: 6px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: $color-card;
+      border: 2px solid $color-accent;
+      box-shadow: 0 0 0 4px color-mix(in srgb, $color-accent 12%, transparent);
+    }
+  }
+}
+
+// ---- Experience entry ----
+.entry {
+  position: relative;
+
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  &__title {
+    font-size: $fs-md;
+    font-weight: 700;
+    color: $color-text;
+  }
+
+  &__org {
+    font-size: $fs-sm;
+    color: $color-heading;
+    font-weight: 600;
+  }
+
+  &__period {
+    font-size: $fs-sm;
+    color: $color-text-muted;
+  }
+
+  &__history {
+    margin-top: 0.15rem;
+    font-size: $fs-sm;
+    color: $color-text-muted;
+
+    span + span::before {
+      content: ' · ';
+      color: $color-text-muted;
+    }
+  }
+
+  &__paragraph {
+    margin-top: 0.7rem;
+    color: $color-text-soft;
+    line-height: 1.6;
+  }
+}
+
+// ---- Group (within work experience) ----
+.group {
+  margin-top: 1.4rem;
+
+  &__heading {
+    font-size: $fs-sm;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: $color-heading;
+    margin-bottom: 0.6rem;
+  }
+
+  &__list {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  &__item {
+    position: relative;
+    padding-left: 1.1rem;
+    color: $color-text-soft;
+    line-height: 1.6;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.6em;
+      width: 5px;
+      height: 5px;
+      background: $color-accent;
+      border-radius: 50%;
+    }
+
+    strong {
+      color: $color-text;
+      font-weight: 600;
+      margin-right: 0.25rem;
+    }
+  }
+}
+
+// ---- Side project card ----
+.project {
+  @include card;
+  padding: 1.5rem;
+
+  & + & { margin-top: 1rem; }
+
+  &__title {
+    font-size: $fs-md;
+    font-weight: 700;
+    color: $color-text;
+  }
+
+  &__subtitle {
+    font-size: $fs-sm;
+    color: $color-text-muted;
+    margin-top: 0.15rem;
+  }
+
+  &__description {
+    margin-top: 0.85rem;
+    color: $color-text-soft;
+    line-height: 1.65;
+  }
+
+  &__pills {
+    margin-top: 1rem;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem 1rem;
+    margin-top: 1.15rem;
+  }
+
+  &__link {
+    @include action-link;
+
+    &--primary { @include action-link-primary; }
+  }
+}
+
+// ---- Languages ----
+.languages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+
+  &__item {
+    @include pill;
+    background: $color-accent-soft;
+    color: $color-accent-dark;
+    font-size: $fs-sm;
+    padding: 0.4rem 0.85rem;
+  }
+}
+
+// ---- Certifications ----
+.certifications {
+  display: grid;
+  gap: 0.6rem;
+
+  &__item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    color: $color-text-soft;
+
+    &::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: $color-accent;
+      flex-shrink: 0;
+      margin-right: 0.15rem;
+      align-self: center;
+    }
+
+    strong {
+      color: $color-text;
+      font-weight: 600;
+    }
+
+    em {
+      font-style: normal;
+      color: $color-text-muted;
+      font-size: $fs-sm;
+    }
+
+    // The issuer span starts with "· " — the dot has built-in whitespace
+    // around its glyph that combines with the flex gap to make the gap
+    // before the bullet look bigger than the surrounding ones. Pull the
+    // span back into the gap so the visible spacing matches the rest.
+    > span {
+      margin-left: -0.25rem;
+    }
+  }
+}
+
+// ---- Awards ----
+.awards {
+  display: grid;
+  gap: 0.85rem;
+
+  &__item {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+    padding: 0.85rem 1rem;
+    background: $color-card;
+    border-left: 3px solid $color-accent;
+    border-radius: 0 $radius-md $radius-md 0;
+    box-shadow: $shadow-card;
+
+    @include sm-up {
+      grid-template-columns: 1fr auto;
+      align-items: baseline;
+    }
+  }
+
+  &__title {
+    font-weight: 700;
+    color: $color-text;
+
+    em {
+      font-style: normal;
+      font-weight: 500;
+      color: $color-text-muted;
+    }
+  }
+
+  &__year {
+    font-size: $fs-sm;
+    color: $color-text-muted;
+  }
+
+  &__desc {
+    font-size: $fs-sm;
+    color: $color-text-soft;
+    grid-column: 1 / -1;
+    margin-top: 0.15rem;
+  }
+}

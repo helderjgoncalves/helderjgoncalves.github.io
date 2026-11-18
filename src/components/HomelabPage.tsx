@@ -1,36 +1,10 @@
-import type { ReactNode } from 'react';
 import { homelab } from '../data/homelab';
-import { HomelabArchitecture } from './HomelabArchitecture';
-import { Icon, type IconName } from './Icon';
 import { Footer } from './Footer';
 import { HeroGlow, Highlighted } from './HeroAccents';
+import { HomelabArchitecture } from './HomelabArchitecture';
+import { Icon } from './Icon';
+import { Section } from './Section';
 import { SiteNav } from './SiteNav';
-import { useReveal } from '../hooks/useReveal';
-
-function RevealSection({
-  id,
-  title,
-  icon,
-  children,
-}: {
-  id: string;
-  title: string;
-  icon: IconName;
-  children: ReactNode;
-}) {
-  const ref = useReveal();
-  return (
-    <section id={id} className="section reveal" ref={ref}>
-      <div className="container">
-        <div className="section__header">
-          <Icon name={icon} className="section__icon" />
-          <h2 className="section__title">{title}</h2>
-        </div>
-        {children}
-      </div>
-    </section>
-  );
-}
 
 export function HomelabPage() {
   const { title, highlight, thesis, intro, decisions, stack, ctas } = homelab;
@@ -68,11 +42,11 @@ export function HomelabPage() {
       </header>
 
       <main>
-        <RevealSection id="architecture" title="Architecture" icon="globe">
+        <Section id="architecture" title="Architecture" icon="globe">
           <HomelabArchitecture />
-        </RevealSection>
+        </Section>
 
-        <RevealSection id="decisions" title="Design decisions" icon="lab">
+        <Section id="decisions" title="Design decisions" icon="lab">
           <ol className="homelab-decisions">
             {decisions.map((decision, index) => (
               <li key={decision.title} className="homelab-decisions__item">
@@ -97,9 +71,9 @@ export function HomelabPage() {
               </li>
             ))}
           </ol>
-        </RevealSection>
+        </Section>
 
-        <RevealSection id="stack" title="Stack" icon="code">
+        <Section id="stack" title="Stack" icon="code">
           <ul className="homelab-stack">
             {stack.map((item) => (
               <li key={item.name} className="homelab-stack__item">
@@ -120,7 +94,7 @@ export function HomelabPage() {
             </a>{' '}
             README — this page is the portfolio view.
           </p>
-        </RevealSection>
+        </Section>
       </main>
 
       <Footer />

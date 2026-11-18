@@ -1,0 +1,156 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ---- Top navigation ----
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  // Standard property only — Lightning CSS derives -webkit-backdrop-filter
+  // from build.target. Hand-writing the prefix alongside it made the minifier
+  // treat the pair as one declaration and keep only the prefixed form, and
+  // Chromium has no -webkit- alias, so the blur silently vanished there.
+  backdrop-filter: saturate(140%) blur(10px);
+  background: $color-nav-bg;
+  border-bottom: 1px solid $color-rule;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    // Vertical-only longhand: shorthand `padding: x 0` would clobber the
+    // horizontal padding inherited from the `.container` class on this same element.
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+
+    @include md-up {
+      padding-top: 0.85rem;
+      padding-bottom: 0.85rem;
+    }
+  }
+
+  &__brand {
+    flex-shrink: 0;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: $color-heading;
+    font-size: $fs-md;
+    padding: 0.25rem 0;
+  }
+
+  // A right-aligned row from md up. Below md it is the ☰ menu's panel: a
+  // full-width sheet dropped from the bottom of the bar (`.nav` is sticky, so
+  // it is the containing block), shown while `.nav--open` is set.
+  &__links {
+    display: none;
+
+    @include md-down {
+      .nav--open & {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        @include gutters;
+        padding-bottom: 0.5rem;
+        background: $color-bg;
+        border-bottom: 1px solid $color-rule;
+        box-shadow: $shadow-card;
+        animation: nav-panel-in $dur-fast $ease;
+
+        @media (prefers-reduced-motion: reduce) { animation: none; }
+      }
+    }
+
+    @include md-up {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1.5rem;
+    }
+
+    a {
+      white-space: nowrap;
+      font-size: $fs-sm;
+      color: $color-text-soft;
+      transition: color $dur-fast $ease;
+      padding: 0.4rem 0;
+
+      // Full-width rows with a thumb-sized hit area inside the panel.
+      @include md-down {
+        font-size: $fs-md;
+        padding: 0.85rem 0;
+
+        & + a { border-top: 1px solid $color-rule; }
+      }
+
+      // 'page' on the page itself, 'true' on the section a sub-page sits in.
+      &:hover,
+      &[aria-current] { color: $color-accent; }
+    }
+  }
+}
+
+@keyframes nav-panel-in {
+  from { opacity: 0; transform: translateY(-0.5rem); }
+}
+
+// ---- Theme toggle and ☰ menu button (sit in the nav) ----
+.theme-toggle,
+.nav__menu {
+  // The toggle owns pushing the trailing controls to the right edge: from md
+  // up the flexible links list eats the free space, but below md the list is
+  // hidden, so this margin is all that keeps them off the brand.
+  margin-left: auto;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid $color-rule;
+  border-radius: 50%;
+  background: transparent;
+  color: $color-text-soft;
+  cursor: pointer;
+  @include nav-control;
+
+  // Its resting colour is muted, so the accent has to arrive on hover for the
+  // control to look live.
+  &:hover { color: $color-accent; }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+// Rightmost on phones, where the page links live in its panel; the links row
+// replaces it from md up.
+.nav__menu {
+  margin-left: 0;
+
+  &[aria-expanded='true'] { color: $color-accent; }
+
+  @include md-up { display: none; }
+}
+
+.theme-toggle {
+  // Shows the theme a click switches to: the moon while light is on screen,
+  // the sun while dark is. Same selectors as the palette in _variables.scss.
+  &__sun { display: none; }
+
+  :root[data-theme='dark'] & {
+    .theme-toggle__moon { display: none; }
+    .theme-toggle__sun { display: block; }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) & {
+      .theme-toggle__moon { display: none; }
+      .theme-toggle__sun { display: block; }
+    }
+  }
+}

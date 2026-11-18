@@ -51,11 +51,13 @@ SASS partials live in `src/styles/`:
 
 - `_variables.scss` — raw palette, theme tokens (CSS custom properties for
   light + dark), typography, breakpoints, motion tokens
-- `_mixins.scss` — reusable patterns (pill, focus ring, section rule, media queries)
+- `_mixins.scss` — reusable patterns (pill, focus ring, section rule, gutters, media queries)
 - `_reset.scss` — minimal CSS reset
-- `_layout.scss` — nav, hero, sections, footer, theme-toggle button
-- `_components.scss` — pills, profile, timeline, entries, project cards, awards
-- `main.scss` — entry point that imports the partials
+- `_layout.scss`, `_nav.scss`, `_heroes.scss`, `_section.scss`, `_footer.scss`,
+  `_gallery.scss`, `_viewer.scss` — blocks shared across pages
+- `_cv.scss`, `_home.scss`, `_trips.scss`, `_trip-help.scss`, `_homelab.scss` —
+  each page's own blocks
+- `main.scss` — entry point that imports the partials, shared ones first
 
 Change the brand colour by editing `$blue-600` (primary) and `$blue-700`
 (accent-dark) in `_variables.scss`. Everything else cascades.

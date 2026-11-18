@@ -94,7 +94,7 @@ src/
   data/tripsPage.ts       # /trips/: title and meta (the cards come from trips/)
   data/trips/             # one file per trip + index.ts (the list, checks and helpers)
   components/             # one component per CV section + page components (HomePage,
-                          # HomelabPage, TripsPage, TripPage), PhotoGrid, PhotoViewer,
+                          # CvPage, HomelabPage, TripsPage, TripPage), PhotoGrid, PhotoViewer,
                           # SiteNav, Hero, Icon, Section…
   hooks/useReveal.ts      # IntersectionObserver scroll-reveal
   styles/                 # SASS partials (see below)
@@ -549,8 +549,21 @@ SASS partials in `src/styles/`:
 
 - `_variables.scss` — raw palette + theme tokens as CSS custom properties
   (light by default, dark via `[data-theme='dark']` or `prefers-color-scheme`)
-- `_mixins.scss`, `_reset.scss`, `_layout.scss`, `_components.scss`
-- `main.scss` — entry; uses `@use` for partials
+- `_mixins.scss` (media queries, gutters, the interaction families), `_reset.scss`
+- Shared blocks: `_layout.scss` (`.container`), `_nav.scss` (nav, theme
+ toggle, ☰ menu), `_heroes.scss` (`.page-hero` and the hero accents, which
+ the CV's hero uses too), `_section.scss` (`.section` and its scroll reveal),
+ `_footer.scss`, `_gallery.scss` (`PhotoGrid`), `_viewer.scss` (`PhotoViewer`)
+- One partial per page for the blocks only it uses: `_cv.scss` (its `.hero`
+ too), `_home.scss`,
+ `_trips.scss` (`/trips/` and the trip pages), `_trip-help.scss` (the tips
+ offer and its form), `_homelab.scss`
+- `main.scss` — entry; uses `@use` for partials, shared ones first. The order
+ is part of the cascade (`.home-hero` and `.trip-cover` override `.page-hero`
+ at equal specificity), so a page partial never goes before a shared one
+
+A new block goes in the partial of the page that uses it, or in a shared one
+once a second page needs it. Don't bring back a catch-all `_components.scss`.
 
 Conventions:
 
@@ -700,7 +713,8 @@ project-page repo.
 
 - Prefer editing existing files over creating new ones.
 - Components are functional, typed, and named-export (`export function Foo`).
-- Keep components presentation-only; data flows from `cv.ts` through `App.tsx`.
+- Keep components presentation-only; each page component (`CvPage`,
+  `HomePage`, …) reads its data file and passes the data down.
 - Don't add runtime dependencies casually — the bundle is intentionally tiny
   (React + ReactDOM only). No icon libraries, no CSS-in-JS, no UI kits.
 - Run `npm run lint` after non-trivial TypeScript edits.

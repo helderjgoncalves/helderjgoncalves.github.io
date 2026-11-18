@@ -1,0 +1,20 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// Footer
+.footer {
+  padding: 2.25rem 0 calc(1.75rem + env(safe-area-inset-bottom));
+  text-align: center;
+  color: $color-text-muted;
+  font-size: $fs-sm;
+  border-top: 1px solid $color-rule;
+  margin-top: 2.5rem;
+
+  @include md-up {
+    padding-top: 3rem;
+    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom));
+    margin-top: 3rem;
+  }
+
+  a { @include prose-link; }
+}

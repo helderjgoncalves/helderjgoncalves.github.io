@@ -1,8 +1,20 @@
 @use 'variables' as *;
-@use 'mixins' as *;
+// Shared pieces first, then each page's own blocks. A later partial may
+// override an earlier one at equal specificity (`.home-hero` and `.trip-cover`
+// sit on a `.page-hero`), so keep this order.
 @use 'reset';
 @use 'layout';
-@use 'components';
+@use 'nav';
+@use 'heroes';
+@use 'section';
+@use 'footer';
+@use 'gallery';
+@use 'viewer';
+@use 'cv';
+@use 'home';
+@use 'trips';
+@use 'trip-help';
+@use 'homelab';
 
 // The Inter @font-face request lives in index.html, not here: a CSS @import is
 // only discovered once this stylesheet has downloaded, so loading it from the

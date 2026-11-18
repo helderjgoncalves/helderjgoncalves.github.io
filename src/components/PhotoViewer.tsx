@@ -65,7 +65,7 @@ const ROOMY_PX = 600;
 
 /**
  * The layout that shows the gallery's photos bigger, by their total area (see
- * the viewer in _components.scss). Chosen for the whole gallery, not each
+ * _viewer.scss). Chosen for the whole gallery, not each
  * photo, so the controls stay put while the visitor moves through it; only
  * resizing the window can change it. The figures are rough copies of the CSS
  * spacing, in px, with a typical caption: near the crossover both layouts

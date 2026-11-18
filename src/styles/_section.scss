@@ -1,0 +1,78 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ---- Section wrapper ----
+.section {
+  padding: 2rem 0 0.5rem;
+
+  // Negative: cancels most of the padding above so anchors don't land a
+  // second gap below the nav clearance in html's scroll-padding-top.
+  scroll-margin-top: -1rem;
+
+  &:first-of-type { padding-top: 1.75rem; }
+
+  @include md-up {
+    padding: 3rem 0 1rem;
+    scroll-margin-top: -2rem;
+
+    &:first-of-type { padding-top: 2.5rem; }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    @include section-rule;
+
+    @include md-up { margin-bottom: 1.4rem; }
+  }
+
+  &__title {
+    font-size: $fs-lg;
+    font-weight: 700;
+    color: $color-heading;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+
+    @include md-up { font-size: $fs-xl; }
+  }
+
+  &__icon {
+    width: 20px;
+    height: 20px;
+    color: $color-accent;
+    flex-shrink: 0;
+
+    @include md-up {
+      width: 22px;
+      height: 22px;
+    }
+  }
+}
+
+// ---- Reveal-on-scroll ----
+//
+// The hidden start state waits for `.js-reveal` on <html>, because only
+// useReveal can add `.is-visible`. index.html sets the class before paint
+// and drops it if the bundle fails to load or throws, so no-JS visitors, a
+// page cached from before a deploy (naming a script that's gone) or a
+// crawler that applies CSS without running JS all see the pre-rendered page
+// rather than blank sections. `scripting: enabled` alone wasn't enough: it
+// says the browser can run scripts, not that ours did.
+.reveal {
+  transition: opacity $dur-slow $ease, transform $dur-slow $ease;
+}
+
+.js-reveal .reveal:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal .reveal:not(.is-visible) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

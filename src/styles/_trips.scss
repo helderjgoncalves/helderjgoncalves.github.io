@@ -1,0 +1,581 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ---- Trip pages ----
+// The stops in travel order, numbered. A stop with photos links to its
+// section below (a card-link, like the home-page doors); one without has
+// nowhere to go yet and stays a plain card.
+.trip-route {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+  counter-reset: stop;
+
+  @include sm-up { grid-template-columns: repeat(2, 1fr); }
+  @include md-up { grid-template-columns: repeat(4, 1fr); }
+
+  &__stop {
+    counter-increment: stop;
+    display: grid;
+  }
+
+  &__card {
+    @include card;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.75rem;
+    align-items: center;
+    // Keeps name and country together when a wider neighbour sets the row's height.
+    align-content: center;
+    padding: 0.8rem 0.9rem;
+
+    &::before {
+      content: counter(stop);
+      grid-row: span 2;
+      display: grid;
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: $color-accent-soft;
+      color: $color-accent-dark;
+      font-size: $fs-xs;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  &__card--link {
+    @include card-link;
+
+    &:hover .trip-route__name,
+    &:focus-visible .trip-route__name { color: $color-accent; }
+  }
+
+  &__name {
+    font-weight: 600;
+    color: $color-heading;
+  }
+
+  &__country {
+    font-size: $fs-xs;
+    color: $color-text-muted;
+  }
+
+  &__land + &__trails::before { content: ' · '; }
+
+  // Phones: one column of eight cards read as a long list, so it becomes a
+  // path instead: numbered dots on a line, no cards, and the country only
+  // where it changes (the border crossing), not repeated on every stop.
+  @include sm-down {
+    position: relative;
+    gap: 0;
+
+    // The line, from the first dot's centre to the last one's.
+    &::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 1.35rem;
+      bottom: 1.35rem;
+      width: 2px;
+      border-radius: 1px;
+      background: $color-rule;
+    }
+
+    // Not a card here, so nothing to lift: the name's colour is the feedback.
+    &__card {
+      position: relative;
+      padding: 0.5rem 0;
+      background: none;
+      box-shadow: none;
+
+      &::before {
+        background: $color-accent-soft;
+        box-shadow: 0 0 0 4px $color-bg;
+      }
+    }
+
+    &__card--link:hover,
+    &__card--link:focus-visible {
+      transform: none;
+      box-shadow: none;
+    }
+
+    &__stop {
+      &[data-same-country] .trip-route__land { display: none; }
+      &[data-same-country] .trip-route__trails::before { content: none; }
+      &[data-same-country]:not(:has(.trip-route__trails)) .trip-route__country { display: none; }
+    }
+  }
+
+  // The offer, once, before the photos. Quiet on purpose: the full sign-off
+  // still closes the page. Its disc matches the stops' numbers above it.
+  &__ask {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1.25rem 0 0;
+    color: $color-text-soft;
+    line-height: 1.5;
+    // Two even lines on phones, rather than "ask." left on its own.
+    text-wrap: balance;
+
+    a {
+      @include prose-link;
+      font-weight: 600;
+    }
+  }
+
+  // While its form is open, the line heads it: this closes it, at the end of
+  // the line, so its right edge is the form's.
+  &__ask-close {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-left: auto;
+    padding: 0.35rem 0.75rem 0.35rem 0.6rem;
+    border: 1px solid $color-rule;
+    border-radius: $radius-pill;
+    background: none;
+    color: $color-text-muted;
+    font: inherit;
+    font-size: $fs-sm;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    @include nav-control;
+
+    &:hover,
+    &:focus-visible { color: $color-accent; }
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    // On phones the line wraps, and a worded pill squeezed it further: a round
+    // ×, the size of the line's mark, like the top bar's round controls. The
+    // word stays for screen readers.
+    @include sm-down {
+      flex: none;
+      justify-content: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      padding: 0;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  &__ask-close-label {
+    @include sm-down {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+
+  &__ask-mark {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: $color-accent-soft;
+    color: $color-accent-dark;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+// One trail inside an area's section (El Chaltén's day hikes), under its own heading.
+.trip-stop {
+  & + & { margin-top: 2rem; }
+
+  &__title {
+    margin-bottom: 0.75rem;
+    font-size: $fs-md;
+    font-weight: 600;
+    color: $color-heading;
+  }
+}
+
+.trip-highlights {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+
+  @include md-up { grid-template-columns: repeat(2, 1fr); }
+
+  &__item {
+    @include card;
+    padding: 1rem 1.1rem;
+    border-left: 3px solid $color-accent;
+  }
+
+  &__title {
+    font-size: $fs-md;
+    font-weight: 700;
+    color: $color-heading;
+  }
+
+  &__text {
+    margin: 0.35rem 0 0;
+    color: $color-text-soft;
+    line-height: 1.6;
+  }
+}
+
+.trip-tips {
+  margin: 1.25rem 0 0;
+  display: grid;
+  gap: 1rem;
+
+  @include md-up { grid-template-columns: repeat(2, 1fr); }
+
+  &__item {
+    @include card;
+    padding: 1rem 1.1rem;
+  }
+
+  &__label {
+    font-size: $fs-xs;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $color-text-muted;
+  }
+
+  &__text {
+    margin: 0.35rem 0 0;
+    line-height: 1.6;
+  }
+}
+
+// The /trips/ index: one card per trip, the whole card a link (card-link).
+.trip-cards {
+  display: grid;
+  gap: 1rem;
+  padding-top: 1.75rem;
+
+  @include md-up {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    padding-top: 3rem;
+  }
+
+  // Everything that isn't featured: small enough that dozens still scan.
+  &--compact {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    padding-top: 0;
+
+    @include md-up {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      padding-top: 0;
+    }
+
+    @include lg-up { grid-template-columns: repeat(4, 1fr); }
+  }
+}
+
+.trip-region {
+  & + & { margin-top: 1.75rem; }
+
+  &__title {
+    margin-bottom: 0.75rem;
+    font-size: $fs-sm;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: $color-text-soft;
+  }
+}
+
+.trip-card {
+  @include card;
+  @include card-link;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    background: $color-rule;
+  }
+
+  &__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1.1rem 1.25rem 1.25rem;
+  }
+
+  &__eyebrow {
+    font-size: $fs-xs;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $color-text-muted;
+  }
+
+  &__title {
+    margin-top: 0.3rem;
+    font-size: $fs-xl;
+    font-weight: 700;
+    color: $color-heading;
+  }
+
+  &__summary {
+    margin-top: 0.5rem;
+    color: $color-text-soft;
+    line-height: 1.6;
+  }
+
+  &__route {
+    flex: 1;
+    margin-top: 0.6rem;
+    font-size: $fs-sm;
+    color: $color-text-muted;
+    line-height: 1.5;
+  }
+
+  // Looks like an action link but is a span: the whole card is the anchor.
+  &__cta {
+    @include action-link;
+    @include action-link-primary;
+    align-self: flex-start;
+    margin-top: 1rem;
+  }
+
+  &:hover &__cta,
+  &:focus-visible &__cta { border-color: $color-accent; }
+
+  &--compact &__img { aspect-ratio: 4 / 3; }
+
+  &--compact &__body { padding: 0.65rem 0.85rem 0.8rem; }
+
+  &--compact &__title {
+    margin-top: 0.15rem;
+    font-size: $fs-md;
+  }
+}
+
+// A trip's facts, in its page hero. Raw white like the rest of the hero, which
+// stays brand-blue in both themes.
+.trip-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
+
+  // Tighter on phones so both badges share a row.
+  &__badge {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.3rem 0.7rem;
+    line-height: 1.4;
+
+    @include sm-up {
+      gap: 0.55rem;
+      padding: 0.3rem 0.85rem;
+    }
+    border: 1px solid rgba($white, 0.3);
+    border-radius: $radius-pill;
+    background: rgba($white, 0.12);
+    font-size: $fs-sm;
+    color: $white;
+  }
+
+  &__label { color: rgba($white, 0.8); }
+
+  &__meter {
+    display: flex;
+    gap: 3px;
+  }
+
+  &__step {
+    width: 11px;
+    height: 6px;
+
+    @include sm-up { width: 14px; }
+    border-radius: 3px;
+    background: rgba($white, 0.22);
+
+    &--on { background: $white; }
+  }
+}
+
+// A trip page's hero: the cover photo full-bleed, the text at its foot.
+// Small viewport units so the height doesn't jump as a phone's address bar
+// slides away. Raw palette: the band behind the text has to keep white
+// legible over any photo, in either theme.
+// The hero's height (a share of the screen, held between a floor and a
+// ceiling) and the widest the photo gets, as a multiple of it.
+$trip-cover-floor: 26rem;
+$trip-cover-share: 0.72;
+$trip-cover-ceiling: 64rem;
+$trip-cover-widest: 2.1;
+
+.trip-cover {
+  display: flex;
+  align-items: flex-end;
+  // A size container, so the photo can measure the hero's width (cqw) when
+  // working out how far short of it it falls.
+  container-type: inline-size;
+  --trip-cover-height: clamp(#{$trip-cover-floor}, #{$trip-cover-share * 100}svh, #{$trip-cover-ceiling});
+  --trip-cover-photo: min(100cqw, calc(var(--trip-cover-height) * #{$trip-cover-widest}));
+  // How far the photo falls short of each side: 0 while it fills the hero.
+  --trip-cover-gap: calc((100cqw - var(--trip-cover-photo)) / 2);
+  min-height: var(--trip-cover-height);
+  padding: 3rem 0 0;
+  background: $ink-900;
+
+  @include md-up { padding-top: 4rem; }
+
+  // The cover's 32 px preview, inlined in the page, so the hero has its colours
+  // from the first paint: an AVIF draws nothing until it has fully arrived.
+  // The photo paints over it, and on ultra-wide screens so does the extension.
+  // Scaled past the hero's clip, where the blur's edges go see-through.
+  &__preview {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-size: cover;
+    filter: blur(24px);
+    transform: scale(1.15);
+  }
+
+  // Once the photo stops widening, each side carries it on: the photo flipped
+  // against its own edge, so the pixels at the seam match. Under the photo
+  // itself sits an unflipped copy, so its edge fade crosses from sharp to
+  // the same picture softened, never to the dark background. The three are
+  // blurred as one layer: blurred one by one, each edge goes see-through and
+  // the seam shows dark. Undimmed, since any change in tone shows the seam
+  // too. Painted only once the photo stops widening: the screen wider than
+  // $trip-cover-widest times the hero's height. Either wider than that
+  // times both its floor (a short window) and its share of the screen, or
+  // than that times its ceiling (a tall one, whose hero stops growing).
+  &__extend {
+    display: none;
+
+    @media (min-width: #{$trip-cover-floor * $trip-cover-widest}) and (min-aspect-ratio: #{$trip-cover-share * $trip-cover-widest * 1000} / 1000),
+      (min-width: #{$trip-cover-ceiling * $trip-cover-widest}) {
+      display: block;
+    }
+    position: absolute;
+    inset: 0;
+    filter: blur(14px);
+    // The blur's see-through top and bottom edges, pushed past the hero's clip.
+    transform: scaleY(1.1);
+  }
+
+  &__copy {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: var(--trip-cover-photo);
+    height: 100%;
+    object-fit: cover;
+    transform: translateX(-50%);
+
+    &--left { transform: translateX(-150%) scaleX(-1); }
+
+    &--right { transform: translateX(50%) scaleX(-1); }
+  }
+
+  // No wider than 2.1:1, or an ultra-wide screen would show a thin slice of a
+  // portrait cover, its subject cut off. Past that it sits centred, its sides
+  // fading into its blurred extension. Sized from the hero's min-height, since a
+  // percentage can't reach its height; a taller hero only crops a little more.
+  // The fade is as wide as the gap beside it, up to 8rem: long enough to
+  // soften gradually into its blurred copy, which matches it underneath. So
+  // while the photo fills the hero its edges stay sharp, and the fade grows
+  // in smoothly as the window widens past that.
+  &__img {
+    --edge: clamp(0px, var(--trip-cover-gap), 8rem);
+    // A photo that fails to load would draw its alt text and icon over the
+    // preview; screen readers still read the alt.
+    color: transparent;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: var(--trip-cover-photo);
+    height: 100%;
+    object-fit: cover;
+    transform: translateX(-50%);
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 var(--edge),
+      #000 calc(100% - var(--edge)),
+      transparent
+    );
+
+    // The cover's phoneZoom: enlarged from its foot, so sky goes from the
+    // top and the subject rises clear of the band. At every narrow width,
+    // portrait or not: a short landscape window's band (text sized for a
+    // narrow screen) covers even more of the hero, and there the zoom trims
+    // the top of the subject a little but keeps it in view.
+    @include md-down {
+      transform: translateX(-50%) scale(var(--phone-zoom, 1));
+      transform-origin: 50% 100%;
+    }
+  }
+
+  // Frosted band behind the text, sized by the text rather than the photo,
+  // so a summary that wraps to five lines on a phone stays covered. Full
+  // width, inside the hero: overhanging the hero's clip left a sharp strip at
+  // its edge. It fades in over its top padding on an eased curve, long on big
+  // screens: a short fade over a smooth sky reads as a grey box. Short on
+  // phones, where the band already covers half the photo and a long fade
+  // blurs the subject above the text.
+  &__band {
+    --fade: 3.5rem;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: var(--fade) 0 2.5rem;
+    background: linear-gradient(0deg, rgba($ink-900, 0.6), rgba($ink-900, 0.15));
+    backdrop-filter: blur(10px) saturate(1.2);
+    mask-image: linear-gradient(
+      180deg,
+      transparent,
+      rgba($ink-900, 0.1) calc(var(--fade) * 0.3),
+      rgba($ink-900, 0.45) calc(var(--fade) * 0.6),
+      rgba($ink-900, 0.85) calc(var(--fade) * 0.85),
+      #000 var(--fade)
+    );
+    text-shadow: 0 1px 10px rgba($ink-900, 0.35);
+
+    @include md-up {
+      --fade: 10rem;
+      padding-bottom: 3.25rem;
+    }
+  }
+
+  .page-hero__thesis { max-width: 40rem; }
+}
