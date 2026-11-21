@@ -43,7 +43,7 @@ const variants = {
     skills: webSkills,
     // The site's own bullets, so the download mirrors the /cv/ page.
     items: cv.work.groups.flatMap((g) =>
-      g.bullets.map((b) => ({ label: b.label, text: b.description, hidden: b.hidden })),
+      g.bullets.map((b) => ({ label: b.label, text: b.description, links: b.links, hidden: b.hidden })),
     ),
   },
 };
@@ -59,6 +59,11 @@ const icon = (name) =>
   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${iconPaths[name]}</svg>`;
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const linked = (text, links = {}) => {
+  let html = esc(text);
+  for (const [phrase, href] of Object.entries(links)) html = html.replace(esc(phrase), `<a href="${href}">${esc(phrase)}</a>`);
+  return html;
+};
 const fullTitle = (t) => t.replace(/\bSWE\b/, 'Software Engineer');
 const yearOnly = (p) => [...new Set(p.match(/\d{4}/g))].join(' – ');
 const portrait = pathToFileURL(path.join(here, '../../public/portrait.jpg')).href;
@@ -201,7 +206,7 @@ ${entry(
   esc(current.period),
   `${head(esc(fullTitle(current.title)), cv.work.company)}
 <ul>
-${v.items.filter((item) => !item.hidden).map((item) => `<li><b>${esc(item.label)}:</b> ${esc(item.text)}</li>`).join('\n')}
+${v.items.filter((item) => !item.hidden).map((item) => `<li><b>${esc(item.label)}:</b> ${linked(item.text, item.links)}</li>`).join('\n')}
 </ul>`,
   'job',
 )}

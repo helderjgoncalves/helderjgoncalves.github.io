@@ -1,9 +1,33 @@
+import type { ReactNode } from 'react';
 import type { WorkExperience as WorkExperienceData } from '../types';
 import { Pills } from './Pill';
 import { Section } from './Section';
 
 interface WorkExperienceProps {
   data: WorkExperienceData;
+}
+
+function linked(text: string, links: Record<string, string> = {}): ReactNode[] {
+  const found = Object.entries(links)
+    .map(([phrase, href]) => {
+      const at = text.indexOf(phrase);
+      if (at < 0) throw new Error(`cv.ts links "${phrase}", which its bullet doesn't say`);
+      return { phrase, href, at };
+    })
+    .sort((a, b) => a.at - b.at);
+  const parts: ReactNode[] = [];
+  let from = 0;
+  for (const { phrase, href, at } of found) {
+    parts.push(text.slice(from, at));
+    parts.push(
+      <a key={phrase} href={href} target="_blank" rel="noopener noreferrer">
+        {phrase}
+      </a>,
+    );
+    from = at + phrase.length;
+  }
+  parts.push(text.slice(from));
+  return parts;
 }
 
 export function WorkExperience({ data }: WorkExperienceProps) {
@@ -34,7 +58,7 @@ export function WorkExperience({ data }: WorkExperienceProps) {
                   {group.bullets.filter((bullet) => !bullet.hidden).map((bullet) => (
                     <li key={bullet.label} className="group__item">
                       <strong>{bullet.label}:</strong>
-                      {bullet.description}
+                      {linked(bullet.description, bullet.links)}
                     </li>
                   ))}
                 </ul>

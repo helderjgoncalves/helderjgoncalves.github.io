@@ -469,6 +469,8 @@
       font-weight: 600;
       margin-right: 0.25rem;
     }
+
+    a { @include prose-link; }
   }
 }
 

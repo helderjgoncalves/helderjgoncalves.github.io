@@ -35,8 +35,9 @@ export interface ExperienceGroup {
   /**
    * `id` names a bullet so a tailored PDF can pick it.
    * `hidden` keeps a bullet on record without showing it on the site or in any PDF.
+   * `links` maps a phrase of the description to a page; its first occurrence becomes the link.
    */
-  bullets: { id?: string; label: string; description: string; hidden?: boolean }[];
+  bullets: { id?: string; label: string; description: string; links?: Record<string, string>; hidden?: boolean }[];
 }
 
 export interface RoleHistoryEntry {

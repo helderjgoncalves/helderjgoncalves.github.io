@@ -496,12 +496,15 @@ The `tagline` and the working `hours` are the PDF's alone: the hero shows
 the role and a short `location` beside a pin, since a longer line there
 wrapped badly.
 
-**Never delete a work item; hide it.** A bullet with `hidden: true` in
-`cv.ts` stays on record but renders nowhere: not on the
-site, not in any PDF. Bullets dropped for space, superseded wordings and
-long records with every known fact are kept this way, so nothing is lost
-when the two-page limit forces a cut. Certifications take `hidden` too: both
-are hidden for now, so the `/cv/` page drops its Certifications section and
+**Hide only unique information.** An item with `hidden: true` stays on
+record but renders nowhere: not on the site, not in any PDF. It is only for
+information that appears nowhere else and is kept off the CV, either for
+lack of space (so it isn't lost when the two-page limit forces a cut) or
+because showing it would weaken the CV. Anything that restates a shown
+item is deleted: a new wording replaces the old one (Git keeps the
+history), so `cv.ts` never holds two versions of the same bullet.
+Certifications take `hidden` too: both are real but would weaken the CV,
+so both are hidden, the `/cv/` page drops its Certifications section and
 the PDF's heading reads "Awards"; un-hiding one brings both back. Hide
 through the data, never by deleting the component that renders it.
 

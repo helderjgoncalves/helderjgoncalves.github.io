@@ -42,13 +42,12 @@ export const cv: CvData = {
             id: 'architecture',
             label: 'Architecture Ownership',
             description:
-              'Own the architecture of 2 teams (12 engineers); shape technical direction for other engineering groups through architecture guidance, design and code reviews.',
-          },
-          {
-            label: 'Architecture & Mentoring',
-            hidden: true,
-            description:
-              'Own the architecture of 2 teams (12 engineers) and mentor their engineers; guide other engineering groups through architecture, design and code reviews.',
+              'Own the architecture of 2 teams (12 engineers) building Service Studio and ODC Studio, OutSystems’ visual IDEs; guide other groups through architecture, design and code reviews.',
+            links: {
+              'Service Studio': 'https://success.outsystems.com/documentation/11/getting_started/service_studio_overview/',
+              'ODC Studio':
+                'https://success.outsystems.com/documentation/outsystems_developer_cloud/getting_started/ui_overview_of_odc_portal_and_odc_studio/',
+            },
           },
           {
             id: 'stability',
@@ -62,12 +61,6 @@ export const cv: CvData = {
             description:
               'Introduced Site Reliability Engineering (SRE) practices and dark launches, so the teams ship to production continuously behind feature flags and roll out gradually.',
           },
-          {
-            label: 'SRE & Progressive Delivery',
-            hidden: true,
-            description:
-              'Introduced Site Reliability Engineering (SRE) practices and dark launches, so features reach production behind feature flags and roll out gradually.',
-          },
         ],
       },
       {
@@ -77,7 +70,11 @@ export const cv: CvData = {
             id: 'mentor',
             label: 'Mentor Integration',
             description:
-              'Led the integration of Mentor, OutSystems’ LLM-based agentic AI, into ODC Studio: conversational, AI-assisted development in the visual IDE, live since March 2026.',
+              'Led and architected, with the AI team, the integration of Mentor, OutSystems’ LLM-based agentic AI, into ODC Studio: AI-assisted development in the visual IDE, live since March 2026.',
+            links: {
+              Mentor:
+                'https://success.outsystems.com/documentation/outsystems_developer_cloud/agentic_development/ai_development_in_mentor_studio/',
+            },
           },
           {
             id: 'aiEnablement',
@@ -101,12 +98,6 @@ export const cv: CvData = {
             label: 'Platform Migration',
             description:
               'With the wider team, moved the IDE off Windows-only WPF to React and TypeScript in an embedded Chromium WebView over several years, component by component behind feature flags; it gained macOS.',
-          },
-          {
-            label: 'Incremental Platform Migration',
-            hidden: true,
-            description:
-              'With the wider team, made the multi-year move off Windows-only WPF to React and TypeScript in an embedded Chromium WebView, component by component behind feature flags, never forking; it gained macOS.',
           },
         ],
       },
