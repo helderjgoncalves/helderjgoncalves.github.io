@@ -19,7 +19,7 @@ export function CvPage() {
 
       <main>
         <Profile profile={cv.profile} />
-        <WorkExperience data={cv.work} />
+        <WorkExperience data={cv.work} title={cv.profile.title} />
         <Internships items={cv.internships} />
         <SideProjects items={cv.sideProjects} />
         <Education data={cv.education} />

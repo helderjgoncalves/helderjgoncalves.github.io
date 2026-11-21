@@ -139,6 +139,9 @@ function homelabJsonLd(dateModified) {
   };
 }
 
+const cvDescription =
+  'Lead Software Engineer at OutSystems: 10+ years on developer tools in React, TypeScript and .NET, IDE crash ratio cut by 80%, and Generative AI in ODC Studio.';
+
 /**
  * ProfilePage for /cv/. The Person @id is shared with the home page and the
  * case study; the page URL is the CV, which is the profile.
@@ -160,8 +163,7 @@ function profileJsonLd() {
       givenName: 'Hélder',
       familyName: 'Gonçalves',
       jobTitle: 'Lead Software Engineer',
-      description:
-        'Lead Software Engineer at OutSystems: 10+ years on developer tools in React, TypeScript and .NET, IDE crash ratio cut by 80%, and Generative AI in ODC Studio.',
+      description: cvDescription,
       url,
       image: `${SITE}/portrait.jpg`,
       email: 'mailto:helder@hgoncalves.uk',
@@ -368,8 +370,7 @@ const pages = [
     path: '/cv',
     out: path.join('cv', 'index.html'),
     title: 'Hélder Gonçalves — Lead Software Engineer | Developer Tools',
-    description:
-      'Lead Software Engineer at OutSystems: 10+ years on developer tools in React, TypeScript and .NET, IDE crash ratio cut by 80%, and Generative AI in ODC Studio.',
+    description: cvDescription,
     canonical: `${SITE}/cv/`,
     ogType: 'profile',
     image: cardUrl('cv'),

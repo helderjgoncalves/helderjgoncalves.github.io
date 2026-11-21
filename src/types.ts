@@ -48,7 +48,6 @@ export interface RoleHistoryEntry {
 export interface WorkExperience {
   company: string;
   logo?: string;
-  primaryTitle: string;
   history: RoleHistoryEntry[];
   groups: ExperienceGroup[];
   techPills: string[];

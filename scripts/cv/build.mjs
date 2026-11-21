@@ -24,8 +24,8 @@ const website = 'hgoncalves.uk';
 
 const webSkills = [
   ['Architecture', 'Software architecture, system design, distributed systems integration, REST APIs, desktop and web applications, embedded Chromium WebView (CEF / CefGlue), design systems, incremental migration'],
-  ['Reliability', 'Site Reliability Engineering (SRE), telemetry and observability, crash, hang and freeze metrics, feature flags, dark launches, progressive delivery, automated testing (Jest, React Testing Library)'],
-  ['AI', 'Generative AI, LLM integration, agentic AI, AI-assisted developer tools'],
+  ['Reliability', 'Site Reliability Engineering (SRE), telemetry and observability, crash, hang, memory and performance analysis, feature flags, dark launches, progressive delivery, automated testing (Jest, React Testing Library)'],
+  ['AI', 'Generative AI, LLM integration, agentic AI, AI-assisted developer tools, agentic coding (Claude Code, Cursor)'],
   ['Programming', 'TypeScript, JavaScript, React, Node.js, C#, .NET, Avalonia, HTML, CSS, SCSS, C, C++'],
   ['Leadership', 'Technical leadership, cross-team technical direction, mentoring, design and code reviews'],
   ['Cloud & delivery', 'AWS, Snowflake, Cloudflare (R2, Workers, WAF, Zero Trust), CI/CD with GitHub Actions, Docker, Git'],
@@ -256,7 +256,7 @@ ${stack(p.techPills)}`,
 <div class="keep">
 <h2>${certifications.length ? 'Certifications &amp; Awards' : 'Awards'}</h2>
 ${certifications.map((c) => entry(esc(c.code), `${esc(c.name)}, ${esc(c.issuer)}`)).join('\n')}
-${cv.awards.map((a) => entry(String(a.year), `<b>${esc(a.title)}</b>, ${esc(a.context)}: ${esc(a.description)}`)).join('\n')}
+${cv.awards.map((a) => entry(String(a.year), `<b>${esc(a.title)}</b>, ${esc(a.context)}${a.description ? `: ${esc(a.description)}` : ''}`)).join('\n')}
 </div>
 
 <div class="keep">

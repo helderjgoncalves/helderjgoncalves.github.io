@@ -5,6 +5,7 @@ import { Section } from './Section';
 
 interface WorkExperienceProps {
   data: WorkExperienceData;
+  title: string;
 }
 
 function linked(text: string, links: Record<string, string> = {}): ReactNode[] {
@@ -30,7 +31,7 @@ function linked(text: string, links: Record<string, string> = {}): ReactNode[] {
   return parts;
 }
 
-export function WorkExperience({ data }: WorkExperienceProps) {
+export function WorkExperience({ data, title }: WorkExperienceProps) {
   return (
     <Section id="experience" title="Work Experience" icon="briefcase">
       <div className="timeline">
@@ -38,7 +39,7 @@ export function WorkExperience({ data }: WorkExperienceProps) {
           <div className="entry">
             <div className="entry__head">
               <div>
-                <div className="entry__title">{data.primaryTitle}</div>
+                <div className="entry__title">{title}</div>
                 <div className="entry__org">{data.company}</div>
               </div>
             </div>

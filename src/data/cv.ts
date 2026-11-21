@@ -9,11 +9,11 @@ export const cv: CvData = {
     hours: 'comfortable working US East Coast hours',
     photo: '/portrait.jpg',
     paragraphs: [
-      'Lead Software Engineer with 10+ years shaping the architecture of developer tools used daily by thousands of enterprise developers. Core stack: React, TypeScript and .NET. Sets technical direction for other engineering groups through architecture guidance and design reviews.',
+      'Lead Software Engineer with 10+ years shaping the architecture of Service Studio and ODC Studio, OutSystems’ visual IDEs, used daily by thousands of enterprise developers. Core stack: React, TypeScript and .NET. Sets technical direction for other engineering groups through architecture and design reviews.',
       'Favours evidence and incremental change: telemetry before fixes, and migrations shipped component by component behind feature flags, never a forked product. Drives multi-year, product-wide work in reliability, cloud integration, design systems and Generative AI.',
     ],
     highlights: [
-      { value: '10+ years', label: 'building developer tools' },
+      { value: '2 IDEs', label: 'on Windows and macOS' },
       { value: '~15% → ~3%', label: 'IDE crash ratio' },
       { value: '50%+', label: 'conflicts auto-resolved' },
       { value: '2 teams', label: '12 engineers led' },
@@ -27,7 +27,6 @@ export const cv: CvData = {
 
   work: {
     company: 'OutSystems',
-    primaryTitle: 'Lead Software Engineer',
     history: [
       { title: 'Lead SWE', period: '2023 – Present' },
       { title: 'Senior SWE', period: '2020 – 2023' },
@@ -40,9 +39,9 @@ export const cv: CvData = {
         bullets: [
           {
             id: 'architecture',
-            label: 'Architecture Ownership',
+            label: 'Architecture & Mentoring',
             description:
-              'Own the architecture of 2 teams (12 engineers) building Service Studio and ODC Studio, OutSystems’ visual IDEs; guide other groups through architecture, design and code reviews.',
+              'Own the architecture of 2 teams (12 engineers) building Service Studio and ODC Studio, mentor their engineers, and review designs and code across other groups.',
             links: {
               'Service Studio': 'https://success.outsystems.com/documentation/11/getting_started/service_studio_overview/',
               'ODC Studio':
@@ -53,7 +52,7 @@ export const cv: CvData = {
             id: 'stability',
             label: 'Stability Programme',
             description:
-              'Built the telemetry that pinpoints the IDE’s high-impact failures and led the fixes: crash ratio from ~15% to ~3% (80% lower). The approach now covers hangs and freezes.',
+              'Built the telemetry that pinpoints the IDE’s high-impact failures and led the fixes to crashes, hangs, memory use and performance bottlenecks: crash ratio from ~15% to ~3% (80% lower).',
           },
           {
             id: 'sre',
@@ -70,7 +69,7 @@ export const cv: CvData = {
             id: 'mentor',
             label: 'Mentor Integration',
             description:
-              'Led and architected, with the AI team, the integration of Mentor, OutSystems’ LLM-based agentic AI, into ODC Studio: AI-assisted development in the visual IDE, live since March 2026.',
+              'Led and architected the integration of Mentor, OutSystems’ LLM-based agentic AI, into ODC Studio with the AI team: AI-assisted development in the visual IDE, live since March 2026.',
             links: {
               Mentor:
                 'https://success.outsystems.com/documentation/outsystems_developer_cloud/agentic_development/ai_development_in_mentor_studio/',
@@ -85,7 +84,7 @@ export const cv: CvData = {
         ],
       },
       {
-        heading: 'Technical Architecture & Cloud Integration',
+        heading: 'Cloud & Platform',
         bullets: [
           {
             id: 'cloudClient',
@@ -97,7 +96,7 @@ export const cv: CvData = {
             id: 'migration',
             label: 'Platform Migration',
             description:
-              'With the wider team, moved the IDE off Windows-only WPF to React and TypeScript in an embedded Chromium WebView over several years, component by component behind feature flags; it gained macOS.',
+              'With the wider team, moved the IDE off Windows-only WPF to React and TypeScript in an embedded Chromium WebView, component by component behind feature flags; it gained macOS.',
           },
         ],
       },
@@ -108,7 +107,7 @@ export const cv: CvData = {
             id: 'designSystem',
             label: 'Design System',
             description:
-              'Led the 2026 company-wide Design System modernization from design to production: built its infrastructure and set the bar for what could ship, sending designs back to UX when they would not hold up in code.',
+              'Led the 2026 company-wide Design System modernization: built its infrastructure and set the bar for what shipped, sending designs back to UX when they would not hold up in code.',
           },
           {
             id: 'merge',
@@ -158,7 +157,7 @@ export const cv: CvData = {
       organisation: 'UT Austin',
       period: 'Jul 2015 – Aug 2015',
       paragraphs: [
-        'Built a multithreaded C++ framework at UT Austin for the GUIDE project (Graph Unified Irregular Distributed Environment), enabling parallel and distributed operations over complex graph structures.',
+        'Built a multithreaded C++ framework for the GUIDE project (Graph Unified Irregular Distributed Environment), enabling parallel and distributed operations over complex graph structures.',
       ],
       techPills: ['C++', 'Multithreading'],
     },
@@ -224,9 +223,8 @@ export const cv: CvData = {
   awards: [
     {
       title: 'Top Performer Award',
-      context: 'OutSystems',
+      context: 'OutSystems, company-wide',
       year: 2023,
-      description: 'Company-wide recognition for delivering high-impact technical results.',
     },
   ],
 };
