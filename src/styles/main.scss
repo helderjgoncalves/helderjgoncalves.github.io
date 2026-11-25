@@ -15,6 +15,7 @@
 @use 'trips';
 @use 'trip-help';
 @use 'homelab';
+@use 'privacy';
 
 // The Inter @font-face request lives in index.html, not here: a CSS @import is
 // only discovered once this stylesheet has downloaded, so loading it from the

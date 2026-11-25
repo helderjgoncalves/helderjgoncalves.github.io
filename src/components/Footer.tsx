@@ -13,6 +13,10 @@ export function Footer() {
           ·{' '}
           <a href="https://linkedin.com/in/helderjgoncalves" target="_blank" rel="noopener noreferrer" draggable={false}>
             LinkedIn
+          </a>{' '}
+          ·{' '}
+          <a href="/privacy/" draggable={false}>
+            Privacy
           </a>
         </p>
       </div>

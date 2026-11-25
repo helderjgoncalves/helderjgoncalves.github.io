@@ -7,6 +7,7 @@ import App from './App';
 export { homelab } from './data/homelab';
 export { home, allPhotos } from './data/home';
 export { tripsPage } from './data/tripsPage';
+export { privacy } from './data/privacy';
 export { cv } from './data/cv';
 export { trips, sampleTrips, tripPath, tripPhotos, tripCountries } from './data/trips';
 export { photos, largeSrcSet, hasAvif, avifSrc, largeSrc } from './data/photos';

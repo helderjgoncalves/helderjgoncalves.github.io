@@ -83,7 +83,7 @@ Don't break that branching when editing `main.tsx`.
 
 ```
 src/
-  App.tsx                 # routes: / home page, /cv/, /homelab/, /trips/, /trips/<slug>/
+  App.tsx                 # routes: / home page, /cv/, /homelab/, /trips/, /trips/<slug>/, /privacy/
   main.tsx                # client entry; hydrate-or-render based on root contents
   entry-server.tsx        # SSR entry; renderToString(<App />)
   types.ts                # CvData and related interfaces
@@ -92,6 +92,7 @@ src/
   data/homelab.ts         # home-lab case study
   data/photos.ts          # every photo, described once (src, alt, caption, place, size)
   data/tripsPage.ts       # /trips/: title and meta (the cards come from trips/)
+  data/privacy.ts         # /privacy/: the privacy notice (see "Privacy and licence")
   data/trips/             # one file per trip + index.ts (the list, checks and helpers)
   components/             # one component per CV section + page components (HomePage,
                           # CvPage, HomelabPage, TripsPage, TripPage), PhotoGrid, PhotoViewer,
@@ -99,7 +100,8 @@ src/
   hooks/useReveal.ts      # IntersectionObserver scroll-reveal
   styles/                 # SASS partials (see below)
   vite-env.d.ts
-public/                   # static assets copied verbatim (favicon, portrait, og/, robots, 404)
+public/                   # static assets copied verbatim (favicon, portrait, og/, fonts/, robots, 404)
+LICENSE.md                # content all rights reserved, Inter under the OFL, code non-commercial
 scripts/prerender.mjs     # post-build SSR injection + head metadata + sitemap
 scripts/dist.test.mjs     # post-build assertions on dist/ (`npm test`)
 scripts/og-cards/         # HTML sources for the social cards + `npm run cards`
@@ -450,6 +452,39 @@ The shape is defined in `src/types.ts` — the compiler will catch missing
 fields when adding new entries. If you genuinely need a new field, update
 `types.ts` first, then `cv.ts`, then the component that renders it.
 
+### Privacy and licence
+
+`/privacy/` (`PrivacyPage.tsx`, copy in `privacy.ts`) is a formal privacy
+notice under the GDPR: Hélder as controller, a private individual in Portugal.
+It is reached from the footer and from a quiet link in the trip-tips form,
+never a banner or popup: the site needs no consent, because it sets no cookies,
+runs no analytics and keeps the theme choice only in the visitor's browser.
+It is `noindex` and borrows the home page's social card.
+
+The notice states what the site actually does, so it has to change with it.
+Anything that sends visitors' data somewhere new (an analytics script, an
+embed, a font or script from another host, a new form field) needs a line
+there first, and some (analytics, embeds) would need consent, which this
+site deliberately avoids. The only hosts a page may contact are its own,
+GitHub Pages, Cloudflare (`media.`, `contact.` and Turnstile). That is why
+Inter is self-hosted from `public/fonts/` rather than loaded from Google
+Fonts, which hands every visitor's IP address to Google: don't bring that
+link back. The social card templates may keep Google Fonts, since they only
+run on Hélder's machine. The notice promises messages are deleted within
+twelve months of the last exchange.
+
+`LICENSE.md` reserves all rights to the content (photos, clips, the CV, the
+written copy, name and likeness), credits Inter under the SIL Open Font License
+(its text ships beside it as `public/fonts/OFL.txt`, as the OFL requires) and
+puts the code under the PolyForm Noncommercial License 1.0.0: free for any
+non-commercial use, never MIT or another licence that allows commercial use.
+Hélder alone authorises any use of his photos. Text and data mining (AI
+training included) is reserved under Article 4(3) of Directive (EU) 2019/790,
+which needs a machine-readable opt-out: the AI crawlers blocked in
+`public/robots.txt` and the `tdm-reservation` meta tag in `index.html`. Keep
+both, and add new AI crawlers to `robots.txt` as they appear; search engines
+stay allowed.
+
 ### Downloadable CV (`public/helder-goncalves-cv.pdf`)
 
 The `/cv/` hero has a "Download CV" link (`CvDownload.tsx`, `<Hero showDownload />`;
@@ -545,6 +580,11 @@ template too.
 Photos under `public/photos/` are resized for display and stripped of all
 metadata except the colour profile before they are committed
 (`exiftool -all= -tagsfromfile @ -icc_profile`), so no GPS or camera data ships.
+Then every copy, JPEG and AVIF, gets the copyright notice written back in
+(`exiftool -@ scripts/copyright.args <files>`): creator, rights, a link to the
+privacy page's copyright section and a PLUS data-mining prohibition, so the
+notice travels with any downloaded copy. `npm run cards` does the same to the
+social cards; the portrait carries it too. Sample photos don't.
 
 ## Styling rules
 
@@ -607,7 +647,7 @@ Reach for the mixin; if nothing fits, add a family here and document why.
 | Prose link | `prose-link` | `.homelab-stack__note a`, `.footer a`, `.trip-help__back a` | accent → accent-dark |
 | Nav control | `nav-control` | `.theme-toggle`, `.nav__menu`, `.trip-route__ask-close` (closing the form under a trip's route) | accent tint deepens, border firms, press scales |
 | Hero button | `hero-button` | `.hero__contact`, `.hero__download`, `.homelab-cta`, `.hero-jumps__link`, `.viewer__button`, `.viewer__link` | white glass brightens, lifts 1px |
-| Nav link | — (`.nav__links a`) | `SiteNav` page links (every page; below md they live in the ☰ panel, which closes on Esc, an outside tap or a link) | soft → accent; the current page rests in accent |
+| Nav link | — (`.nav__links a`, `.privacy__toc a`) | `SiteNav` page links (every page; below md they live in the ☰ panel, which closes on Esc, an outside tap or a link) and the privacy notice's contents list | soft → accent; the current page rests in accent |
 | Card link | `card-link` | `.door` (home-page cards), `.trip-card` (`/trips/`), `.gallery__link` (photo tiles), `.trip-route__card--link` (a trip's route stops, to their photo section; on phones, where the route is a path rather than cards, only the name turns accent) | card lifts 2px, shadow deepens, inner action line turns accent |
 | Primary button | `primary-button` | `.trip-help__email` ("Email me" closing the trip pages, then the form's "Send") | fill deepens to accent-dark, lifts 1px, gains a shadow |
 | Text field | `text-field` | `.trip-help__field` inputs (the trip-tips form) | border firms on hover; accent border and a soft ring on focus |

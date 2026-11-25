@@ -31,6 +31,7 @@ const {
   home,
   allPhotos,
   tripsPage,
+  privacy,
   cv,
   trips,
   sampleTrips,
@@ -335,6 +336,27 @@ function homeJsonLd(dateModified) {
   };
 }
 
+/**
+ * The privacy notice: a plain WebPage by the same Person. Copy comes from
+ * src/data/privacy.ts.
+ *
+ * @param {string} dateModified
+ */
+function privacyJsonLd(dateModified) {
+  const url = privacy.meta.canonical;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: privacy.meta.title,
+    description: privacy.meta.description,
+    dateModified,
+    inLanguage: 'en-GB',
+    author: { '@id': PERSON_ID },
+  };
+}
+
 // Routing (output path, structured data, social card) belongs to the build; the
 // copy belongs to the data layer. Home and homelab strings come from
 // their data files. The CV description still lives here, beside its ProfilePage.
@@ -412,6 +434,21 @@ const pages = [
       'public/photos',
     ],
     jsonLd: 'trips',
+  },
+  {
+    path: '/privacy',
+    out: path.join('privacy', 'index.html'),
+    title: privacy.meta.title,
+    description: privacy.meta.description,
+    canonical: privacy.meta.canonical,
+    ogType: 'website',
+    // Rarely shared, so it borrows the home page's card rather than having its own.
+    image: cardUrl('home'),
+    imageAlt: `${home.title}. ${home.meta.card.photo.alt}`,
+    sources: ['src/data/privacy.ts', 'src/components/PrivacyPage.tsx'],
+    jsonLd: 'privacy',
+    // Found from the footer and the form; nothing for search to rank.
+    noindex: true,
   },
   // One page per entry in src/data/trips/index.ts — adding a trip there is all
   // it takes for it to be built, described and listed in the sitemap.
@@ -598,6 +635,7 @@ function applyMeta(html, page, dateModified) {
       homelab: homelabJsonLd,
       trips: tripsJsonLd,
       trip: tripJsonLd,
+      privacy: privacyJsonLd,
     };
     const data = JSON.stringify(builders[meta.jsonLd](dateModified, page), null, 2);
     const script = `\n    <script type="application/ld+json">\n${data}\n    </script>`;

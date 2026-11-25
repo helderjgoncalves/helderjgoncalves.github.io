@@ -48,6 +48,8 @@ export interface TripsPageData {
       sending: string;
       /** Beside Send, before the address as a mailto: link. */
       direct: string;
+      /** After the address, linking to /privacy/. */
+      privacy: string;
       /** Before the trip's place, atop the form on a trip page. */
       about: string;
       sent: { title: string; text: string };
@@ -106,6 +108,7 @@ export const tripsPage: TripsPageData = {
       close: 'Close',
       sending: 'Sending…',
       direct: 'Or write to',
+      privacy: 'Privacy',
       sent: { title: 'Got it, thanks!', text: "I'll reply to your email soon." },
       checks: {
         email: 'Needed, so I can reply',

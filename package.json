@@ -1,6 +1,7 @@
 {
   "name": "helder-cv",
   "private": true,
+  "license": "SEE LICENSE IN LICENSE.md",
   "version": "1.0.0",
   "type": "module",
   "description": "Personal landing page for Hélder Gonçalves — Lead Software Engineer",

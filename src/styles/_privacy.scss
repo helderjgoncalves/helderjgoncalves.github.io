@@ -1,0 +1,96 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ---- Privacy notice: a document column, with its contents beside it on wide screens ----
+.privacy {
+  padding-top: 2rem;
+
+  @include md-up { padding-top: 3rem; }
+
+  @include lg-up {
+    display: grid;
+    grid-template-columns: minmax(0, 46rem) 13rem;
+    justify-content: space-between;
+    align-items: start;
+    gap: 3rem;
+  }
+
+  &__body { max-width: 46rem; }
+
+  &__toc {
+    display: none;
+
+    @include lg-up {
+      display: block;
+      grid-column: 2;
+      grid-row: 1;
+      position: sticky;
+      top: 5.5rem;
+    }
+
+    ol {
+      list-style: none;
+      margin: 0;
+      padding: 0 0 0 0.9rem;
+      border-left: 1px solid $color-rule;
+      display: grid;
+      gap: 0.5rem;
+      font-size: $fs-sm;
+    }
+
+    // Same treatment as the top bar's page links: soft at rest, accent on hover.
+    a {
+      color: $color-text-soft;
+      text-decoration: none;
+      transition: color $dur-fast $ease;
+
+      &:hover,
+      &:focus-visible { color: $color-accent; }
+    }
+  }
+
+  &__toc-title {
+    margin: 0 0 0.75rem;
+    font-size: $fs-xs;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $color-text-muted;
+  }
+
+  &__section + &__section { margin-top: 2.25rem; }
+
+  &__heading {
+    margin: 0 0 0.75rem;
+    font-size: $fs-md;
+    font-weight: 700;
+    color: $color-heading;
+
+    @include md-up { font-size: $fs-lg; }
+  }
+
+  &__number {
+    margin-right: 0.4rem;
+    color: $color-text-muted;
+    font-variant-numeric: tabular-nums;
+  }
+
+  p {
+    margin: 0 0 0.9rem;
+    line-height: 1.7;
+    color: $color-text-soft;
+
+    &:last-child { margin-bottom: 0; }
+  }
+
+  strong {
+    font-weight: 600;
+    color: $color-text;
+  }
+
+  // Emphasised: these sit mid-sentence and have to be findable in them.
+  p a {
+    @include prose-link;
+    font-weight: 600;
+  }
+}

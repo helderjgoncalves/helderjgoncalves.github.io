@@ -328,7 +328,10 @@ export function TripHelpForm({ trip = '', wide = false, closing = false, draft, 
                 )}
                 <div className="trip-help__footer">
                   <p className="trip-help__direct">
-                    {form.direct} <a href={`mailto:${email}`}>{email}</a>
+                    {form.direct} <a href={`mailto:${email}`}>{email}</a> ·{' '}
+                    <a className="trip-help__privacy" href="/privacy/" draggable={false}>
+                      {form.privacy}
+                    </a>
                   </p>
                   <button className="trip-help__email" type="submit" disabled={status === 'sending'}>
                     <Icon name="email" />

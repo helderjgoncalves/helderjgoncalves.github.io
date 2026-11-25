@@ -422,6 +422,8 @@
       font-weight: 600;
       @include prose-link;
     }
+
+    .trip-help__privacy { font-weight: 400; }
   }
 
   // The way back, on its own line so the button stands alone as the offer.
