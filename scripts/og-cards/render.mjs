@@ -118,6 +118,7 @@ for (const card of cards) {
   execFileSync('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', quality, shot, '--out', dest], {
     stdio: 'ignore',
   });
+  execFileSync('exiftool', ['-@', path.join(projectRoot, 'scripts', 'copyright.args'), dest], { stdio: 'ignore' });
 
   const { size } = fs.statSync(dest);
   console.log(`✓ ${card.out} (${(size / 1024).toFixed(0)} KB)`);
