@@ -181,7 +181,7 @@ export const cv: CvData = {
       subtitle: 'Product, design and infrastructure, built solo',
       period: '2026 – Present',
       description:
-        'React and TypeScript, pre-rendered to static HTML for SEO, with 110+ CI tests gating every deploy; 10 trips, 80+ photos and 21 HDR clips. Serverless on Cloudflare: clips in AV1 and HEVC from R2 behind WAF rules, a cron Worker that cuts media off before it leaves the free tier, and a contact Worker with layered spam defence.',
+        'React and TypeScript, pre-rendered to static HTML for SEO, with 110+ CI tests gating every deploy; it runs entirely on free tiers. Serverless on Cloudflare: HDR clips in AV1 and HEVC from R2 behind WAF rules, a cron Worker that keeps it there by cutting media off near the quota, and a contact Worker with layered spam filters.',
       techPills: [
         'React',
         'TypeScript',
