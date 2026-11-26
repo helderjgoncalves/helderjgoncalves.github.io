@@ -67,9 +67,9 @@ export const cv: CvData = {
         bullets: [
           {
             id: 'mentor',
-            label: 'Mentor Integration',
+            label: 'Mentor',
             description:
-              'Led and architected the integration of Mentor, OutSystems’ LLM-based agentic AI, into ODC Studio with the AI team: AI-assisted development in the visual IDE, live since March 2026.',
+              'Co-architected and built Mentor, ODC Studio’s agentic AI, from scratch with the AI team: its tools, the merge into the developer’s work and its chat pane. Led its IDE engineers; live since March 2026.',
             links: {
               Mentor:
                 'https://success.outsystems.com/documentation/outsystems_developer_cloud/agentic_development/ai_development_in_mentor_studio/',
@@ -113,7 +113,7 @@ export const cv: CvData = {
             id: 'merge',
             label: 'Merge & Conflict Resolution',
             description:
-              'Made merge granular, so edits to different parts of the same screen no longer conflict; automatic text merge now resolves over 50% of the rest, in a redesigned merge UI.',
+              'Made merge granular, so edits to different parts of the same screen no longer conflict; automatic text merge now resolves over 50% of the rest, in a redesigned merge UI. Nodes two people add to one flow no longer collide and lose one side’s work.',
           },
           {
             id: 'notifications',
@@ -177,11 +177,11 @@ export const cv: CvData = {
 
   sideProjects: [
     {
-      title: 'Personal Website and Travel Guide (hgoncalves.uk)',
+      title: 'Travel Guide Platform (hgoncalves.uk)',
       subtitle: 'Product, design and infrastructure, built solo',
       period: '2026 – Present',
       description:
-        'React and TypeScript, pre-rendered to static HTML for SEO, with post-build tests in CI that block a broken deploy. Serverless backend on Cloudflare Workers: a contact form with layered spam protection, and media on R2 behind WAF rules and a cost guard that cuts it off before it leaves the free tier.',
+        'React and TypeScript, pre-rendered to static HTML for SEO, with 110+ CI tests gating every deploy; 10 trips, 80+ photos and 21 HDR clips. Serverless on Cloudflare: clips in AV1 and HEVC from R2 behind WAF rules, a cron Worker that cuts media off before it leaves the free tier, and a contact Worker with layered spam defence.',
       techPills: [
         'React',
         'TypeScript',
@@ -194,11 +194,11 @@ export const cv: CvData = {
       href: 'https://github.com/helderjgoncalves/helderjgoncalves.github.io',
     },
     {
-      title: 'Self-Hosted Home Lab',
-      subtitle: 'Personal infrastructure',
+      title: 'Self-Hosted Private Cloud',
+      subtitle: 'Personal infrastructure, for family and friends',
       period: '2023 – Present',
       description:
-        'Private cloud for the family’s photos, files and media, in Docker on a NAS. No inbound ports: Cloudflare Tunnel and Traefik, with zero-trust access at the edge (OAuth, mTLS). Monitored with alerting, and declared in Git, so it redeploys onto fresh hardware.',
+        '24 containers in 14 Docker stacks on a NAS, serving family and friends’ photos, files and media. No inbound ports: Cloudflare Tunnel and Traefik, with zero-trust access at the edge (OAuth, mTLS). Monitored with alerts, and declared in Git with CI checks, so it redeploys onto fresh hardware.',
       techPills: [
         'Docker',
         'Cloudflare Zero Trust',
