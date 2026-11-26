@@ -39,7 +39,8 @@ does not extend to them.
 works for text and data mining, including the training of artificial
 intelligence and machine-learning models, under Article 4(3) of Directive (EU)
 2019/790. This reservation is also expressed in machine-readable form in the
-site's `robots.txt` and in a `tdm-reservation` meta tag on every page.
+site's `robots.txt`, in `/.well-known/tdmrep.json` and in a `tdm-reservation`
+meta tag on every page.
 
 Requests for authorisation: helder@hgoncalves.uk.
 

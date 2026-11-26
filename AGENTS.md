@@ -455,7 +455,8 @@ fields when adding new entries. If you genuinely need a new field, update
 ### Privacy and licence
 
 `/privacy/` (`PrivacyPage.tsx`, copy in `privacy.ts`) is a formal privacy
-notice under the GDPR: Hélder as controller, a private individual in Portugal.
+notice under the GDPR, naming the site's owner, a private individual in
+Portugal, as controller.
 It is reached from the footer and from a quiet link in the trip-tips form,
 never a banner or popup: the site needs no consent, because it sets no cookies,
 runs no analytics and keeps the theme choice only in the visitor's browser.
@@ -470,7 +471,7 @@ GitHub Pages, Cloudflare (`media.`, `contact.` and Turnstile). That is why
 Inter is self-hosted from `public/fonts/` rather than loaded from Google
 Fonts, which hands every visitor's IP address to Google: don't bring that
 link back. The social card templates may keep Google Fonts, since they only
-run on Hélder's machine. The notice promises messages are deleted within
+run locally. The notice promises messages are deleted within
 twelve months of the last exchange.
 
 `LICENSE.md` reserves all rights to the content (photos, clips, the CV, the
@@ -478,12 +479,18 @@ written copy, name and likeness), credits Inter under the SIL Open Font License
 (its text ships beside it as `public/fonts/OFL.txt`, as the OFL requires) and
 puts the code under the PolyForm Noncommercial License 1.0.0: free for any
 non-commercial use, never MIT or another licence that allows commercial use.
-Hélder alone authorises any use of his photos. Text and data mining (AI
-training included) is reserved under Article 4(3) of Directive (EU) 2019/790,
-which needs a machine-readable opt-out: the AI crawlers blocked in
-`public/robots.txt` and the `tdm-reservation` meta tag in `index.html`. Keep
-both, and add new AI crawlers to `robots.txt` as they appear; search engines
-stay allowed.
+Text and data mining (AI training included) is reserved under Article 4(3) of
+Directive (EU) 2019/790, which needs a machine-readable opt-out: the AI
+crawlers blocked in `public/robots.txt`, `public/.well-known/tdmrep.json`
+(TDMRep, covering every file, images included; the deploy sets
+`include-hidden-files` so it ships) and the `tdm-reservation` meta tag in
+`index.html`. Keep all three (`npm test` checks the last two).
+
+Only search engines may crawl the site. Every AI crawler is blocked in
+`robots.txt`: training crawlers, and AI search tools and their fetchers alike
+(OAI-SearchBot, ChatGPT-User, Claude-User, PerplexityBot…). Add new ones as
+they appear. Fetches a person triggers by pasting a link into an assistant
+ignore `robots.txt`, and GitHub Pages can't block them.
 
 ### Downloadable CV (`public/helder-goncalves-cv.pdf`)
 

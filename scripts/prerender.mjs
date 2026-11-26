@@ -442,7 +442,6 @@ const pages = [
     description: privacy.meta.description,
     canonical: privacy.meta.canonical,
     ogType: 'website',
-    // Rarely shared, so it borrows the home page's card rather than having its own.
     image: cardUrl('home'),
     imageAlt: `${home.title}. ${home.meta.card.photo.alt}`,
     sources: ['src/data/privacy.ts', 'src/components/PrivacyPage.tsx'],

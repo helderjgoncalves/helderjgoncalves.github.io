@@ -46,6 +46,8 @@ jobs:
         uses: actions/upload-pages-artifact@v5
         with:
           path: dist
+          # Ships public/.well-known/tdmrep.json, the site-wide AI-training opt-out.
+          include-hidden-files: true
 
   deploy:
     needs: build

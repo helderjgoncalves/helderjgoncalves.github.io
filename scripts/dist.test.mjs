@@ -284,6 +284,25 @@ describe('robots.txt', () => {
   });
 });
 
+// Article 4(3) of Directive (EU) 2019/790 only reserves text and data mining
+// when the reservation is machine-readable. tdmrep.json covers every file,
+// images included; the meta tag covers each page for crawlers that skip it.
+describe('text and data mining reservation', () => {
+  test('/.well-known/tdmrep.json reserves the whole site', async () => {
+    const rules = JSON.parse(await readDist('.well-known/tdmrep.json'));
+    assert.ok(
+      rules.some((rule) => rule.location === '/*' && rule['tdm-reservation'] === 1),
+      'tdmrep.json no longer reserves "/*"',
+    );
+  });
+
+  test('every page carries the tdm-reservation meta tag', () => {
+    for (const page of pages) {
+      assert.match(page.html, /<meta name="tdm-reservation" content="1" \/>/, `${page.url} has no tdm-reservation`);
+    }
+  });
+});
+
 // Non-standard properties with no unprefixed counterpart to look for.
 // -webkit-user-drag has no unprefixed form any engine implements. Safari needs
 // it to stop dragging an <a href>; draggable="false" is enough for images.
