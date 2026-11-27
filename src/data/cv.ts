@@ -198,7 +198,7 @@ export const cv: CvData = {
       subtitle: 'Personal infrastructure, for family and friends',
       period: '2023 – Present',
       description:
-        '24 containers in 14 Docker stacks on a NAS, serving family and friends’ photos, files and media. No inbound ports: Cloudflare Tunnel and Traefik, with zero-trust, geo-restricted access at the edge (OAuth, mTLS); admin tools stay off public DNS, LAN and VPN only. Least-privilege Docker access, DMARC-enforced mail, monitored with alerts, and declared in Git with CI checks, so it redeploys onto fresh hardware.',
+        '24 containers in 14 Docker stacks on a NAS, serving family and friends’ photos, files and media. No inbound ports: Cloudflare Tunnel and Traefik, with zero-trust, geo-restricted access at the edge (OAuth, mTLS); admin tools stay off public DNS, LAN and VPN only. Least-privilege Docker access, monitored with alerts, and declared in Git with CI checks, so it redeploys onto fresh hardware.',
       techPills: [
         'Docker',
         'Cloudflare Zero Trust',

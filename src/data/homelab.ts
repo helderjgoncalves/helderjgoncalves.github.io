@@ -65,6 +65,11 @@ export const homelab: HomelabPageData = {
         'VPN traffic reaches Traefik directly, skipping Cloudflare Access, so per-route allowlists carry it instead: family devices get only the public apps behind their own logins, and admin UIs answer to my devices alone.',
     },
     {
+      title: 'Monitors that can’t take over',
+      description:
+        'Uptime Kuma and Beszel see Docker through a read-only proxy: they list containers and read their state, but can’t create, start, stop or exec. Only the stack manager can deploy. A compromised monitor could read what it watches, never run anything on the NAS.',
+    },
+    {
       title: 'Layered monitoring',
       description:
         'Uptime Kuma covers container and HTTP liveness, Beszel covers resources, and Better Stack probes the public path from outside. Alerts converge on ntfy — and Better Stack also expects a heartbeat on a schedule, so a lab that goes dark entirely, ntfy included, still raises an alarm: the missing heartbeat is the alert.',
@@ -101,7 +106,7 @@ export const homelab: HomelabPageData = {
     { name: 'Dockge', purpose: 'Compose stack manager' },
     { name: 'Uptime Kuma', purpose: 'Container and HTTP liveness probes' },
     { name: 'Beszel', purpose: 'CPU, RAM, disk, temperature metrics' },
-    { name: 'ntfy', purpose: 'Push alert sink for every monitoring layer' },
+    { name: 'ntfy', purpose: 'Push alerts for every monitoring layer' },
   ],
   ctas: [
     {
