@@ -207,7 +207,7 @@ export const cv: CvData = {
         'mTLS',
         'OAuth',
         'DNS over HTTPS',
-        'Workers AI',
+        'Cloudflare Workers AI',
         'Configuration-as-Code',
       ],
       caseStudyHref: '/homelab/',

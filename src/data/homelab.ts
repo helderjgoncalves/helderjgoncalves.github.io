@@ -78,7 +78,7 @@ export const homelab: HomelabPageData = {
     {
       title: 'Updates that know when to ask',
       description:
-        'Updates run unattended. Each compose tag sets how far an app moves on its own, and a release past it raises a push. An LLM on Workers AI judges the releases the rules can’t from their notes; critical majors wait for me. Every upgrade backs up first and rolls back if unhealthy.',
+        'Updates run unattended. Each compose tag sets how far an app moves on its own, and a release past it raises a push. An LLM on Workers AI judges the releases the rules can’t from their notes; critical majors wait for me. What it approves is backed up first and rolled back if unhealthy.',
       evidence: {
         label: 'The updater on GitHub',
         href: 'https://github.com/helderjgoncalves/Homelab-Infrastructure/tree/main/updates',
