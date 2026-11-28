@@ -76,7 +76,7 @@ export const homelab: HomelabPageData = {
       evidence: { label: 'Live status page', href: 'https://status.hgoncalves.uk' },
     },
     {
-      title: 'An AI gatekeeper for updates',
+      title: 'AI gatekeeper for updates',
       description:
         'Updates run unattended. An LLM on Workers AI reads the release notes and decides whether a bump is safe to install or needs me. Routine releases within the compose tag skip it; critical majors always wait for me. What it approves is backed up first and rolled back if unhealthy.',
       evidence: {
