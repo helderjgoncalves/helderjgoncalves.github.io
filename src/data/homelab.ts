@@ -76,9 +76,9 @@ export const homelab: HomelabPageData = {
       evidence: { label: 'Live status page', href: 'https://status.hgoncalves.uk' },
     },
     {
-      title: 'Reliable automatic updates',
+      title: 'AI decides which updates are safe',
       description:
-        'Updates run unattended. Each compose tag sets how far an app moves on its own, and a release past it raises a push. An LLM on Workers AI judges the releases the rules can’t from their notes; critical majors wait for me. What it approves is backed up first and rolled back if unhealthy.',
+        'Updates run unattended. An LLM on Workers AI reads the release notes and decides whether a bump is safe to install or needs me. Routine releases within the compose tag skip it; critical majors always wait for me. What it approves is backed up first and rolled back if unhealthy.',
       evidence: {
         label: 'The updater on GitHub',
         href: 'https://github.com/helderjgoncalves/Homelab-Infrastructure/tree/main/updates',
