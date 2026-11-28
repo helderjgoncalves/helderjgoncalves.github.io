@@ -198,7 +198,7 @@ export const cv: CvData = {
       subtitle: 'Personal infrastructure, for family and friends',
       period: '2023 – Present',
       description:
-        '24 containers in 14 Docker stacks on a NAS, serving family and friends’ photos, files and media. No inbound ports: Cloudflare Tunnel and Traefik, with zero-trust, geo-restricted access at the edge (OAuth, mTLS); admin tools stay off public DNS, LAN and VPN only. Least-privilege Docker access, monitored with alerts, and declared in Git with CI checks, so it redeploys onto fresh hardware.',
+        '24 containers in 14 Docker stacks on a NAS, serving family and friends’ photos, files and media. No inbound ports: Cloudflare Tunnel and Traefik, with zero-trust, geo-restricted access at the edge (OAuth, mTLS); admin tools stay off public DNS, LAN and VPN only. Updates run unattended and roll back if unhealthy, with an LLM on Workers AI judging the releases the rules can’t. Least-privilege Docker access, monitored with alerts, and declared in Git with CI checks, so it redeploys onto fresh hardware.',
       techPills: [
         'Docker',
         'Cloudflare Zero Trust',
@@ -207,6 +207,7 @@ export const cv: CvData = {
         'mTLS',
         'OAuth',
         'DNS over HTTPS',
+        'Workers AI',
         'Configuration-as-Code',
       ],
       caseStudyHref: '/homelab/',
