@@ -76,7 +76,7 @@ export const homelab: HomelabPageData = {
       evidence: { label: 'Live status page', href: 'https://status.hgoncalves.uk' },
     },
     {
-      title: 'Updates that know when to ask',
+      title: 'Updates judged by an LLM',
       description:
         'Updates run unattended. Each compose tag sets how far an app moves on its own, and a release past it raises a push. An LLM on Workers AI judges the releases the rules can’t from their notes; critical majors wait for me. What it approves is backed up first and rolled back if unhealthy.',
       evidence: {
