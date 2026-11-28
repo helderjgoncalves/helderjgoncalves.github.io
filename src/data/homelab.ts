@@ -78,7 +78,7 @@ export const homelab: HomelabPageData = {
     {
       title: 'Updates that know when to ask',
       description:
-        'About twenty containers update unattended. Each compose tag sets how far an app moves on its own (:2 takes minors, :latest everything), and a release past it raises a push, never silence. An open-weight LLM on Cloudflare Workers AI judges the releases the rules can’t, reading their notes and the integrations actually in use, and answers auto or manual with its reasons; majors of critical apps always wait for me. Each upgrade backs up the app’s data first, rolls back if unhealthy and commits the new tag to Git.',
+        'About twenty containers update unattended. Each compose tag sets how far an app moves on its own, and a release past it raises a push. An LLM on Workers AI judges the releases the rules can’t from their notes; critical majors wait for me. Every upgrade backs up first and rolls back if unhealthy.',
       evidence: {
         label: 'The updater on GitHub',
         href: 'https://github.com/helderjgoncalves/Homelab-Infrastructure/tree/main/updates',
