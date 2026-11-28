@@ -76,9 +76,9 @@ export const homelab: HomelabPageData = {
       evidence: { label: 'Live status page', href: 'https://status.hgoncalves.uk' },
     },
     {
-      title: 'Updates that undo themselves',
+      title: 'Updates that know when to ask',
       description:
-        'Updates run unattended, tiered by risk: low-risk services update each morning and roll themselves back if unhealthy, a database app follows its major with no rollback, and the rest wait for me. A weekly email lists what changed and what is waiting; a run that fails, or never runs, raises an alert.',
+        'About twenty containers update unattended. Each compose tag sets how far an app moves on its own (:2 takes minors, :latest everything), and a release past it raises a push, never silence. An open-weight LLM on Cloudflare Workers AI judges the releases the rules can’t, reading their notes and the integrations actually in use, and answers auto or manual with its reasons; majors of critical apps always wait for me. Each upgrade backs up the app’s data first, rolls back if unhealthy and commits the new tag to Git.',
       evidence: {
         label: 'The updater on GitHub',
         href: 'https://github.com/helderjgoncalves/Homelab-Infrastructure/tree/main/updates',
